@@ -512,7 +512,7 @@ mark,
 
 .img-fluid {
     max-width: 100%;
-    height: auto;
+    height: 310px;
 }
 
 .img-thumbnail {
@@ -11961,6 +11961,7 @@ h5,
     box-shadow: inset 0px 0px 101px 21px rgba(0, 0, 0, 0.09);
     background: #fff;
     z-index: 1;
+    text-align: center;
 }
 
 .product .img-prod .overlay {
@@ -13933,7 +13934,7 @@ textarea.form-control {
     font-weight: 400;
 }
 
-.block-27 ul li a,
+.block-27 ul li button,
 .block-27 ul li span {
     color: #333333;
     text-align: center;
@@ -14243,7 +14244,7 @@ textarea.form-control {
     padding: 10px 0;
     display: block;
     width: 100%;
-    font-size: 12px;
+    font-size: 15px;
     text-transform: uppercase;
     background: transparent;
     color: #dbcc8f;
@@ -14564,5 +14565,9 @@ textarea.form-control {
 
 .manager {
     padding: 10px 10px !important;
+}
+
+.rate-active {
+    color: #dbcc8f;
 }
 /*end individual*/

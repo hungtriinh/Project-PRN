@@ -27,7 +27,23 @@ namespace Project_PRN.Models {
         public string description { get; set; }
         public string shortDescription { get; set; }
         public string image { get; set; }
-
+        public int rate { get; set; }
+        public int calculateRate()
+        {
+            int total = 0;
+            foreach (Evaluate e in Evaluates)
+            {
+                total += e.rate;
+            }
+            if (Evaluates.Count > 0)
+            {
+                return total / Evaluates.Count;
+            }
+            else
+            {
+                return 0;
+            }
+        }
         public string fullImagePath() {
             string path = ConfigurationManager.ConnectionStrings["imagePath"].ToString();
             return $"{path}{image}";
