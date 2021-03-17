@@ -9,29 +9,23 @@ using System.Web.Mvc;
 using PagedList;
 using Project_PRN.Models;
 
-namespace Project_PRN.Controllers
-{
-    public class ProductsController : Controller
-    {
+namespace Project_PRN.Controllers {
+    public class ProductsController : Controller {
         private ProjectPRNEntities3 db = new ProjectPRNEntities3();
 
         // GET: Products
-        public ActionResult Product()
-        {
+        public ActionResult Product() {
             return View();
         }
 
-        public JsonResult ProductJson(int? index, string searchText, int? userID)
-        {
-            if (index == null)
-            {
+        public JsonResult ProductJson(int? index, string searchText, int? userID) {
+            if (index == null) {
                 index = 1;
             }
             int pageSize = 8;
             int pageNumber = (index ?? 1);
             db.Configuration.ProxyCreationEnabled = false;
-            var listProduct = db.Products.ToList().Select(product => new Product
-            {
+            var listProduct = db.Products.ToList().Select(product => new Product {
                 productID = product.productID,
                 title = product.title,
                 author = product.author,
@@ -53,41 +47,34 @@ namespace Project_PRN.Controllers
 
         }
 
-        public ActionResult UploadProduct()
-        {
+        public ActionResult UploadProduct() {
             return View();
         }
 
-        public ActionResult ProductDetail()
-        {
+        public ActionResult ProductDetail() {
             return View();
         }
 
-        public JsonResult GetCategoriesJson()
-        {
+        public JsonResult GetCategoriesJson() {
             db.Configuration.ProxyCreationEnabled = false;
             List<Category> listCategories = db.Categories.ToList();
             return Json(listCategories, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Products/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
+        public ActionResult Details(int? id) {
+            if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Product product = db.Products.Find(id);
-            if (product == null)
-            {
+            if (product == null) {
                 return HttpNotFound();
             }
             return View(product);
         }
 
         // GET: Products/Create
-        public ActionResult Create()
-        {
+        public ActionResult Create() {
             ViewBag.userID = new SelectList(db.Accounts, "userID", "email");
             ViewBag.categoriesID = new SelectList(db.Categories, "categoriesID", "categoriesName");
             return View();
@@ -98,10 +85,8 @@ namespace Project_PRN.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "productID,title,author,description,shortDescription,image,price,quantity,sold,postTime,categoriesID,userID")] Product product)
-        {
-            if (ModelState.IsValid)
-            {
+        public ActionResult Create([Bind(Include = "productID,title,author,description,shortDescription,image,price,quantity,sold,postTime,categoriesID,userID")] Product product) {
+            if (ModelState.IsValid) {
                 db.Products.Add(product);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -113,15 +98,12 @@ namespace Project_PRN.Controllers
         }
 
         // GET: Products/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
+        public ActionResult Edit(int? id) {
+            if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Product product = db.Products.Find(id);
-            if (product == null)
-            {
+            if (product == null) {
                 return HttpNotFound();
             }
             ViewBag.userID = new SelectList(db.Accounts, "userID", "email", product.userID);
@@ -134,10 +116,8 @@ namespace Project_PRN.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "productID,title,author,description,shortDescription,image,price,quantity,sold,postTime,categoriesID,userID")] Product product)
-        {
-            if (ModelState.IsValid)
-            {
+        public ActionResult Edit([Bind(Include = "productID,title,author,description,shortDescription,image,price,quantity,sold,postTime,categoriesID,userID")] Product product) {
+            if (ModelState.IsValid) {
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -148,15 +128,12 @@ namespace Project_PRN.Controllers
         }
 
         // GET: Products/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
+        public ActionResult Delete(int? id) {
+            if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Product product = db.Products.Find(id);
-            if (product == null)
-            {
+            if (product == null) {
                 return HttpNotFound();
             }
             return View(product);
@@ -165,18 +142,15 @@ namespace Project_PRN.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
+        public ActionResult DeleteConfirmed(int id) {
             Product product = db.Products.Find(id);
             db.Products.Remove(product);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
+        protected override void Dispose(bool disposing) {
+            if (disposing) {
                 db.Dispose();
             }
             base.Dispose(disposing);
