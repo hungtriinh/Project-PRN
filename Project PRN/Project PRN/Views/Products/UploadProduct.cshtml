@@ -43,37 +43,38 @@
         <div class="row justify-content-center">
             <div class="col-xl-10 ftco-animate">
                 <form action="Create" method="post" class="billing-form" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
                     <h3 class="mb-4 billing-heading">Product Information</h3>
                     <div class="row align-items-end">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="firstname">Title</label>
-                                <input type="text" class="form-control" placeholder="">
+                                <input type="text" name="title" class="form-control" placeholder="">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="lastname">Author</label>
-                                <input type="text" class="form-control" placeholder="">
+                                <input type="text" name="author" class="form-control" placeholder="">
                             </div>
                         </div>
                         <div class="w-100"></div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="postcodezip">Image</label><br>
-                                <input type="file" class="" placeholder="">
+                                <input type="file" name="image" class="" placeholder="">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="postcodezip">Price</label>
-                                <input type="number" class="form-control" placeholder="">
+                                <input type="number" name="price" class="form-control" placeholder="">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="postcodezip">Quantity</label>
-                                <input type="number" class="form-control" placeholder="">
+                                <input type="number" name="quantity" class="form-control" placeholder="">
                             </div>
                         </div>
                         <div id="categories" class="col-md-6">
@@ -81,8 +82,8 @@
                                 <label for="country">Categories</label>
                                 <div class="select-wrap">
                                     <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                    <select name="categoryID" id="" class="form-control">
-                                        <option v-for="c in categories" value="c.categoriesID">{{c.categoriesName}}</option>
+                                    <select name="categoriesID" id="" class="form-control">
+                                        <option v-for="c in categories" v-bind:value="c.categoriesID">{{c.categoriesName}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -91,13 +92,13 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="phone">ShortDescription</label>
-                                <textarea class="form-control" rows="5" placeholder=""></textarea>
+                                <textarea class="form-control" name="shortDescription" rows="5" placeholder=""></textarea>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="emailaddress">Description</label>
-                                <textarea class="form-control" rows="7" placeholder=""></textarea>
+                                <textarea class="form-control" name="description" rows="7" placeholder=""></textarea>
                             </div>
                         </div>
                         <div class="w-100"></div>
