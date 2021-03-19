@@ -1,7 +1,29 @@
 ﻿
 @{
-    ViewBag.Title = "Infro";
+    ViewBag.Title = "Edit Infor";
     Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script src="~/Scripts/axios.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#forminfor',
+            data: {
+                information: []
+            },
+            mounted: function () {
+                axios.get('/Accounts/EditJson')
+                    .then(response => {
+                        this.information = response.data;
+                        console.log(this.information);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+            }
+        })
+    </script>
 }
 
 <div class="hero-wrap hero-bread" style="background-image: url('/Content/images/bg_6.jpg');">
@@ -21,37 +43,38 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-xl-10 ftco-animate">
-                <form action="#" class="billing-form">
+                <form action="Edit" method="post" class="billing-form" id="forminfor">
+                    @Html.AntiForgeryToken()
                     <h3 class="mb-4 billing-heading">Product Information</h3>
-                    <div class="row align-items-end">
+                    <div v-for="i in information" class="row align-items-end">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="firstname">User Name</label>
-                                <input type="text" class="form-control" placeholder="">
+                                <input type="text" name="username" class="form-control" placeholder="" v-bind:value="i.userName">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="lastname">Phone Number</label>
-                                <input type="text" class="form-control" placeholder="">
+                                <input type="text" name="phoneNumber" class="form-control" placeholder="" v-bind:value="i.phoneNumber">
                             </div>
                         </div>
                         <div class="w-100"></div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="lastname">Address</label>
-                                <input type="text" class="form-control" placeholder="">
+                                <input type="text" name="address" class="form-control" placeholder="" v-bind:value="i.address">
                             </div>
                         </div>
                         <div class="w-100"></div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="firstname">Password Confrim</label>
-                                <input type="password" class="form-control" placeholder="" required>
+                                <input type="password" name="password" class="form-control" placeholder="" required>
                             </div>
                         </div>
                         <div class="w-100"></div>
-                        <p><a href="#" class="btn btn-primary py-3 px-4">Submit</a></p>
+                        <input type="submit" value="Update" class="btn btn-primary py-3 px-4">
 
                     </div>
                 </form><!-- END -->
