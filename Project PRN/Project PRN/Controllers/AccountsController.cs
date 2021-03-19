@@ -84,8 +84,12 @@ namespace Project_PRN.Controllers {
             });
         }
 
-        public ViewResult Edit() {
-            return View();
+        public ActionResult Edit() {
+            if (Session["user"] != null) {
+                return View();
+            } else {
+                return RedirectToAction("SignIn");
+            }
         }
 
         public JsonResult EditJson() {
