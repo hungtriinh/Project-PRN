@@ -4,29 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section scripts{
-    <script src="~/Scripts/axios.js"></script>
-
-    <script>
-            var app1 = new Vue({
-                el: '#categories',
-                data: {
-                    categories: []
-                },
-                mounted: function () {
-                    axios.get('/Products/GetCategoriesJson')
-                        .then(response => {
-                            this.categories = response.data;
-                            console.log(this.categories);
-                        })
-                        .catch(error => {
-                            console.log(error);
-                        })
-                }
-            })
-    </script>
-}
-
 <div class="hero-wrap hero-bread" style="background-image: url('/Content/images/bg_6.jpg');">
     <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
@@ -49,41 +26,46 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="firstname">Title</label>
-                                <input type="text" name="title" class="form-control" placeholder="">
+                                <input type="text" class="form-control" placeholder="">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="lastname">Author</label>
-                                <input type="text" name="author" class="form-control" placeholder="">
+                                <input type="text" class="form-control" placeholder="">
                             </div>
                         </div>
                         <div class="w-100"></div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="postcodezip">Image</label><br>
-                                <input type="file" name="image" class="" placeholder="">
+                                <input type="file" class="" placeholder="">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="postcodezip">Price</label>
-                                <input type="number" name="price" class="form-control" placeholder="">
+                                <input type="number" class="form-control" placeholder="">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="postcodezip">Quantity</label>
-                                <input type="number" name="quantity" class="form-control" placeholder="">
+                                <input type="number" class="form-control" placeholder="">
                             </div>
                         </div>
-                        <div id="categories" class="col-md-6">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label for="country">Categories</label>
                                 <div class="select-wrap">
                                     <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                                    <select name="categoriesID" id="" class="form-control">
-                                        <option v-for="cat in categories" value="cat.categoriesID">{{cat.categoriesName}}</option>
+                                    <select name="" id="" class="form-control">
+                                        <option value="">France</option>
+                                        <option value="">Italy</option>
+                                        <option value="">Philippines</option>
+                                        <option value="">South Korea</option>
+                                        <option value="">Hongkong</option>
+                                        <option value="">Japan</option>
                                     </select>
                                 </div>
                             </div>
@@ -92,13 +74,13 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="phone">ShortDescription</label>
-                                <textarea class="form-control" name="shortDescription" rows="5" placeholder=""></textarea>
+                                <textarea class="form-control" rows="5" placeholder=""></textarea>
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="emailaddress">Description</label>
-                                <textarea class="form-control" name="description" rows="7" placeholder=""></textarea>
+                                <textarea class="form-control" rows="7" placeholder=""></textarea>
                             </div>
                         </div>
                         <div class="w-100"></div>
