@@ -44,6 +44,7 @@ namespace Project_PRN.Models {
                 return 0;
             }
         }
+
         public string fullImagePath() {
             string path = ConfigurationManager.ConnectionStrings["imagePath"].ToString();
             return $"{path}{image}";
