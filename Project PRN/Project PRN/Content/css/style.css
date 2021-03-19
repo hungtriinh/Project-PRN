@@ -514,6 +514,12 @@ mark,
     max-width: 100%;
     height: 310px;
 }
+.img-fluids {
+    max-width: 540px;
+    height: 612px;
+    margin: 0 auto;
+    
+}
 
 .img-thumbnail {
     padding: 0.25rem;
@@ -12188,6 +12194,7 @@ h5,
     box-shadow: inset 0px 0px 101px 21px rgba(0, 0, 0, 0.09);
     height: 100%;
     display: block;
+    text-align: center;
 }
 
 .product-details h3 {
@@ -14568,6 +14575,9 @@ textarea.form-control {
 }
 
 .rate-active {
+    color: #dbcc8f;
+}
+rates-active {
     color: #dbcc8f;
 }
 /*end individual*/
