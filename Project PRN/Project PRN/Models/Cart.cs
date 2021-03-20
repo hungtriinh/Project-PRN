@@ -11,14 +11,14 @@ namespace Project_PRN.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.Web.Script.Serialization;
-
-
+    
     public partial class Cart
     {
         public Nullable<int> userid { get; set; }
         public int productid { get; set; }
         public int quantity { get; set; }
+        public int cartid { get; set; }
+    
         public virtual Account Account { get; set; }
         public virtual Product Product { get; set; }
     }

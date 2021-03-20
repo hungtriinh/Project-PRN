@@ -17,22 +17,11 @@
           <Property Name="address" Type="nvarchar(max)" Nullable="false" />
           <Property Name="phoneNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ProjectPRN.dbo.Bill' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Bill">
           <Key>
-            <PropertyRef Name="BillID" />
-            <PropertyRef Name="userName" />
-            <PropertyRef Name="address" />
-            <PropertyRef Name="phoneNumber" />
-            <PropertyRef Name="email" />
-            <PropertyRef Name="orderTime" />
-            <PropertyRef Name="payment" />
-            <PropertyRef Name="productid" />
-            <PropertyRef Name="quantity" />
-            <PropertyRef Name="amount" />
-            <PropertyRef Name="status" />
+            <PropertyRef Name="ID" />
           </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BillID" Type="bigint" Nullable="false" />
           <Property Name="userName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="address" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -46,13 +35,11 @@ warning 6002: The table/view 'ProjectPRN.dbo.Bill' does not have a primary key d
           <Property Name="amount" Type="money" Nullable="false" />
           <Property Name="status" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ProjectPRN.dbo.Cart' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Cart">
           <Key>
-            <PropertyRef Name="productid" />
-            <PropertyRef Name="quantity" />
+            <PropertyRef Name="cartid" />
           </Key>
+          <Property Name="cartid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="userid" Type="int" />
           <Property Name="productid" Type="int" Nullable="false" />
           <Property Name="quantity" Type="int" Nullable="false" />
@@ -64,16 +51,11 @@ warning 6002: The table/view 'ProjectPRN.dbo.Cart' does not have a primary key d
           <Property Name="categoriesID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="categoriesName" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ProjectPRN.dbo.Contact' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Contact">
           <Key>
-            <PropertyRef Name="userid" />
-            <PropertyRef Name="username" />
-            <PropertyRef Name="email" />
-            <PropertyRef Name="content" />
-            <PropertyRef Name="date" />
+            <PropertyRef Name="contactid" />
           </Key>
+          <Property Name="contactid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="userid" Type="int" Nullable="false" />
           <Property Name="username" Type="nvarchar" MaxLength="1" Nullable="false" />
           <Property Name="email" Type="nvarchar" MaxLength="1" Nullable="false" />
@@ -108,7 +90,7 @@ warning 6002: The table/view 'ProjectPRN.dbo.Contact' does not have a primary ke
           <Property Name="categoriesID" Type="int" Nullable="false" />
           <Property Name="userID" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="FK__Bill__productid__3F466844">
+        <Association Name="FK__Bill__productid__4222D4EF">
           <End Role="Product" Type="Self.Product" Multiplicity="1" />
           <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
           <ReferentialConstraint>
@@ -120,7 +102,7 @@ warning 6002: The table/view 'ProjectPRN.dbo.Contact' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Bill__userid__403A8C7D">
+        <Association Name="FK__Bill__userid__4316F928">
           <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
           <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
           <ReferentialConstraint>
@@ -132,7 +114,7 @@ warning 6002: The table/view 'ProjectPRN.dbo.Contact' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Cart__productid__412EB0B6">
+        <Association Name="FK__Cart__productid__440B1D61">
           <End Role="Product" Type="Self.Product" Multiplicity="1" />
           <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
           <ReferentialConstraint>
@@ -144,7 +126,7 @@ warning 6002: The table/view 'ProjectPRN.dbo.Contact' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Cart__userid__4222D4EF">
+        <Association Name="FK__Cart__userid__44FF419A">
           <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
           <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
           <ReferentialConstraint>
@@ -156,7 +138,7 @@ warning 6002: The table/view 'ProjectPRN.dbo.Contact' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Contact__userid__4316F928">
+        <Association Name="FK__Contact__userid__45F365D3">
           <End Role="Account" Type="Self.Account" Multiplicity="1" />
           <End Role="Contact" Type="Self.Contact" Multiplicity="*" />
           <ReferentialConstraint>
@@ -168,7 +150,7 @@ warning 6002: The table/view 'ProjectPRN.dbo.Contact' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Evaluate__produc__440B1D61">
+        <Association Name="FK__Evaluate__produc__46E78A0C">
           <End Role="Product" Type="Self.Product" Multiplicity="1" />
           <End Role="Evaluate" Type="Self.Evaluate" Multiplicity="*" />
           <ReferentialConstraint>
@@ -180,7 +162,7 @@ warning 6002: The table/view 'ProjectPRN.dbo.Contact' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Evaluate__userID__44FF419A">
+        <Association Name="FK__Evaluate__userID__47DBAE45">
           <End Role="Account" Type="Self.Account" Multiplicity="1" />
           <End Role="Evaluate" Type="Self.Evaluate" Multiplicity="*" />
           <ReferentialConstraint>
@@ -192,7 +174,7 @@ warning 6002: The table/view 'ProjectPRN.dbo.Contact' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Product__categor__45F365D3">
+        <Association Name="FK__Product__categor__48CFD27E">
           <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
@@ -204,7 +186,7 @@ warning 6002: The table/view 'ProjectPRN.dbo.Contact' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Product__userID__46E78A0C">
+        <Association Name="FK__Product__userID__49C3F6B7">
           <End Role="Account" Type="Self.Account" Multiplicity="1" />
           <End Role="Product" Type="Self.Product" Multiplicity="*" />
           <ReferentialConstraint>
@@ -218,74 +200,45 @@ warning 6002: The table/view 'ProjectPRN.dbo.Contact' does not have a primary ke
         </Association>
         <EntityContainer Name="ProjectPRNModelStoreContainer">
           <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cart" EntityType="Self.Cart" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Contact" EntityType="Self.Contact" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Evaluate" EntityType="Self.Evaluate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Bill" EntityType="Self.Bill" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Bill].[BillID] AS [BillID], 
-    [Bill].[userName] AS [userName], 
-    [Bill].[address] AS [address], 
-    [Bill].[phoneNumber] AS [phoneNumber], 
-    [Bill].[email] AS [email], 
-    [Bill].[orderTime] AS [orderTime], 
-    [Bill].[payment] AS [payment], 
-    [Bill].[userid] AS [userid], 
-    [Bill].[productid] AS [productid], 
-    [Bill].[quantity] AS [quantity], 
-    [Bill].[amount] AS [amount], 
-    [Bill].[status] AS [status]
-    FROM [dbo].[Bill] AS [Bill]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Cart" EntityType="Self.Cart" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Cart].[userid] AS [userid], 
-    [Cart].[productid] AS [productid], 
-    [Cart].[quantity] AS [quantity]
-    FROM [dbo].[Cart] AS [Cart]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="Contact" EntityType="Self.Contact" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Contact].[userid] AS [userid], 
-    [Contact].[username] AS [username], 
-    [Contact].[email] AS [email], 
-    [Contact].[content] AS [content], 
-    [Contact].[date] AS [date]
-    FROM [dbo].[Contact] AS [Contact]</DefiningQuery>
-          </EntitySet>
-          <AssociationSet Name="FK__Bill__productid__3F466844" Association="Self.FK__Bill__productid__3F466844">
+          <AssociationSet Name="FK__Bill__productid__4222D4EF" Association="Self.FK__Bill__productid__4222D4EF">
             <End Role="Product" EntitySet="Product" />
             <End Role="Bill" EntitySet="Bill" />
           </AssociationSet>
-          <AssociationSet Name="FK__Bill__userid__403A8C7D" Association="Self.FK__Bill__userid__403A8C7D">
+          <AssociationSet Name="FK__Bill__userid__4316F928" Association="Self.FK__Bill__userid__4316F928">
             <End Role="Account" EntitySet="Account" />
             <End Role="Bill" EntitySet="Bill" />
           </AssociationSet>
-          <AssociationSet Name="FK__Cart__productid__412EB0B6" Association="Self.FK__Cart__productid__412EB0B6">
+          <AssociationSet Name="FK__Cart__productid__440B1D61" Association="Self.FK__Cart__productid__440B1D61">
             <End Role="Product" EntitySet="Product" />
             <End Role="Cart" EntitySet="Cart" />
           </AssociationSet>
-          <AssociationSet Name="FK__Cart__userid__4222D4EF" Association="Self.FK__Cart__userid__4222D4EF">
+          <AssociationSet Name="FK__Cart__userid__44FF419A" Association="Self.FK__Cart__userid__44FF419A">
             <End Role="Account" EntitySet="Account" />
             <End Role="Cart" EntitySet="Cart" />
           </AssociationSet>
-          <AssociationSet Name="FK__Contact__userid__4316F928" Association="Self.FK__Contact__userid__4316F928">
+          <AssociationSet Name="FK__Contact__userid__45F365D3" Association="Self.FK__Contact__userid__45F365D3">
             <End Role="Account" EntitySet="Account" />
             <End Role="Contact" EntitySet="Contact" />
           </AssociationSet>
-          <AssociationSet Name="FK__Evaluate__produc__440B1D61" Association="Self.FK__Evaluate__produc__440B1D61">
+          <AssociationSet Name="FK__Evaluate__produc__46E78A0C" Association="Self.FK__Evaluate__produc__46E78A0C">
             <End Role="Product" EntitySet="Product" />
             <End Role="Evaluate" EntitySet="Evaluate" />
           </AssociationSet>
-          <AssociationSet Name="FK__Evaluate__userID__44FF419A" Association="Self.FK__Evaluate__userID__44FF419A">
+          <AssociationSet Name="FK__Evaluate__userID__47DBAE45" Association="Self.FK__Evaluate__userID__47DBAE45">
             <End Role="Account" EntitySet="Account" />
             <End Role="Evaluate" EntitySet="Evaluate" />
           </AssociationSet>
-          <AssociationSet Name="FK__Product__categor__45F365D3" Association="Self.FK__Product__categor__45F365D3">
+          <AssociationSet Name="FK__Product__categor__48CFD27E" Association="Self.FK__Product__categor__48CFD27E">
             <End Role="Categories" EntitySet="Categories" />
             <End Role="Product" EntitySet="Product" />
           </AssociationSet>
-          <AssociationSet Name="FK__Product__userID__46E78A0C" Association="Self.FK__Product__userID__46E78A0C">
+          <AssociationSet Name="FK__Product__userID__49C3F6B7" Association="Self.FK__Product__userID__49C3F6B7">
             <End Role="Account" EntitySet="Account" />
             <End Role="Product" EntitySet="Product" />
           </AssociationSet>
@@ -356,17 +309,7 @@ warning 6002: The table/view 'ProjectPRN.dbo.Contact' does not have a primary ke
         </EntityType>
         <EntityType Name="Bill">
           <Key>
-            <PropertyRef Name="BillID" />
-            <PropertyRef Name="userName" />
-            <PropertyRef Name="address" />
-            <PropertyRef Name="phoneNumber" />
-            <PropertyRef Name="email" />
-            <PropertyRef Name="orderTime" />
-            <PropertyRef Name="payment" />
-            <PropertyRef Name="productid" />
-            <PropertyRef Name="quantity" />
-            <PropertyRef Name="status" />
-            <PropertyRef Name="amount" />
+            <PropertyRef Name="ID" />
           </Key>
           <Property Name="BillID" Type="Int64" Nullable="false" />
           <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
@@ -382,25 +325,22 @@ warning 6002: The table/view 'ProjectPRN.dbo.Contact' does not have a primary ke
           <NavigationProperty Name="Account" Relationship="Self.FK__Bill__userid__403A8C7D" FromRole="Bill" ToRole="Account" />
           <NavigationProperty Name="Product" Relationship="Self.FK__Bill__productid__3F466844" FromRole="Bill" ToRole="Product" />
           <Property Name="amount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="Cart">
           <Key>
-            <PropertyRef Name="productid" />
-            <PropertyRef Name="quantity" />
+            <PropertyRef Name="cartid" />
           </Key>
           <Property Name="userid" Type="Int32" />
           <Property Name="productid" Type="Int32" Nullable="false" />
           <Property Name="quantity" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Account" Relationship="Self.FK__Cart__userid__4222D4EF" FromRole="Cart" ToRole="Account" />
           <NavigationProperty Name="Product" Relationship="Self.FK__Cart__productid__412EB0B6" FromRole="Cart" ToRole="Product" />
+          <Property Name="cartid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="Contact">
           <Key>
-            <PropertyRef Name="userid" />
-            <PropertyRef Name="username" />
-            <PropertyRef Name="email" />
-            <PropertyRef Name="content" />
-            <PropertyRef Name="date" />
+            <PropertyRef Name="contactid" />
           </Key>
           <Property Name="userid" Type="Int32" Nullable="false" />
           <Property Name="username" Type="String" MaxLength="1" FixedLength="false" Unicode="true" Nullable="false" />
@@ -408,6 +348,7 @@ warning 6002: The table/view 'ProjectPRN.dbo.Contact' does not have a primary ke
           <Property Name="content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Account" Relationship="Self.FK__Contact__userid__4316F928" FromRole="Contact" ToRole="Account" />
+          <Property Name="contactid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <Association Name="FK__Bill__userid__403A8C7D">
           <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
@@ -622,6 +563,7 @@ warning 6002: The table/view 'ProjectPRN.dbo.Contact' does not have a primary ke
           <EntitySetMapping Name="Bills">
             <EntityTypeMapping TypeName="ProjectPRNModel.Bill">
               <MappingFragment StoreEntitySet="Bill">
+                <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="amount" ColumnName="amount" />
                 <ScalarProperty Name="BillID" ColumnName="BillID" />
                 <ScalarProperty Name="userName" ColumnName="userName" />
@@ -640,6 +582,7 @@ warning 6002: The table/view 'ProjectPRN.dbo.Contact' does not have a primary ke
           <EntitySetMapping Name="Carts">
             <EntityTypeMapping TypeName="ProjectPRNModel.Cart">
               <MappingFragment StoreEntitySet="Cart">
+                <ScalarProperty Name="cartid" ColumnName="cartid" />
                 <ScalarProperty Name="userid" ColumnName="userid" />
                 <ScalarProperty Name="productid" ColumnName="productid" />
                 <ScalarProperty Name="quantity" ColumnName="quantity" />
@@ -649,6 +592,7 @@ warning 6002: The table/view 'ProjectPRN.dbo.Contact' does not have a primary ke
           <EntitySetMapping Name="Contacts">
             <EntityTypeMapping TypeName="ProjectPRNModel.Contact">
               <MappingFragment StoreEntitySet="Contact">
+                <ScalarProperty Name="contactid" ColumnName="contactid" />
                 <ScalarProperty Name="userid" ColumnName="userid" />
                 <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="email" ColumnName="email" />

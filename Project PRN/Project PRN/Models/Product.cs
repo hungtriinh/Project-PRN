@@ -10,9 +10,8 @@
 namespace Project_PRN.Models {
     using System;
     using System.Collections.Generic;
-    using System.Web.Script.Serialization;
     using System.Configuration;
-
+    using System.Web.Script.Serialization;
     public partial class Product {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Product() {
@@ -27,20 +26,21 @@ namespace Project_PRN.Models {
         public string description { get; set; }
         public string shortDescription { get; set; }
         public string image { get; set; }
+        public decimal price { get; set; }
+        public int quantity { get; set; }
+        public int sold { get; set; }
+        public System.DateTime postTime { get; set; }
+        public int categoriesID { get; set; }
+        public int userID { get; set; }
         public int rate { get; set; }
-        public int calculateRate()
-        {
+        public int calculateRate() {
             int total = 0;
-            foreach (Evaluate e in Evaluates)
-            {
+            foreach (Evaluate e in Evaluates) {
                 total += e.rate;
             }
-            if (Evaluates.Count > 0)
-            {
+            if (Evaluates.Count > 0) {
                 return total / Evaluates.Count;
-            }
-            else
-            {
+            } else {
                 return 0;
             }
         }
@@ -49,13 +49,6 @@ namespace Project_PRN.Models {
             string path = ConfigurationManager.ConnectionStrings["imagePath"].ToString();
             return $"{path}{image}";
         }
-        public decimal price { get; set; }
-        public int quantity { get; set; }
-        public int sold { get; set; }
-        public System.DateTime postTime { get; set; }
-        public int categoriesID { get; set; }
-        public int userID { get; set; }
-
         public virtual Account Account { get; set; }
         public virtual Category Category { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

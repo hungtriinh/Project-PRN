@@ -11,7 +11,10 @@ namespace Project_PRN.Controllers {
             return View();
         }
 
-        
+        public ViewResult Error() {
+
+            return View();
+        }
         public ViewResult Manager() {
 
             return View();

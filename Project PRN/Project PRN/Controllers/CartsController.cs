@@ -8,36 +8,55 @@ using System.Web;
 using System.Web.Mvc;
 using Project_PRN.Models;
 
-namespace Project_PRN.Controllers
-{
-    public class CartsController : Controller
-    {
+namespace Project_PRN.Controllers {
+    public class CartsController : Controller {
         private ProjectPRNEntities3 db = new ProjectPRNEntities3();
 
         // GET: Carts
-        public ActionResult Cart()
-        {
+        public ActionResult Cart() {
             return View();
         }
 
+        public JsonResult AddToCart(int productID, int quantity) {
+            try {
+                db.Configuration.ProxyCreationEnabled = false;
+                int userID = Int32.Parse(Session["user"].ToString());
+                Cart cart = db.Carts.Where(c => c.userid == userID).Where(c => c.productid == productID).FirstOrDefault();
+                if (cart == null) {
+                    cart = new Cart();
+                    cart.userid = userID;
+                    cart.productid = productID;
+                    cart.quantity = quantity;
+                    db.Carts.Add(cart);
+                    db.SaveChanges();
+                } else {
+                    cart.quantity += quantity;
+                    db.Entry(cart).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                return Json("product added successfully!", JsonRequestBehavior.AllowGet);
+
+            } catch {
+                return Json("product added fail!", JsonRequestBehavior.AllowGet);
+            }
+
+
+        }
+
         // GET: Carts/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
+        public ActionResult Details(int? id) {
+            if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Cart cart = db.Carts.Find(id);
-            if (cart == null)
-            {
+            if (cart == null) {
                 return HttpNotFound();
             }
             return View(cart);
         }
 
         // GET: Carts/Create
-        public ActionResult Create()
-        {
+        public ActionResult Create() {
             ViewBag.userid = new SelectList(db.Accounts, "userID", "email");
             ViewBag.productid = new SelectList(db.Products, "productID", "title");
             return View();
@@ -48,10 +67,8 @@ namespace Project_PRN.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "userid,productid,quantity")] Cart cart)
-        {
-            if (ModelState.IsValid)
-            {
+        public ActionResult Create([Bind(Include = "userid,productid,quantity")] Cart cart) {
+            if (ModelState.IsValid) {
                 db.Carts.Add(cart);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -63,15 +80,12 @@ namespace Project_PRN.Controllers
         }
 
         // GET: Carts/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
+        public ActionResult Edit(int? id) {
+            if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Cart cart = db.Carts.Find(id);
-            if (cart == null)
-            {
+            if (cart == null) {
                 return HttpNotFound();
             }
             ViewBag.userid = new SelectList(db.Accounts, "userID", "email", cart.userid);
@@ -84,10 +98,8 @@ namespace Project_PRN.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "userid,productid,quantity")] Cart cart)
-        {
-            if (ModelState.IsValid)
-            {
+        public ActionResult Edit([Bind(Include = "userid,productid,quantity")] Cart cart) {
+            if (ModelState.IsValid) {
                 db.Entry(cart).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -98,15 +110,12 @@ namespace Project_PRN.Controllers
         }
 
         // GET: Carts/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
+        public ActionResult Delete(int? id) {
+            if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Cart cart = db.Carts.Find(id);
-            if (cart == null)
-            {
+            if (cart == null) {
                 return HttpNotFound();
             }
             return View(cart);
@@ -115,18 +124,15 @@ namespace Project_PRN.Controllers
         // POST: Carts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
+        public ActionResult DeleteConfirmed(int id) {
             Cart cart = db.Carts.Find(id);
             db.Carts.Remove(cart);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
+        protected override void Dispose(bool disposing) {
+            if (disposing) {
                 db.Dispose();
             }
             base.Dispose(disposing);

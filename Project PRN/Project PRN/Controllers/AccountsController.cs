@@ -27,6 +27,7 @@ namespace Project_PRN.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CheckLogin([Bind(Include = "email,password")] Account account) {
+            db.Configuration.ProxyCreationEnabled = false;
             if (ModelState.IsValid) {
                 string checkEmail = account.email;
                 string checkPassword = account.password;
@@ -51,6 +52,7 @@ namespace Project_PRN.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "userID,email,password,userName,role,address,phoneNumber")] Account account) {
+            db.Configuration.ProxyCreationEnabled = false;
             if (ModelState.IsValid) {
                 List<Account> list = db.Accounts.Where(a => a.email.Equals(account.email)).ToList();
                 if (list.Count == 0) {

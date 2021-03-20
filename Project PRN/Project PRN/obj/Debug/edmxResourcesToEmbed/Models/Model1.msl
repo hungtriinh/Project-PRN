@@ -55,6 +55,7 @@
     <EntitySetMapping Name="Bills">
       <EntityTypeMapping TypeName="ProjectPRNModel.Bill">
         <MappingFragment StoreEntitySet="Bill">
+          <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="amount" ColumnName="amount" />
           <ScalarProperty Name="BillID" ColumnName="BillID" />
           <ScalarProperty Name="userName" ColumnName="userName" />
@@ -73,6 +74,7 @@
     <EntitySetMapping Name="Carts">
       <EntityTypeMapping TypeName="ProjectPRNModel.Cart">
         <MappingFragment StoreEntitySet="Cart">
+          <ScalarProperty Name="cartid" ColumnName="cartid" />
           <ScalarProperty Name="userid" ColumnName="userid" />
           <ScalarProperty Name="productid" ColumnName="productid" />
           <ScalarProperty Name="quantity" ColumnName="quantity" />
@@ -82,6 +84,7 @@
     <EntitySetMapping Name="Contacts">
       <EntityTypeMapping TypeName="ProjectPRNModel.Contact">
         <MappingFragment StoreEntitySet="Contact">
+          <ScalarProperty Name="contactid" ColumnName="contactid" />
           <ScalarProperty Name="userid" ColumnName="userid" />
           <ScalarProperty Name="username" ColumnName="username" />
           <ScalarProperty Name="email" ColumnName="email" />
