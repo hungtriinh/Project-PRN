@@ -12124,41 +12124,42 @@ h5,
     z-index: 1;
 }
 
-.product .text .bottom-area a {
+.product .text .bottom-area button {
     color: #333333;
     width: 100%;
     background: #fff;
+    border: 0;
 }
 
-.product .text .bottom-area a.add-to-cart,
-.product .text .bottom-area a.buy-now {
+.product .text .bottom-area button.add-to-cart,
+.product .text .bottom-area button.buy-now {
     font-size: 13px;
     color: #333333;
     text-transform: uppercase;
     font-weight: 300;
 }
 
-.product .text .bottom-area a.add-to-cart i,
-.product .text .bottom-area a.buy-now i {
+.product .text .bottom-area button.add-to-cart i,
+.product .text .bottom-area button.buy-now i {
     font-size: 16px;
 }
 
-.product .text .bottom-area a.add-to-cart {
+.product .text .bottom-area button.add-to-cart {
     background: #333333;
     color: #fff;
 }
 
-.product .text .bottom-area a.add-to-cart:hover {
+.product .text .bottom-area button.add-to-cart:hover {
     background: #dbcc8f;
     color: #fff;
 }
 
-.product .text .bottom-area a.buy-now {
+.product .text .bottom-area button.buy-now {
     background: #fff;
     color: #333333;
 }
 
-.product .text .bottom-area a.buy-now:hover {
+.product .text .bottom-area button.buy-now:hover {
     background: #dbcc8f;
     color: #fff;
 }

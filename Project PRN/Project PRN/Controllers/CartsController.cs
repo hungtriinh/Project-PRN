@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using Project_PRN.Models;
 
 namespace Project_PRN.Controllers {
@@ -17,25 +18,66 @@ namespace Project_PRN.Controllers {
             return View();
         }
 
+        //Add item into cart
         public JsonResult AddToCart(int productID, int quantity) {
             try {
                 db.Configuration.ProxyCreationEnabled = false;
-                int userID = Int32.Parse(Session["user"].ToString());
-                Cart cart = db.Carts.Where(c => c.userid == userID).Where(c => c.productid == productID).FirstOrDefault();
-                if (cart == null) {
-                    cart = new Cart();
-                    cart.userid = userID;
-                    cart.productid = productID;
-                    cart.quantity = quantity;
-                    db.Carts.Add(cart);
-                    db.SaveChanges();
+                //userID from session
+                //check is user logged in
+                if (Session["user"] != null) {
+                    //logged in case, storage cart in database
+
+                    int userID = Int32.Parse(Session["user"].ToString());
+
+                    //select items from cart with userID and productid
+                    Cart cart = db.Carts.Where(c => c.userid == userID).Where(c => c.productid == productID).FirstOrDefault();
+                    if (cart == null) {
+                        //in null case, add new items to database
+                        cart = new Cart();
+                        cart.userid = userID;
+                        cart.productid = productID;
+                        cart.quantity = quantity;
+                        db.Carts.Add(cart);
+                        db.SaveChanges();
+                    } else {
+                        //in exsisted case, change quantity
+                        cart.quantity += quantity;
+                        db.Entry(cart).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
                 } else {
-                    cart.quantity += quantity;
-                    db.Entry(cart).State = EntityState.Modified;
-                    db.SaveChanges();
+                    //didn't log in case, storage cart in cookies
+                    var serializer = new JavaScriptSerializer();
+
+                    Dictionary<string, int> cart;
+                    
+                    //check is exsisted cart in cookies
+                    if (Request.Cookies["cart"] != null) {
+                        //exsisted case, pick up it
+                        string cartJson = Request.Cookies["cart"].Value;
+                        cart = serializer.Deserialize<Dictionary<string, int>>(cartJson);
+                    } else {
+                        //not exsisted case, declare new cart
+                        cart = new Dictionary<string, int>();
+                    }
+                    
+                    //check is exsisted item in cart
+                    if (cart.ContainsKey(productID.ToString())) {
+                        //in exsisted case, change quantity
+                        int currentQuantity = cart[productID.ToString()];
+                        cart[productID.ToString()] = currentQuantity + quantity;
+                    } else {
+                        //in not exsisted case, add new item to cart
+                        cart[productID.ToString()] = quantity;
+                    }
+                    
+                    //save into cookies
+                    string cartValue = serializer.Serialize(cart);
+                    Response.Cookies["cart"].Value = cartValue;
+                    Response.Cookies["cart"].Expires = DateTime.Now.AddDays(30);
+
                 }
                 return Json("product added successfully!", JsonRequestBehavior.AllowGet);
-
             } catch {
                 return Json("product added fail!", JsonRequestBehavior.AllowGet);
             }
@@ -43,93 +85,6 @@ namespace Project_PRN.Controllers {
 
         }
 
-        // GET: Carts/Details/5
-        public ActionResult Details(int? id) {
-            if (id == null) {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Cart cart = db.Carts.Find(id);
-            if (cart == null) {
-                return HttpNotFound();
-            }
-            return View(cart);
-        }
-
-        // GET: Carts/Create
-        public ActionResult Create() {
-            ViewBag.userid = new SelectList(db.Accounts, "userID", "email");
-            ViewBag.productid = new SelectList(db.Products, "productID", "title");
-            return View();
-        }
-
-        // POST: Carts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "userid,productid,quantity")] Cart cart) {
-            if (ModelState.IsValid) {
-                db.Carts.Add(cart);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.userid = new SelectList(db.Accounts, "userID", "email", cart.userid);
-            ViewBag.productid = new SelectList(db.Products, "productID", "title", cart.productid);
-            return View(cart);
-        }
-
-        // GET: Carts/Edit/5
-        public ActionResult Edit(int? id) {
-            if (id == null) {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Cart cart = db.Carts.Find(id);
-            if (cart == null) {
-                return HttpNotFound();
-            }
-            ViewBag.userid = new SelectList(db.Accounts, "userID", "email", cart.userid);
-            ViewBag.productid = new SelectList(db.Products, "productID", "title", cart.productid);
-            return View(cart);
-        }
-
-        // POST: Carts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "userid,productid,quantity")] Cart cart) {
-            if (ModelState.IsValid) {
-                db.Entry(cart).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.userid = new SelectList(db.Accounts, "userID", "email", cart.userid);
-            ViewBag.productid = new SelectList(db.Products, "productID", "title", cart.productid);
-            return View(cart);
-        }
-
-        // GET: Carts/Delete/5
-        public ActionResult Delete(int? id) {
-            if (id == null) {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Cart cart = db.Carts.Find(id);
-            if (cart == null) {
-                return HttpNotFound();
-            }
-            return View(cart);
-        }
-
-        // POST: Carts/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id) {
-            Cart cart = db.Carts.Find(id);
-            db.Carts.Remove(cart);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
 
         protected override void Dispose(bool disposing) {
             if (disposing) {
