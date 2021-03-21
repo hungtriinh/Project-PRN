@@ -51,7 +51,57 @@ namespace Project_PRN.Controllers {
         }
 
         public ActionResult UploadProduct() {
-            return View();
+            db.Configuration.ProxyCreationEnabled = false;
+            if (Session["user"] == null) {
+                return RedirectToAction("SignIn", "Accounts");
+            } else {
+                int userID = Int32.Parse(Session["user"].ToString());
+                Account account = db.Accounts.Find(userID);
+                if (account.role == 3) {
+                    return View(); 
+                } else {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+        }
+
+        // POST: Products/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "productID,title,author,description,shortDescription,image,price,quantity,sold,postTime,categoriesID,userID")] Product product, HttpPostedFileBase image) {
+            if (ModelState.IsValid) {
+                product.userID = Int32.Parse(Session["user"].ToString());
+                product.postTime = DateTime.Now;
+                string imgPath = ConfigurationManager.ConnectionStrings["imagePath"].ToString();
+                try {
+                    if (image != null) {
+                        var allowedExtensions = new[] { ".Jpg", ".png", ".jpg", "jpeg" };
+                        var ext = Path.GetExtension(image.FileName);
+                        if (allowedExtensions.Contains(ext)) //check what type of extension  
+                        {
+                            string path = Path.Combine(Server.MapPath($"~{imgPath}"), Path.GetFileName(image.FileName));
+                            image.SaveAs(path);
+                            product.image = image.FileName;
+                        } else { return RedirectToAction("UploadProduct", "Products"); }
+                    } else {
+                        return RedirectToAction("UploadProduct", "Products");
+                    }
+                    ViewBag.FileStatus = "File uploaded successfully.";
+                } catch (Exception) {
+
+                }
+
+                db.Products.Add(product);
+                db.SaveChanges();
+                return RedirectToRoute(new {
+                    controller = "Home",
+                    action = "Index",
+                    id = UrlParameter.Optional
+                });
+            }
+            return RedirectToAction("UploadProduct");
         }
 
         public ActionResult ProductDetail(int? productID) {
@@ -120,38 +170,7 @@ namespace Project_PRN.Controllers {
             return View();
         }
 
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "productID,title,author,description,shortDescription,image,price,quantity,sold,postTime,categoriesID,userID")] Product product, HttpPostedFileBase image) {
-            if (ModelState.IsValid) {
-                product.userID = Int32.Parse(Session["user"].ToString());
-                product.postTime = DateTime.Now;
-                string imgPath = ConfigurationManager.ConnectionStrings["imagePath"].ToString();
-                try {
-                    if (image != null) {
-                        string path = Path.Combine(Server.MapPath($"~{imgPath}"), Path.GetFileName(image.FileName));
-                        image.SaveAs(path);
-                        product.image = image.FileName;
-                    }
-                    ViewBag.FileStatus = "File uploaded successfully.";
-                } catch (Exception) {
 
-                    ViewBag.FileStatus = "Error while file uploading.";
-                }
-
-                db.Products.Add(product);
-                db.SaveChanges();
-                return RedirectToRoute(new {
-                    controller = "Home",
-                    action = "Index",
-                    id = UrlParameter.Optional
-                });
-            }
-            return RedirectToAction("UploadProduct");
-        }
 
         // GET: Products/Edit/5
         public ActionResult Edit(int? id) {

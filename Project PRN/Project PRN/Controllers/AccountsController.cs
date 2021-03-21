@@ -56,7 +56,7 @@ namespace Project_PRN.Controllers {
             if (ModelState.IsValid) {
                 List<Account> list = db.Accounts.Where(a => a.email.Equals(account.email)).ToList();
                 if (list.Count == 0) {
-                    account.role = 3;
+                    account.role = 2;
                     string pass = account.password;
                     int cost = 12;
                     string newPassword = BCrypt.Net.BCrypt.HashPassword(pass, cost);
