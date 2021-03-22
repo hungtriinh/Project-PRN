@@ -19,7 +19,7 @@
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="BillID" Type="bigint" Nullable="false" />
     <Property Name="userName" Type="nvarchar" MaxLength="50" Nullable="false" />
-    <Property Name="address" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="address" Type="nvarchar(max)" Nullable="false" />
     <Property Name="phoneNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="email" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="orderTime" Type="datetime" Nullable="false" />

@@ -12,6 +12,7 @@ namespace Project_PRN.Models
     using System;
     using System.Collections.Generic;
     using System.Web.Script.Serialization;
+
     public partial class Evaluate
     {
         public int evaluateID { get; set; }

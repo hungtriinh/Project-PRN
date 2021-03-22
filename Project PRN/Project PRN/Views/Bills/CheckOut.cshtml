@@ -14,7 +14,12 @@
                 cityIndex: 0,
                 districtIndex: 0,
                 wardIndex: 0,
-                detail: ''
+                detail: '',
+                firstName: '',
+                lastName: '',
+                phone: '',
+                email: '',
+                payment: 0
             },
             mounted: function () {
                 axios.post('/Bills/GetLocalJson')
@@ -33,6 +38,27 @@
                 },
                 changeDistrict() {
                     this.wardIndex = 0
+                },
+                submitCheckOut() {
+                    list = this.list;
+                    axios.get('/Bills/AddBill', {
+                        params: {
+                            name: this.firstName + this.lastName,
+                            address: list[this.cityIndex].Name + ' - ' + list[this.cityIndex].Districts[this.districtIndex].Name + ' - ' + list[this.cityIndex].Districts[this.districtIndex].Wards[this.wardIndex].Name + ' - ' + this.detail,
+                            phone: this.phone,
+                            email: this.email,
+                            payment: this.payment
+                        }
+                    })
+                        .then(response => {
+                            alert(response.data)
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                },
+                showInfor() {
+
                 }
             }
         })
@@ -56,19 +82,19 @@
     <div id="checkOut" class="container">
         <div class="row justify-content-center">
             <div class="col-xl-10 ">
-                <form action="#" class="billing-form">
+                <div action="#" class="billing-form">
                     <h3 class="mb-4 billing-heading">Billing Details</h3>
                     <div class="row align-items-end">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="firstname">Firt Name</label>
-                                <input type="text" class="form-control" placeholder="">
+                                <input v-model="firstName" type="text" class="form-control" placeholder="">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="lastname">Last Name</label>
-                                <input type="text" class="form-control" placeholder="">
+                                <input v-model="lastName" type="text" class="form-control" placeholder="">
                             </div>
                         </div>
                         <div class="w-100"></div>
@@ -111,20 +137,20 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="postcodezip">Detail Address</label>
-                                <input type="text" class="form-control" placeholder="">
+                                <input v-model="detail" type="text" class="form-control" placeholder="">
                             </div>
                         </div>
                         <div class="w-100"></div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="phone">Phone</label>
-                                <input type="text" class="form-control" placeholder="">
+                                <input v-model="phone" type="text" class="form-control" placeholder="">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="emailaddress">Email Address</label>
-                                <input type="text" class="form-control" placeholder="">
+                                <input v-model="email" type="email" class="form-control" placeholder="">
                             </div>
                         </div>
                         <div class="w-100"></div>
@@ -132,7 +158,11 @@
                             <div class="form-group mt-4">
                                 <div class="radio">
                                     <label class="mr-3">
-                                        <a href="#">Using Your Information?</a>
+                                        @if (Session["user"] == null) {
+                                            <a href="/Accounts/SignIn">Using Your Information?</a>
+                                        } else {
+                                            <a href="#">Using Your Information?</a>
+                                        }
                                     </label>
                                 </div>
                             </div>
@@ -168,7 +198,7 @@
                                     <div class="col-md-12">
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="optradio" class="mr-2" value="1"> Direct Bank
+                                                <input v-model="payment" type="radio" name="optradio" class="mr-2" value="1"> Direct Bank
                                                 Tranfer
                                             </label>
                                         </div>
@@ -178,7 +208,7 @@
                                     <div class="col-md-12">
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="optradio" class="mr-2" value="2"> Check
+                                                <input v-model="payment" type="radio" name="optradio" class="mr-2" value="2"> Check
                                                 Payment
                                             </label>
                                         </div>
@@ -187,15 +217,15 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <div class="radio">
-                                            <label><input type="radio" name="optradio" class="mr-2" value="3"> Paypal</label>
+                                            <label><input v-model="payment" type="radio" name="optradio" class="mr-2" value="3"> Paypal</label>
                                         </div>
                                     </div>
                                 </div>
-                                <p><a href="#" class="btn btn-primary py-3 px-4">Place an order</a></p>
+                                <p><button v-on:click="submitCheckOut()" class="btn btn-primary py-3 px-4">Place an order</button></p>
                             </div>
                         </div>
                     </div>
-                </form><!-- END -->
+                </div><!-- END -->
             </div> <!-- .col-md-8 -->
         </div>
     </div>

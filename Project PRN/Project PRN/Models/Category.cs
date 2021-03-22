@@ -12,6 +12,7 @@ namespace Project_PRN.Models
     using System;
     using System.Collections.Generic;
     using System.Web.Script.Serialization;
+
     public partial class Category
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
