@@ -124,7 +124,6 @@ C:\Users\tvhtr\OneDrive\Máy tính\Project-PRN\Project PRN\Project PRN\bin\Syste
 C:\Users\tvhtr\OneDrive\Máy tính\Project-PRN\Project PRN\Project PRN\bin\Newtonsoft.Json.xml
 C:\Users\tvhtr\OneDrive\Máy tính\Project-PRN\Project PRN\Project PRN\bin\Antlr3.Runtime.pdb
 C:\Users\tvhtr\OneDrive\Máy tính\Project-PRN\Project PRN\Project PRN\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-C:\Users\tvhtr\OneDrive\Máy tính\Project-PRN\Project PRN\Project PRN\obj\Debug\Project PRN.csprojAssemblyReference.cache
 C:\Users\tvhtr\OneDrive\Máy tính\Project-PRN\Project PRN\Project PRN\obj\Debug\Project PRN.csproj.CoreCompileInputs.cache
 C:\Users\tvhtr\OneDrive\Máy tính\Project-PRN\Project PRN\Project PRN\obj\Debug\Project PRN.csproj.CopyComplete
 C:\Users\tvhtr\OneDrive\Máy tính\Project-PRN\Project PRN\Project PRN\obj\Debug\Project PRN.dll
@@ -276,3 +275,4 @@ G:\Data\GitHub Clone\Project-PRN\Project PRN\Project PRN\obj\Debug\Project PRN.c
 G:\Data\GitHub Clone\Project-PRN\Project PRN\Project PRN\obj\Debug\Project PRN.csproj.CopyComplete
 G:\Data\GitHub Clone\Project-PRN\Project PRN\Project PRN\obj\Debug\Project PRN.dll
 G:\Data\GitHub Clone\Project-PRN\Project PRN\Project PRN\obj\Debug\Project PRN.pdb
+C:\Users\tvhtr\OneDrive\Máy tính\Project-PRN\Project PRN\Project PRN\obj\Debug\Project PRN.csprojAssemblyReference.cache

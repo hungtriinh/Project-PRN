@@ -22,16 +22,22 @@
                     .catch(error => {
                         console.log(error);
                     })
-            }
+            },
         })
 
         var app2 = new Vue({
             el: '#products',
             data: {
-                products: []
+                products: [],
+                msg: '',
+                search: '',
             },
             mounted: function () {
-                axios.get('/Products/ProductJson')
+                axios.get('/Products/ProductJson', {
+                    params: {
+                        categoryID: '@ViewData["categoryID"]',
+                    }
+                })
                     .then(response => {
                         this.products = response.data;
                         console.log(this.products);
@@ -40,11 +46,18 @@
                         console.log(error);
                     })
             },
+            computed: {
+                filteredList() {
+                    return this.products.filter(product => {
+                        return product.title.toLowerCase().includes(this.search.toLowerCase())
+                    })
+                }
+            },
             methods: {
-                loadNewPage(index) {
+                loadNewPage(index, categoryID) {
                     axios.get('/Products/ProductJson', {
                         params: {
-                            index: index
+                            index: index, categoryID: categoryID,
                         }
                     })
                         .then(response => {
@@ -55,6 +68,24 @@
                             console.log(error);
                         })
                 },
+@*                onEnter: function () {
+                    this.msg = 'on enter event';
+
+                    axios.get('/Products/ProductJson', {
+                    params: {
+                            categoryID: '@ViewData["searchName"]',
+
+                    }
+                })
+                    .then(response => {
+                        this.products = response.data;
+                        console.log(this.products);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+
+                },*@
 
                 addToCart(productID) {
                     axios.get('/Carts/AddToCart', {
@@ -86,21 +117,24 @@
     </div>
 </div>
 
+
 <section class="ftco-section bg-light">
     <div class="container">
         <div class="row">
             <div id="products" class="col-md-8 col-lg-10 order-md-last">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
+                    <input v-model="search" type="text" class="form-control" placeholder="Search">
+                    <h1>{{ msg }}</h1>
+
                 </div>
                 <div class="row">
-                    <div v-for="p in products" class="col-sm-12 col-md-12 col-lg-4 d-flex">
+                    <div v-for="p in filteredList" class="col-sm-12 col-md-12 col-lg-4 d-flex">
                         <div class="product d-flex flex-column">
                             <a v-bind:href="'/Products/ProductDetail?productID=' + p.productID" class="img-prod">
                                 <img class="img-fluid" v-bind:src="p.image"
                                      alt="Colorlib Template">
                                 <div class="overlay"></div>
-                            </a>
+                            </a>                          
                             <div class="text py-3 pb-4 px-3">
                                 <div class="d-flex">
                                     <div class="cat">
@@ -132,19 +166,17 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
+
+
                 <div class="row mt-5">
                     <div class="col text-center">
                         <div class="block-27">
                             <ul>
                                 <li><button>&lt;&lt;</button></li>
-                                <li class="active"><span>1</span></li>
-                                <li><button v-on:click="loadNewPage(2)">2</button></li>
-                                <li><button v-on:click="loadNewPage(3)">3</button></li>
-                                <li><button v-on:click="loadNewPage(4)">4</button></li>
-                                <li><button v-on:click="loadNewPage(5)">5</button></li>
-                                <li><button v-on:click="loadNewPage(6)">6</button></li>
+                                @*<li class="active"><span>1</span></li>*@
+                                <li v-for="n in @ViewData["totalpage"]"><button v-on:click="loadNewPage(n, @ViewData["categoryID"])">{{n}}</button></li>
+
                                 <li><button>&gt;&gt;</button></li>
                             </ul>
                         </div>
@@ -159,6 +191,7 @@
                         <div class="fancy-collapse-panel">
                             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                                 <ul>
+                                    <!--v-for Category-->>
                                     <li v-for="category in categories">
                                         <div class="panel panel-default">
                                             <div class="panel-heading" role="tab" id="headingOne">
