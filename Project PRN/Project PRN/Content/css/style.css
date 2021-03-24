@@ -11524,6 +11524,8 @@ h5,
     position: relative;
     z-index: -1;
     background-position: center center;
+    height: 80%;
+    width: auto;
 }
 
 .owl-carousel.home-slider .slider-item .slider-text .one-third .overlay {
@@ -13726,7 +13728,7 @@ textarea.form-control {
 
 @media (min-width: 768px) {
     .blog-entry {
-        margin-bottom: 60px;
+        margin-bottom: 00px;
     }
 }
 

@@ -5,7 +5,6 @@
 }
 
 @section scripts{
-    <script src="~/Scripts/axios.js"></script>
     <script>
         new Vue({
             el: '#checkOut',
@@ -14,7 +13,12 @@
                 cityIndex: 0,
                 districtIndex: 0,
                 wardIndex: 0,
-                detail: ''
+                detail: '',
+                firstName: '',
+                lastName: '',
+                phone: '',
+                email: '',
+                payment: 0
             },
             mounted: function () {
                 axios.post('/Bills/GetLocalJson')
@@ -33,6 +37,46 @@
                 },
                 changeDistrict() {
                     this.wardIndex = 0
+                },
+                submitCheckOut() {
+                    list = this.list;
+                    axios.get('/Bills/AddBill', {
+                        params: {
+                            name: this.firstName + this.lastName,
+                            address: list[this.cityIndex].Name + ' - ' + list[this.cityIndex].Districts[this.districtIndex].Name + ' - ' + list[this.cityIndex].Districts[this.districtIndex].Wards[this.wardIndex].Name + ' - ' + this.detail,
+                            phone: this.phone,
+                            email: this.email,
+                            payment: this.payment
+                        }
+                    })
+                        .then(response => {
+                            if (response.data.type == 1) {
+                                Swal.fire({
+                                    title: 'Check Out Success',
+                                    text: "Your Bill have send to email, Show Bill detail!",
+                                    icon: 'success',
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'Show!'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        //chuyen trang
+                                    }
+                                })
+                            } else {
+                                Swal.fire({
+                                    position: 'Center',
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: response.data.message,
+                                })
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                },
+                showInfor() {
+
                 }
             }
         })
@@ -56,7 +100,7 @@
     <div id="checkOut" class="container">
         <div class="row justify-content-center">
             <div class="col-xl-10 ">
-                <form action="#" class="billing-form">
+                <div class="billing-form">
                     <h3 class="mb-4 billing-heading">Billing Details</h3>
                     <div class="row align-items-end">
                         <div class="col-md-6">
@@ -168,7 +212,7 @@
                                     <div class="col-md-12">
                                         <div class="radio">
                                             <label>
-                                                <input type="radio" name="optradio" class="mr-2" value="1"> Direct Bank
+                                                <input disabled type="radio" name="optradio" class="mr-2" value="1"> Direct Bank
                                                 Tranfer
                                             </label>
                                         </div>
@@ -177,25 +221,24 @@
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <div class="radio">
-                                            <label>
-                                                <input type="radio" name="optradio" class="mr-2" value="2"> Check
-                                                Payment
-                                            </label>
+                                            <label><input disabled type="radio" name="optradio" class="mr-2" value="2"> Paypal</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <div class="radio">
-                                            <label><input type="radio" name="optradio" class="mr-2" value="3"> Paypal</label>
+                                            <label>
+                                                <input type="radio" checked name="optradio" class="mr-2" value="3"> Direct Payment
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
-                                <p><a href="#" class="btn btn-primary py-3 px-4">Place an order</a></p>
+                                <p><button v-on:click="submitCheckOut" class="btn btn-primary py-3 px-4">Place an order</button></p>
                             </div>
                         </div>
                     </div>
-                </form><!-- END -->
+                </div><!-- END -->
             </div> <!-- .col-md-8 -->
         </div>
     </div>

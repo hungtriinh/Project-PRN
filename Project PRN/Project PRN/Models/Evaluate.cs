@@ -12,6 +12,7 @@ namespace Project_PRN.Models
     using System;
     using System.Collections.Generic;
     using System.Web.Script.Serialization;
+
     public partial class Evaluate
     {
         public int evaluateID { get; set; }
@@ -20,7 +21,7 @@ namespace Project_PRN.Models
         public System.DateTime date { get; set; }
         public int userID { get; set; }
         public int productID { get; set; }
-
+    
         public virtual Account Account { get; set; }
         [ScriptIgnore]
         public virtual Product Product { get; set; }

@@ -337,6 +337,9 @@
     <Content Include="Content\css\owl.carousel.min.css" />
     <Content Include="Content\css\owl.theme.default.min.css" />
     <Content Include="Content\css\style.css" />
+    <Content Include="Content\Design Images\2.png" />
+    <Content Include="Content\Design Images\4.png" />
+    <Content Include="Content\Design Images\bg_6.jpg" />
     <Content Include="Content\fonts\flaticon\backup.txt" />
     <Content Include="Content\fonts\flaticon\font\flaticon.css" />
     <Content Include="Content\fonts\flaticon\font\flaticon.html" />
@@ -888,7 +891,7 @@
     <Content Include="Views\Evaluates\Evaluate.cshtml" />
     <Content Include="Views\Bills\BillManager.cshtml" />
     <Content Include="Views\Products\UploadProduct.cshtml" />
-    <Content Include="Views\Accounts\Manager.cshtml" />
+    <Content Include="Views\Home\Manager.cshtml" />
     <Content Include="Views\Accounts\Edit.cshtml" />
     <Content Include="Scripts\axios.min.map" />
     <Content Include="Scripts\axios.map" />

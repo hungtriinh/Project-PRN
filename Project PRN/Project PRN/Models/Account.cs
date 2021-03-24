@@ -24,7 +24,7 @@ namespace Project_PRN.Models
             this.Evaluates = new HashSet<Evaluate>();
             this.Products = new HashSet<Product>();
         }
-
+    
         public int userID { get; set; }
         public string email { get; set; }
         public string password { get; set; }
@@ -32,7 +32,7 @@ namespace Project_PRN.Models
         public int role { get; set; }
         public string address { get; set; }
         public string phoneNumber { get; set; }
-
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [ScriptIgnore]
         public virtual ICollection<Bill> Bills { get; set; }

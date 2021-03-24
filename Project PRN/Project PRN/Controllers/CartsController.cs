@@ -15,10 +15,78 @@ namespace Project_PRN.Controllers
     {
         private ProjectPRNEntities3 db = new ProjectPRNEntities3();
 
-        // GET: Carts
+        
         public ActionResult Cart()
         {
             return View();
+        }
+
+        public JsonResult CartJson() {//Chọn bảng cart qua userID, từ kết quả chọn ra ID của product load lên data
+            try {
+
+                if (Session["user"] != null)//da login
+                {
+                    int userId = Int32.Parse(Session["user"].ToString());
+                    //Chọn tất cả cart của ng dùng đã log in
+                    db.Configuration.ProxyCreationEnabled = false;
+                    List<Cart> listCart = db.Carts.ToList().Select(Cart => new Cart {
+                        userid = userId,
+                        quantity = Cart.quantity,
+                        productid = Cart.productid,
+                        Product = db.Products.ToList().Select(product => new Product {
+                            productID = product.productID,
+                            title = product.title,
+                            author = product.author,
+                            description = product.description,
+                            shortDescription = product.shortDescription,
+                            image = product.fullImagePath(),
+                            price = product.price,
+                            quantity = product.quantity,
+                            sold = product.sold,
+                            postTime = product.postTime,
+                            categoriesID = product.categoriesID,
+                            userID = product.userID,
+                        }).Where(p => p.productID == Cart.productid).FirstOrDefault()
+                    }).Where(c => c.userid == userId).ToList();
+                    return Json(listCart, JsonRequestBehavior.AllowGet);
+                } else//nếu chưa login. lấy dữ liệu từ cookies
+                  {
+
+                    var serializer = new JavaScriptSerializer();
+                    Dictionary<string, int> cart;
+                    string cartJson = Request.Cookies["cart"].Value;
+
+                    cart = serializer.Deserialize<Dictionary<string, int>>(cartJson);
+                    Dictionary<string, int>.KeyCollection keys = cart.Keys;
+                    List<Cart> carts = new List<Cart>();
+                    foreach (string key in keys) {
+                        int productid = Int32.Parse(key);
+                        int quatity = cart[key];
+                        Cart newCart = new Cart() {
+                            quantity = quatity,
+                            Product = db.Products.ToList().Select(product => new Product {
+                                productID = product.productID,
+                                title = product.title,
+                                author = product.author,
+                                description = product.description,
+                                shortDescription = product.shortDescription,
+                                image = product.fullImagePath(),
+                                price = product.price,
+                                quantity = product.quantity,
+                                sold = product.sold,
+                                postTime = product.postTime,
+                                categoriesID = product.categoriesID,
+                                userID = product.userID,
+                            }).Where(p => p.productID == productid).FirstOrDefault()
+                        };
+                        carts.Add(newCart);
+                    }
+                    return Json(carts, JsonRequestBehavior.AllowGet);
+                }
+
+            } catch {
+            }
+            return Json(db.Products.ToList(), JsonRequestBehavior.AllowGet);
         }
 
         //Add item into cart
@@ -94,11 +162,18 @@ namespace Project_PRN.Controllers
                     Response.Cookies["cart"].Expires = DateTime.Now.AddDays(30);
 
                 }
-                return Json("product added successfully!", JsonRequestBehavior.AllowGet);
+                return Json(new { 
+                    message = "Product Added Successfully!",
+                    type = 1
+                }, JsonRequestBehavior.AllowGet);
             }
             catch
             {
-                return Json("product added fail!", JsonRequestBehavior.AllowGet);
+                return Json(
+                    new {
+                        message = "Product Added Fail!",
+                        type = 2
+                    }, JsonRequestBehavior.AllowGet);
             }
 
 
