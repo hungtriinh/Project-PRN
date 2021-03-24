@@ -11524,6 +11524,8 @@ h5,
     position: relative;
     z-index: -1;
     background-position: center center;
+    height: 80%;
+    width:auto;
 }
 
 .owl-carousel.home-slider .slider-item .slider-text .one-third .overlay {
@@ -11581,6 +11583,7 @@ h5,
 
 .owl-carousel.home-slider .slider-item .slider-text .one-forth .text {
     position: relative;
+
 }
 
 @media (min-width: 992px) {

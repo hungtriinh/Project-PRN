@@ -28,7 +28,7 @@ namespace Project_PRN.Controllers
             int? totalpage = (totalCount / 9) + 1;
             ViewData["totalpage"] = totalpage;
             return View();
-            
+
         }
 
         public List<Product> listProduct()
@@ -53,14 +53,10 @@ namespace Project_PRN.Controllers
                 Evaluates = db.Evaluates.Where(e => e.productID == product.productID).ToList()
 
             }).OrderBy(product => product.postTime).ToList();
-
-
-
-
             return listProduct;
         }
 
-        public JsonResult ProductJson(int? index, string searchText, int? userID, int? categoryID)
+        public JsonResult ProductJson(int? index, int? userID, int? categoryID)
         {
             db.Configuration.ProxyCreationEnabled = false;
             List<Product> listProduct;
@@ -122,6 +118,57 @@ namespace Project_PRN.Controllers
                 }).OrderBy(product => product.postTime).ToPagedList(pageNumber, pageSize).ToList();
             }
 
+            return Json(listProduct, JsonRequestBehavior.AllowGet);
+
+        }
+        public JsonResult HomeProductJson()
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            List<Product> listProduct = db.Products.ToList().Select(product => new Product
+            {
+                productID = product.productID,
+                title = product.title,
+                author = product.author,
+                description = product.description,
+                shortDescription = product.shortDescription,
+                image = product.fullImagePath(),
+                price = product.price,
+                quantity = product.quantity,
+                sold = product.sold,
+                postTime = product.postTime,
+                categoriesID = product.categoriesID,
+                userID = product.userID,
+                rate = product.calculateRate(),
+                Account = db.Accounts.Find(product.userID),
+                Category = db.Categories.Find(product.categoriesID),
+                Evaluates = db.Evaluates.Where(e => e.productID == product.productID).ToList()
+
+            }).OrderByDescending(product => product.postTime).Take(8).ToList();
+            return Json(listProduct, JsonRequestBehavior.AllowGet);
+
+        }
+        public JsonResult HomeRateProductJson()
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            List<Product> listProduct = db.Products.ToList().Select(product => new Product
+            {
+                productID = product.productID,
+                title = product.title,
+                author = product.author,
+                description = product.description,
+                shortDescription = product.shortDescription,
+                image = product.fullImagePath(),
+                price = product.price,
+                quantity = product.quantity,
+                sold = product.sold,
+                postTime = product.postTime,
+                categoriesID = product.categoriesID,
+                userID = product.userID,
+                rate = product.calculateRate(),
+                Account = db.Accounts.Find(product.userID),
+                Category = db.Categories.Find(product.categoriesID),
+                Evaluates = db.Evaluates.Where(ev => ev.productID == product.productID).ToList()
+            }).OrderByDescending(product => product.rate).Take(8).ToList();
             return Json(listProduct, JsonRequestBehavior.AllowGet);
 
         }
