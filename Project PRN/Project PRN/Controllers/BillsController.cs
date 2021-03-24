@@ -18,6 +18,10 @@ namespace Project_PRN.Controllers {
             return View();
         }
 
+        public ActionResult BillManager() {
+            return View();
+        }
+
         public JsonResult GetLocalJson() {
             string json = "";
             using (StreamReader r = new StreamReader(Path.Combine(Server.MapPath("~/Content/data.json")))) {
