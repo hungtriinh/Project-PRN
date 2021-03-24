@@ -20,7 +20,7 @@ namespace Project_PRN.Models
         public System.DateTime date { get; set; }
         public int userID { get; set; }
         public int productID { get; set; }
-    
+
         public virtual Account Account { get; set; }
         [ScriptIgnore]
         public virtual Product Product { get; set; }

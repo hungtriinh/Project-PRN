@@ -7,14 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Project_PRN.Models {
+namespace Project_PRN.Models
+{
     using System;
     using System.Collections.Generic;
     using System.Configuration;
     using System.Web.Script.Serialization;
-    public partial class Product {
+    public partial class Product
+    {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Product() {
+        public Product()
+        {
             this.Evaluates = new HashSet<Evaluate>();
             this.Bills = new HashSet<Bill>();
             this.Carts = new HashSet<Cart>();
@@ -33,19 +36,25 @@ namespace Project_PRN.Models {
         public int categoriesID { get; set; }
         public int userID { get; set; }
         public int rate { get; set; }
-        public int calculateRate() {
+        public int calculateRate()
+        {
             int total = 0;
-            foreach (Evaluate e in Evaluates) {
+            foreach (Evaluate e in Evaluates)
+            {
                 total += e.rate;
             }
-            if (Evaluates.Count > 0) {
+            if (Evaluates.Count > 0)
+            {
                 return total / Evaluates.Count;
-            } else {
+            }
+            else
+            {
                 return 0;
             }
         }
 
-        public string fullImagePath() {
+        public string fullImagePath()
+        {
             string path = ConfigurationManager.ConnectionStrings["imagePath"].ToString();
             return $"{path}{image}";
         }

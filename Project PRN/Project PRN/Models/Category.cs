@@ -19,10 +19,10 @@ namespace Project_PRN.Models
         {
             this.Products = new HashSet<Product>();
         }
-    
+
         public int categoriesID { get; set; }
         public string categoriesName { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [ScriptIgnore]
         public virtual ICollection<Product> Products { get; set; }
