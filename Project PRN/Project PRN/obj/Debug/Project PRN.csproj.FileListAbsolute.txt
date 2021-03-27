@@ -463,3 +463,4 @@ G:\Data\GitHub-Clone\Project PRN\Project PRN\obj\Debug\Project PRN.csproj.CoreCo
 G:\Data\GitHub-Clone\Project PRN\Project PRN\obj\Debug\Project PRN.csproj.CopyComplete
 G:\Data\GitHub-Clone\Project PRN\Project PRN\obj\Debug\Project PRN.dll
 G:\Data\GitHub-Clone\Project PRN\Project PRN\obj\Debug\Project PRN.pdb
+C:\Users\Hung Trinh\OneDrive\Desktop\TestGithub\Project-PRN\Project PRN\Project PRN\obj\Debug\Project PRN.csprojAssemblyReference.cache

@@ -10,7 +10,22 @@ namespace Project_PRN.Controllers {
             return View();
         }
 
+        public ActionResult AdminBillManager()
+        {
+            return View();
+        }
+
+        public ActionResult StaffBillManager()
+        {
+            return View();
+        }
+
         public ActionResult BillManager() {
+            return View();
+        }
+
+        public ActionResult ReplyContact()
+        {
             return View();
         }
     }

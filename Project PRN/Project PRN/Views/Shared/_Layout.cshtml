@@ -74,7 +74,7 @@
                     <li class="nav-item active"><a href="/Products/Product" class="nav-link">Product</a></li>
                     @if (Session["user"] != null) {
                         if (Session["role"].ToString().Equals("1")) {
-                            <li class="nav-item"><a href="/Manager/BillManager" class="nav-link"><span><i class="fas fa-user"></i></span> ADMIN Manager</a></li>
+                            <li class="nav-item"><a href="/Manager/AdminBillManager" class="nav-link"><span><i class="fas fa-user"></i></span> ADMIN Manager</a></li>
                         } else if (Session["role"].ToString().Equals("3")) {
                             <li class="nav-item"><a href="/Manager/ContactManager" class="nav-link"><span><i class="fas fa-user"></i></span> Staff Manager</a></li>
                         } else {

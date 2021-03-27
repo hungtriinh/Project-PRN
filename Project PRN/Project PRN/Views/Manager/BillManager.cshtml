@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Manager";
+    ViewBag.Title = "User Bill Manager";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
             <div class="col-md-9 ftco-animate text-center">
-                <h1 class="mb-0 bread">Staff Manager</h1>
+                <h1 class="mb-0 bread">Bill Manager</h1>
             </div>
         </div>
     </div>
@@ -22,31 +22,87 @@
                     <table class="table">
                         <thead class="thead-primary">
                             <tr class="text-center">
-                                <th>UserName</th>
-                                <th>Subject</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                                <th></th>
+                                <th>#123543256</th>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Ordertime</th>
+                                <th><a href="#" class="btn btn-danger">CANCEL</a></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="c in contacts" class="text-center">
-                                <td class="">
-                                    abc
-                                </td>
-
-                                <td class="">abc</td>
-
-                                <td class="">abc</td>
-
-                                <td>
-                                    abc
-                                </td>
-
+                            <tr class="text-center">
+                                <td class="">{{image}}</td>
+                                <td class=""><a href="#">Learn 'How to learn'</a></td>
+                                <td class="">$12</td>
+                                <td>2</td>
+                                <td>$24</td>
+                                <td>27/03/2021</td>
                                 <td class="quantity manager">
-                                    <p><a href="#" class="btn btn-primary py-3 px-4">Change to succsess!</a></p>
+                                    <p><a href="#" class="btn btn-primary py-3 px-4">Review</a></p>
                                 </td>
-                            </tr><!-- END TR-->
+                            </tr>
+                            <tr class="text-center">
+                                <td class="">{{image}}</td>
+                                <td class=""><a href="#">Little UK</a></td>
+                                <td class="">$15</td>
+                                <td>3</td>
+                                <td>$45</td>
+                                <td>27/03/2021</td>
+                                <td class="quantity manager">
+                                    <p><a href="#" class="btn btn-primary py-3 px-4">Review</a></p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr />
+                    <table class="table">
+                        <thead class="thead-primary">
+                            <tr class="text-center">
+                                <th>#675689346
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Ordertime</th>
+                                <th><div class="btn btn-secondary">RECEIVED</div></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center">
+                                <td class="">{{image}}</td>
+                                <td class=""><a href="#">Global Citizen</td>
+                                <td class="">$12</td>
+                                <td>2</td>
+                                <td>$24</td>
+                                <td>20/03/2021</td>
+                                <td class="quantity manager">
+                                    <p><a href="#" class="btn btn-primary py-3 px-4">Review</a></p>
+                                </td>
+                            </tr>
+                            <tr class="text-center">
+                                <td class="">{{image}}</td>
+                                <td class=""><a href="#">Little UK</a></td>
+                                <td class="">$15</td>
+                                <td>3</td>
+                                <td>$45</td>
+                                <td>20/03/2021</td>
+                                <td class="quantity manager">
+                                    <p><a href="#" class="btn btn-primary py-3 px-4">Review</a></p>
+                                </td>
+                            </tr>
+                            <tr class="text-center">
+                                <td class="">{{image}}</td>
+                                <td class=""><a href="#">Bye</a></td>
+                                <td class="">$15</td>
+                                <td>3</td>
+                                <td>$45</td>
+                                <td>20/03/2021</td>
+                                <td class="quantity manager">
+                                    <p><a href="#" class="btn btn-primary py-3 px-4">Review</a></p>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
