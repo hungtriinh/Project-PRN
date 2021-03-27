@@ -102,6 +102,7 @@
     <NavigationProperty Name="Account" Relationship="Self.FK__Contact__userid__4316F928" FromRole="Contact" ToRole="Account" />
     <Property Name="contactid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="subject" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="status" Type="Boolean" Nullable="false" />
   </EntityType>
   <Association Name="FK__Bill__userid__403A8C7D">
     <End Role="Account" Type="Self.Account" Multiplicity="0..1" />

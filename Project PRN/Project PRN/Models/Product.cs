@@ -7,20 +7,23 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Project_PRN.Models {
+namespace Project_PRN.Models
+{
     using System;
     using System.Collections.Generic;
     using System.Configuration;
     using System.Web.Script.Serialization;
 
-    public partial class Product {
+    public partial class Product
+    {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Product() {
+        public Product()
+        {
             this.Evaluates = new HashSet<Evaluate>();
             this.Bills = new HashSet<Bill>();
             this.Carts = new HashSet<Cart>();
         }
-
+    
         public int productID { get; set; }
         public string title { get; set; }
         public string author { get; set; }

@@ -4,6 +4,38 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section scripts{
+    <script src="~/Scripts/moment.js"></script>
+
+    <script>import moment from 'moment';</script>
+    <script>
+
+        new Vue({
+            el: '#contacts',
+            data: {
+                contacts: [],
+            },
+            mounted: function () {
+                axios.get('/Home/ContactJson')
+                    .then(response => {
+                        this.contacts = response.data;
+                        console.log(this.contacts);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+            },
+            methods: {
+                format_date(value) {
+                    if (value) {
+                        return moment(String(value)).format('MMMM Do YYYY, h: mm: ss a')
+                    }
+                },
+            }
+        })
+    </script>
+}
+
 <div class="hero-wrap hero-bread" style="background-image: url('/Content/Design Images/bg_6.jpg');">
     <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
@@ -20,9 +52,6 @@
             <div class="row">
                 <div class="col-md-12 d-flex ">
                     <div class="blog-entry align-self-stretch d-md-flex">
-                        <a href="blog-single.html" class="block-20"
-                           style="background-image: url('/Content/images/image_1.jpg');">
-                        </a>
                         <div class="text d-block pl-md-4">
                             <div class="meta mb-3">
                                 <div><a href="#">April 9, 2019</a></div>
@@ -48,9 +77,6 @@
                 </div>
                 <div class="col-md-12 d-flex ">
                     <div class="blog-entry align-self-stretch d-md-flex">
-                        <a href="blog-single.html" class="block-20"
-                           style="background-image: url('/Content/images/image_1.jpg');">
-                        </a>
                         <div class="text d-block pl-md-4">
                             <div class="meta mb-3">
                                 <div><a href="#">April 9, 2019</a></div>
@@ -74,7 +100,7 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div> <!-- .col-md-12 -->
     </div>

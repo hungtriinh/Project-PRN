@@ -29,7 +29,7 @@ namespace Project_PRN.Controllers
                     int userId = Int32.Parse(Session["user"].ToString());
                     //Chọn tất cả cart của ng dùng đã log in
                     db.Configuration.ProxyCreationEnabled = false;
-                    List<Cart> listCart = db.Carts.ToList().Select(Cart => new Cart {
+                    List<Cart> listCart = db.Carts.Where(c => c.userid == userId).ToList().Select(Cart => new Cart {
                         userid = userId,
                         quantity = Cart.quantity,
                         productid = Cart.productid,
@@ -47,11 +47,10 @@ namespace Project_PRN.Controllers
                             categoriesID = product.categoriesID,
                             userID = product.userID,
                         }).Where(p => p.productID == Cart.productid).FirstOrDefault()
-                    }).Where(c => c.userid == userId).ToList();
+                    }).ToList();
                     return Json(listCart, JsonRequestBehavior.AllowGet);
-                } else//nếu chưa login. lấy dữ liệu từ cookies
-                  {
-
+                } else {
+                    //nếu chưa login. lấy dữ liệu từ cookies
                     var serializer = new JavaScriptSerializer();
                     Dictionary<string, int> cart;
                     string cartJson = Request.Cookies["cart"].Value;

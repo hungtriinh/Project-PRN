@@ -4,38 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section scripts{
-    <script src="~/Scripts/moment.js"></script>
-
-    <script>import moment from 'moment';</script>
-    <script>
-
-        new Vue({
-            el: '#contacts',
-            data: {
-                contacts: [],
-            },
-            mounted: function () {
-                axios.get('/Home/ContactJson')
-                    .then(response => {
-                        this.contacts = response.data;
-                        console.log(this.contacts);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    })
-            }, 
-            methods: {
-                format_date(value) {
-                    if (value) {
-                        return moment(String(value)).format('MMMM Do YYYY, h: mm: ss a')
-                    }
-                },
-            }
-        })
-    </script>
-}
-
 <div class="hero-wrap hero-bread" style="background-image: url('/Content/Design Images/bg_6.jpg');">
     <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
@@ -57,21 +25,26 @@
                                 <th>UserName</th>
                                 <th>Subject</th>
                                 <th>Date</th>
+                                <th>Status</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="c in contacts" class="text-center">
                                 <td class="">
-                                    {{c.Account.userName}}
+                                    abc
                                 </td>
 
-                                <td class="">{{c.subject}}</td>
+                                <td class="">abc</td>
 
-                                <td class="">{{format_date(c.date)}}</td>
+                                <td class="">abc</td>
+
+                                <td>
+                                    abc
+                                </td>
 
                                 <td class="quantity manager">
-                                    <p><a href="#" class="btn btn-primary py-3 px-4">Read</a></p>
+                                    <p><a href="#" class="btn btn-primary py-3 px-4">Change to succsess!</a></p>
                                 </td>
                             </tr><!-- END TR-->
                         </tbody>

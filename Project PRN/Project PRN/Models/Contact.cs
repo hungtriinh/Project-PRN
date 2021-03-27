@@ -20,6 +20,7 @@ namespace Project_PRN.Models
         public System.DateTime date { get; set; }
         public int contactid { get; set; }
         public string subject { get; set; }
+        public bool status { get; set; }
     
         public virtual Account Account { get; set; }
     }

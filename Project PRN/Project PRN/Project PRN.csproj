@@ -274,6 +274,7 @@
     <Compile Include="Controllers\CartsController.cs" />
     <Compile Include="Controllers\EvaluatesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -725,6 +726,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Manager\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\flaticon\.DS_Store" />
@@ -889,7 +891,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Bills\CheckOut.cshtml" />
     <Content Include="Views\Evaluates\Evaluate.cshtml" />
-    <Content Include="Views\Bills\BillManager.cshtml" />
+    <Content Include="Views\Bills\ContactManager.cshtml" />
     <Content Include="Views\Products\UploadProduct.cshtml" />
     <Content Include="Views\Home\Manager.cshtml" />
     <Content Include="Views\Accounts\Edit.cshtml" />

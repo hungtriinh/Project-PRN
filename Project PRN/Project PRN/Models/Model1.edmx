@@ -61,6 +61,7 @@
           <Property Name="email" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="content" Type="nvarchar(max)" Nullable="false" />
           <Property Name="date" Type="datetime" Nullable="false" />
+          <Property Name="status" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Evaluate">
           <Key>
@@ -349,6 +350,7 @@
           <NavigationProperty Name="Account" Relationship="Self.FK__Contact__userid__4316F928" FromRole="Contact" ToRole="Account" />
           <Property Name="contactid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="subject" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="status" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK__Bill__userid__403A8C7D">
           <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
@@ -592,6 +594,7 @@
           <EntitySetMapping Name="Contacts">
             <EntityTypeMapping TypeName="ProjectPRNModel.Contact">
               <MappingFragment StoreEntitySet="Contact">
+                <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="subject" ColumnName="subject" />
                 <ScalarProperty Name="contactid" ColumnName="contactid" />
                 <ScalarProperty Name="userid" ColumnName="userid" />

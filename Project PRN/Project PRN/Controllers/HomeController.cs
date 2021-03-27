@@ -47,6 +47,7 @@ namespace Project_PRN.Controllers {
                         contact.userid = userId;
                         contact.date = DateTime.Now;
                         contact.Account = currAccount;
+                        contact.status = false;
                         db.Contacts.Add(contact);
                         db.SaveChanges();
                         return RedirectToRoute(new {
@@ -82,6 +83,7 @@ namespace Project_PRN.Controllers {
                 date = contact.date,
                 contactid = contact.contactid,
                 subject = contact.subject,
+                status = contact.status,
                 Account = db.Accounts.Find(contact.userid)
             }).ToList();
             return Json(contacts, JsonRequestBehavior.AllowGet);
