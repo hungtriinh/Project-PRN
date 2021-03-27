@@ -1,0 +1,96 @@
+﻿
+@{
+    ViewBag.Title = "Staff Bill Manager";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="hero-wrap hero-bread" style="background-image: url('/Content/Design Images/bg_6.jpg');">
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+            <div class="col-md-9 ftco-animate text-center">
+                <h1 class="mb-0 bread">Bill Manager</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="ftco-section ftco-cart">
+    <div id="contacts" class="container">
+        <form>
+            Bill ID: <input type="text" />
+            <input type="submit" value="Search"  />
+        </form>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="cart-list">
+                    <!-- Truong hop Search ra Bill ID chua giao hang thanh cong (Pending)-->
+                    <table class="table">
+                        <thead class="thead-primary">
+                            <tr class="text-center">
+                                <th>#432567359</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Order Time</th>
+                                <th>Username</th>
+                                <th><a href="#" class="btn btn-success">DELIVERY SUCCESS</a></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center">
+                                <td class=""><a href="#">Learn 'How to learn'</a></td>
+                                <td class="">$12</td>
+                                <td class="">2</td>
+                                <td class="">$24</td>
+                                <td class="">27/03/2021</td>
+                                <td class="">Huy Tran</td>
+                            </tr><!-- END TR-->
+                            <tr class="text-center">
+                                <td class=""><a href="#">Global Citizen</a></td>
+                                <td class="">$10</td>
+                                <td class="">3</td>
+                                <td class="">$30</td>
+                                <td class="">27/03/2021</td>
+                                <td class="">Huy Tran</td>
+                            </tr><!-- END TR-->
+                        </tbody>
+                    </table>
+
+                    <!-- Truong hop Search ra Bill ID da giao hang (Success)-->
+                    <table class="table">
+                        <thead class="thead-primary">
+                            <tr class="text-center">
+                                <th>#432567359</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Order Time</th>
+                                <th>Username</th>
+                                <th><a href="#" class="btn btn-secondary">SUCCESSED</a></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center">
+                                <td class=""><a href="#">Learn 'How to learn'</a></td>
+                                <td class="">$12</td>
+                                <td class="">2</td>
+                                <td class="">$24</td>
+                                <td class="">27/03/2021</td>
+                                <td class="">Huy Tran</td>
+                            </tr><!-- END TR-->
+                            <tr class="text-center">
+                                <td class=""><a href="#">Global Citizen</a></td>
+                                <td class="">$10</td>
+                                <td class="">3</td>
+                                <td class="">$30</td>
+                                <td class="">27/03/2021</td>
+                                <td class="">Huy Tran</td>
+                            </tr><!-- END TR-->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

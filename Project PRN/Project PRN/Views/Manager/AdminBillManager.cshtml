@@ -1,0 +1,100 @@
+﻿
+@{
+    ViewBag.Title = "Admin Bill Manager";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="hero-wrap hero-bread" style="background-image: url('/Content/Design Images/bg_6.jpg');">
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+            <div class="col-md-9 ftco-animate text-center">
+                <h1 class="mb-0 bread">Admin Manager</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="ftco-section ftco-cart">
+    <div id="contacts" class="container">
+        <div class="row justify-content-start">
+            <div class="col col-lg-5 col-md-6 mt-5 cart-wrap">
+                <div class="cart-total mb-3">
+                    <h3>Revenue Totals</h3>
+                    <p class="d-flex">
+                        <span>Bill success</span>
+                        <span>1</span>
+                    </p>
+                    <hr>
+                    <p class="d-flex total-price">
+                        <span>Total</span>
+                        <span>$24</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="cart-list">
+                    <table class="table">
+                        <thead class="thead-primary">
+                            <tr class="text-center">
+                                <th>Bill ID</th>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Ordertime</th>
+                                <th>User Name</th>
+                                <th>Status</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Success-->
+                            <tr v-for="c in contacts" class="text-center">
+                                <td class="">#234563342</td>
+                                <td class=""><a href="#">Learn 'How to Learn'</a></td>
+                                <td class="">$12</td>
+                                <td>2</td>
+                                <td>$24</td>
+                                <td>27/03/2021</td>
+                                <td>Admin</td>
+                                <td class="quantity manager">
+                                    <p><div class="btn btn-success">Success</div></p>
+                                </td>
+
+                            </tr><!-- END TR-->
+                            <!-- Pending-->
+                            <tr>
+                                <td class="">#345873495</td>
+                                <td class=""><a href="#">Global Citizen</a></td>
+                                <td class="">$10</td>
+                                <td>3</td>
+                                <td>$30</td>
+                                <td>27/03/2021</td>
+                                <td>Admin</td>
+                                <td class="quantity manager">
+                                    <p><div class="btn btn-secondary">Pending</div></p>
+                                </td>
+                            </tr>
+                            <!-- Cancel-->
+                            <tr>
+                                <td class="">#456235763</td>
+                                <td class=""><a href="#">Little UK</a></td>
+                                <td class="">$20</td>
+                                <td>1</td>
+                                <td>$20</td>
+                                <td>27/03/2021</td>
+                                <td>Admin</td>
+                                <td class="quantity manager">
+                                    <p><div class="btn btn-danger">Cancel</div></p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
