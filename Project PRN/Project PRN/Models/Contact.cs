@@ -15,11 +15,12 @@ namespace Project_PRN.Models
     public partial class Contact
     {
         public int userid { get; set; }
-        public string username { get; set; }
         public string email { get; set; }
         public string content { get; set; }
         public System.DateTime date { get; set; }
         public int contactid { get; set; }
+        public string subject { get; set; }
+        public bool status { get; set; }
     
         public virtual Account Account { get; set; }
     }

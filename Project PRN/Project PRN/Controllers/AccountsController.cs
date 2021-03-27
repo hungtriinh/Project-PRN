@@ -18,7 +18,9 @@ namespace Project_PRN.Controllers {
                 return View();
             } else {
                 return RedirectToRoute(new {
-                    controller = "Home", action = "Index", id = UrlParameter.Optional
+                    controller = "Home",
+                    action = "Index",
+                    id = UrlParameter.Optional
                 });
             }
 
@@ -26,23 +28,43 @@ namespace Project_PRN.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CheckLogin([Bind(Include = "email,password")] Account account) {
+        public ActionResult SignIn([Bind(Include = "email,password")] Account account) {
             db.Configuration.ProxyCreationEnabled = false;
             if (ModelState.IsValid) {
                 string checkEmail = account.email;
                 string checkPassword = account.password;
-                List<Account> list = db.Accounts.Where(a => a.email.Equals(checkEmail)).ToList();
-                if (list.Count > 0) {
-                    if (BCrypt.Net.BCrypt.Verify(checkPassword, list[0].password)) {
+
+                //get user's information from database
+                Account checkAccount = db.Accounts.Where(a => a.email.Equals(checkEmail)).FirstOrDefault();
+                //check is exsisted account
+                if (checkAccount != null) {
+                    //check if password matches
+                    if (BCrypt.Net.BCrypt.Verify(checkPassword, checkAccount.password)) {
                         HttpSessionStateBase session = HttpContext.Session;
-                        session.Add("user", list[0].userID);
+                        //add user to session
+                        session.Add("user", checkAccount.userID);
+                        session.Add("role", checkAccount.role);
+                        //reload cart
+                        if (Request.Cookies["cart"] != null) {
+                            string cartJson = Request.Cookies["cart"].Value;
+                            CartsController cartsController = new CartsController();
+                            int userId = Int32.Parse(Session["user"].ToString());
+                            cartsController.AddToCartWhenLogin(cartJson, userId);
+                            Response.Cookies["cart"].Expires = DateTime.Now.AddDays(-1);
+                        }
                         return RedirectToRoute(new {
-                            controller = "Home", action = "Index", id = UrlParameter.Optional
+                            controller = "Home",
+                            action = "Index",
+                            id = UrlParameter.Optional
                         });
+                    } else {
+                        ViewBag.Message = "Wrong Password!";
                     }
+                } else {
+                    ViewBag.Message = "Not exsisted account!";
                 }
             }
-            return RedirectToAction("SignIn");
+            return View();
         }
 
         public ViewResult SignUp() {
@@ -51,25 +73,34 @@ namespace Project_PRN.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "userID,email,password,userName,role,address,phoneNumber")] Account account) {
-            db.Configuration.ProxyCreationEnabled = false;
-            if (ModelState.IsValid) {
-                List<Account> list = db.Accounts.Where(a => a.email.Equals(account.email)).ToList();
-                if (list.Count == 0) {
-                    account.role = 2;
-                    string pass = account.password;
-                    int cost = 12;
-                    string newPassword = BCrypt.Net.BCrypt.HashPassword(pass, cost);
-                    account.password = newPassword;
-                    Console.WriteLine($"{account.userID} - {account.userName} - {account.password} - {account.phoneNumber} - {account.role} - {account.address}");
-                    db.Accounts.Add(account);
-                    db.SaveChanges();
-                    return RedirectToRoute(new {
-                        controller = "Home", action = "Index", id = UrlParameter.Optional
-                    });
+        public ActionResult SignUp([Bind(Include = "userID,email,password,userName,role,address,phoneNumber")] Account account) {
+            try {
+                db.Configuration.ProxyCreationEnabled = false;
+                if (ModelState.IsValid) {
+                    List<Account> list = db.Accounts.Where(a => a.email.Equals(account.email)).ToList();
+                    if (list.Count == 0) {
+                        account.role = 2;
+                        string pass = account.password;
+                        int cost = 12;
+                        string newPassword = BCrypt.Net.BCrypt.HashPassword(pass, cost);
+                        account.password = newPassword;
+                        Console.WriteLine($"{account.userID} - {account.userName} - {account.password} - {account.phoneNumber} - {account.role} - {account.address}");
+                        db.Accounts.Add(account);
+                        db.SaveChanges();
+                        return RedirectToAction("SignIn");
+                    } else {
+                        ViewBag.Message = "Exsisted Account! Please register again";
+                    }
                 }
+                return View();
+            } catch (Exception e) {
+                return RedirectToRoute(new {
+                    controller = "Home",
+                    action = "Error",
+                    id = UrlParameter.Optional
+                });
             }
-            return RedirectToAction("SignUp");
+
         }
 
         public ActionResult SignOut() {
@@ -82,7 +113,9 @@ namespace Project_PRN.Controllers {
                 //chuyen toi trang bao loi
             }
             return RedirectToRoute(new {
-                controller = "Home", action = "Index", id = UrlParameter.Optional
+                controller = "Home",
+                action = "Index",
+                id = UrlParameter.Optional
             });
         }
 
@@ -132,14 +165,6 @@ namespace Project_PRN.Controllers {
                 }
             }
             return View(account);
-        }
-
-        public ViewResult Manager() {
-            return View();
-        }
-
-        public JsonResult ManagerJson(int? index) {
-            return Json("", JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing) {

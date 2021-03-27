@@ -66,7 +66,7 @@
     </Key>
     <Property Name="BillID" Type="Int64" Nullable="false" />
     <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="phoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="orderTime" Type="DateTime" Nullable="false" Precision="3" />
@@ -96,12 +96,13 @@
       <PropertyRef Name="contactid" />
     </Key>
     <Property Name="userid" Type="Int32" Nullable="false" />
-    <Property Name="username" Type="String" MaxLength="1" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="email" Type="String" MaxLength="1" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="date" Type="DateTime" Nullable="false" Precision="3" />
     <NavigationProperty Name="Account" Relationship="Self.FK__Contact__userid__4316F928" FromRole="Contact" ToRole="Account" />
     <Property Name="contactid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="subject" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="status" Type="Boolean" Nullable="false" />
   </EntityType>
   <Association Name="FK__Bill__userid__403A8C7D">
     <End Role="Account" Type="Self.Account" Multiplicity="0..1" />

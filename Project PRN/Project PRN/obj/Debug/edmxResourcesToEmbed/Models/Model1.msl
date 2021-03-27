@@ -84,9 +84,10 @@
     <EntitySetMapping Name="Contacts">
       <EntityTypeMapping TypeName="ProjectPRNModel.Contact">
         <MappingFragment StoreEntitySet="Contact">
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="subject" ColumnName="subject" />
           <ScalarProperty Name="contactid" ColumnName="contactid" />
           <ScalarProperty Name="userid" ColumnName="userid" />
-          <ScalarProperty Name="username" ColumnName="username" />
           <ScalarProperty Name="email" ColumnName="email" />
           <ScalarProperty Name="content" ColumnName="content" />
           <ScalarProperty Name="date" ColumnName="date" />

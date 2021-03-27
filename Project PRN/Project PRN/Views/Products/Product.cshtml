@@ -5,8 +5,6 @@
 }
 
 @section scripts{
-    <script src="~/Scripts/axios.js"></script>
-
     <script>
         var app1 = new Vue({
             el: '#categories',
@@ -65,7 +63,22 @@
                     })
                         .then(response => {
                             console.log(response.data)
-                            alert(response.data)
+                            if (response.data.type == 1) {
+                                Swal.fire({
+                                    position: 'Center',
+                                    icon: 'success',
+                                    title: response.data.message,
+                                    showConfirmButton: false,
+                                    timer: 1000
+                                })
+                            } else {
+                                Swal.fire({
+                                    position: 'Center',
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: response.data.message,
+                                })
+                            }
                         })
                         .catch(error => {
                             console.log(error);
@@ -76,11 +89,11 @@
     </script>
 }
 
-<div class="hero-wrap hero-bread" style=" background-image: url('/Content/images/bg_6.jpg');">
+<div class="hero-wrap hero-bread" style="background-image: url('/Content/Design Images/bg_6.jpg');">
     <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
             <div class="col-md-9 ftco-animate text-center">
-                <h1 class="mb-0 bread">Shop</h1>
+                <h1 class="mb-0 bread">PRODUCT</h1>
             </div>
         </div>
     </div>
