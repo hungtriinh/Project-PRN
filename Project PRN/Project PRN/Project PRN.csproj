@@ -726,7 +726,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Manager\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\flaticon\.DS_Store" />
@@ -891,9 +890,9 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Bills\CheckOut.cshtml" />
     <Content Include="Views\Evaluates\Evaluate.cshtml" />
-    <Content Include="Views\Bills\ContactManager.cshtml" />
+    <Content Include="Views\Manager\ContactManager.cshtml" />
     <Content Include="Views\Products\UploadProduct.cshtml" />
-    <Content Include="Views\Home\Manager.cshtml" />
+    <Content Include="Views\Manager\BillManager.cshtml" />
     <Content Include="Views\Accounts\Edit.cshtml" />
     <Content Include="Scripts\axios.min.map" />
     <Content Include="Scripts\axios.map" />
