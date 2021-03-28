@@ -3,7 +3,31 @@
     ViewBag.Title = "User Bill Manager";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+@section scripts{
+    <script>
+        new Vue({
+            el: '#BillManager',
+            data: {
+                bills: []
+            },
+            mounted: function () {
+                axios.post('/Bills/BillManagerJson')
+                    .then(response => {
+                        this.bills = response.data;
+                        console.log(this.bills);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            methods: {
+                calTotalForSingleProduct: function (bills) {
+                    return bills.Product.price * bills.quantity;
+                }
+            }
+        })
+    </script>
+}
 <div class="hero-wrap hero-bread" style="background-image: url('/Content/Design Images/bg_6.jpg');">
     <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
@@ -15,7 +39,7 @@
 </div>
 
 <section class="ftco-section ftco-cart">
-    <div id="contacts" class="container">
+    <div id="BillManager" class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="cart-list">
@@ -33,7 +57,7 @@
                         </thead>
                         <tbody>
                             <tr class="text-center">
-                                <td class="">{{image}}</td>
+                                <td class="">image</td>
                                 <td class=""><a href="#">Learn 'How to learn'</a></td>
                                 <td class="">$12</td>
                                 <td>2</td>
@@ -44,7 +68,7 @@
                                 </td>
                             </tr>
                             <tr class="text-center">
-                                <td class="">{{image}}</td>
+                                <td class="">imag</td>
                                 <td class=""><a href="#">Little UK</a></td>
                                 <td class="">$15</td>
                                 <td>3</td>
@@ -71,7 +95,7 @@
                         </thead>
                         <tbody>
                             <tr class="text-center">
-                                <td class="">{{image}}</td>
+                                <td class="">image</td>
                                 <td class=""><a href="#">Global Citizen</td>
                                 <td class="">$12</td>
                                 <td>2</td>
@@ -82,7 +106,7 @@
                                 </td>
                             </tr>
                             <tr class="text-center">
-                                <td class="">{{image}}</td>
+                                <td class="">image</td>
                                 <td class=""><a href="#">Little UK</a></td>
                                 <td class="">$15</td>
                                 <td>3</td>
@@ -93,7 +117,7 @@
                                 </td>
                             </tr>
                             <tr class="text-center">
-                                <td class="">{{image}}</td>
+                                <td class="">image</td>
                                 <td class=""><a href="#">Bye</a></td>
                                 <td class="">$15</td>
                                 <td>3</td>

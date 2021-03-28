@@ -464,3 +464,97 @@ G:\Data\GitHub-Clone\Project PRN\Project PRN\obj\Debug\Project PRN.csproj.CopyCo
 G:\Data\GitHub-Clone\Project PRN\Project PRN\obj\Debug\Project PRN.dll
 G:\Data\GitHub-Clone\Project PRN\Project PRN\obj\Debug\Project PRN.pdb
 C:\Users\Hung Trinh\OneDrive\Desktop\TestGithub\Project-PRN\Project PRN\Project PRN\obj\Debug\Project PRN.csprojAssemblyReference.cache
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\Project PRN.dll.config
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\Project PRN.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\Project PRN.pdb
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\csc.exe
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\csc.exe.config
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\csc.rsp
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\csi.exe
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\csi.exe.config
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\csi.rsp
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\Microsoft.Managed.Core.targets
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\Microsoft.Win32.Primitives.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.AppContext.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.Collections.Immutable.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.Console.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.Diagnostics.DiagnosticSource.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.Diagnostics.FileVersionInfo.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.Globalization.Calendars.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.IO.Compression.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.IO.Compression.ZipFile.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.IO.FileSystem.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.Net.Http.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.Net.Sockets.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.Reflection.Metadata.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.Runtime.InteropServices.RuntimeInformation.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.Security.Cryptography.Algorithms.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.Security.Cryptography.Encoding.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.Security.Cryptography.Primitives.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.Security.Cryptography.X509Certificates.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.Text.Encoding.CodePages.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.Threading.Tasks.Extensions.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.ValueTuple.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.Xml.ReaderWriter.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.Xml.XmlDocument.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.Xml.XPath.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\System.Xml.XPath.XDocument.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\vbc.exe
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\vbc.exe.config
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\vbc.rsp
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\VBCSCompiler.exe
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\roslyn\VBCSCompiler.exe.config
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\Antlr3.Runtime.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\BCrypt.Net.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\EntityFramework.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\EntityFramework.SqlServer.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\IdGen.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\Microsoft.Web.Infrastructure.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\Newtonsoft.Json.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\PagedList.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\PagedList.Mvc.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\System.Diagnostics.DiagnosticSource.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\System.Web.Helpers.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\System.Web.Mvc.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\System.Web.Optimization.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\System.Web.Razor.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\System.Web.WebPages.Deployment.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\System.Web.WebPages.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\System.Web.WebPages.Razor.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\WebGrease.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\BCrypt.Net.pdb
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\BCrypt.Net.xml
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\EntityFramework.xml
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\EntityFramework.SqlServer.xml
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\IdGen.xml
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\PagedList.xml
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\PagedList.Mvc.xml
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\System.Diagnostics.DiagnosticSource.xml
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\System.Web.Helpers.xml
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\System.Web.Mvc.xml
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\System.Web.Optimization.xml
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\System.Web.Razor.xml
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\System.Web.WebPages.xml
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\System.Web.WebPages.Deployment.xml
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\System.Web.WebPages.Razor.xml
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\Newtonsoft.Json.xml
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\Antlr3.Runtime.pdb
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\obj\Debug\Project PRN.csprojAssemblyReference.cache
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\obj\Debug\Project PRN.csproj.CoreCompileInputs.cache
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\obj\Debug\Project PRN.csproj.CopyComplete
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\obj\Debug\Project PRN.dll
+D:\LEARNING\26_PRN\PROJECT chuan\Project-PRN\Project PRN\Project PRN\obj\Debug\Project PRN.pdb

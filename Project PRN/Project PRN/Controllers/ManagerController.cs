@@ -8,16 +8,21 @@ using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Project_PRN.Controllers {
-    public class ManagerController : Controller {
+namespace Project_PRN.Controllers
+{
+    public class ManagerController : Controller
+    {
         private ProjectPRNEntities3 db = new ProjectPRNEntities3();
-        public ActionResult ContactManager() {
+        public ActionResult ContactManager()
+        {
             return View();
         }
 
-        public JsonResult ContactJson() {
+        public JsonResult ContactJson()
+        {
             db.Configuration.ProxyCreationEnabled = false;
-            List<Contact> contacts = db.Contacts.ToList().Select(contact => new Contact {
+            List<Contact> contacts = db.Contacts.ToList().Select(contact => new Contact
+            {
                 userid = contact.userid,
                 email = contact.email,
                 content = contact.content,
@@ -31,17 +36,70 @@ namespace Project_PRN.Controllers {
         }
         public ActionResult AdminBillManager()
         {
-            return View();
+            db.Configuration.ProxyCreationEnabled = false;
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("SignIn", "Accounts");
+            }
+            else
+            {
+                int userID = Int32.Parse(Session["user"].ToString());
+                Account account = db.Accounts.Find(userID);
+                if (account.role == 1)
+                {
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
         }
 
         public ActionResult StaffBillManager()
         {
-            return View();
+            db.Configuration.ProxyCreationEnabled = false;
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("SignIn", "Accounts");
+            }
+            else
+            {
+                int userID = Int32.Parse(Session["user"].ToString());
+                Account account = db.Accounts.Find(userID);
+                if (account.role == 3)
+                {
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
         }
 
-        public ActionResult BillManager() {
-            return View();
+        public ActionResult BillManager()
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("SignIn", "Accounts");
+            }
+            else
+            {
+                int userID = Int32.Parse(Session["user"].ToString());
+                Account account = db.Accounts.Find(userID);
+                if (account.role == 3 || account.role == 2)
+                {
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
         }
+
 
         public ActionResult ReplyContact(int? contactId)
         {
@@ -49,9 +107,11 @@ namespace Project_PRN.Controllers {
             return View();
         }
 
-        public JsonResult GetContactByID(int? contactId) {
+        public JsonResult GetContactByID(int? contactId)
+        {
             db.Configuration.ProxyCreationEnabled = false;
-            Contact ct = db.Contacts.ToList().Select(contact => new Contact {
+            Contact ct = db.Contacts.ToList().Select(contact => new Contact
+            {
                 userid = contact.userid,
                 email = contact.email,
                 content = contact.content,
@@ -66,15 +126,19 @@ namespace Project_PRN.Controllers {
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ReplyContact(string email, string subject, string content, int? contactId) {
-            try {
-                if (ModelState.IsValid) {
+        public ActionResult ReplyContact(string email, string subject, string content, int? contactId)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
                     MailAddress senderEmail = new MailAddress("pes2020testing@gmail.com", "BookStore");
                     MailAddress receiverEmail = new MailAddress(email, "Receiver");
                     string password = "pes2020test";
                     string sub = subject;
                     string body = content;
-                    SmtpClient smtp = new SmtpClient {
+                    SmtpClient smtp = new SmtpClient
+                    {
                         Host = "smtp.gmail.com",
                         Port = 587,
                         EnableSsl = true,
@@ -82,11 +146,13 @@ namespace Project_PRN.Controllers {
                         UseDefaultCredentials = false,
                         Credentials = new NetworkCredential(senderEmail.Address, password)
                     };
-                    using (MailMessage mess = new MailMessage(senderEmail, receiverEmail) {
+                    using (MailMessage mess = new MailMessage(senderEmail, receiverEmail)
+                    {
 
                         Subject = subject,
                         Body = body
-                    }) {
+                    })
+                    {
                         mess.IsBodyHtml = true;
                         smtp.Send(mess);
                     }
@@ -97,7 +163,9 @@ namespace Project_PRN.Controllers {
                     db.SaveChanges();
                 }
 
-            } catch (Exception) {
+            }
+            catch (Exception)
+            {
                 ViewBag.Message = "Some Error";
                 return View();
             }

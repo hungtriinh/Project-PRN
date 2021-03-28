@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -11,18 +12,23 @@ using System.Web.Script.Serialization;
 using IdGen;
 using Project_PRN.Models;
 
-namespace Project_PRN.Controllers {
-    public class BillsController : Controller {
+namespace Project_PRN.Controllers
+{
+    public class BillsController : Controller
+    {
         private ProjectPRNEntities3 db = new ProjectPRNEntities3();
 
         // GET: Bills
-        public ActionResult CheckOut() {
+        public ActionResult CheckOut()
+        {
             return View();
         }
 
-        public JsonResult GetLocalJson() {
+        public JsonResult GetLocalJson()
+        {
             string json = "";
-            using (StreamReader r = new StreamReader(Path.Combine(Server.MapPath("~/Content/data.json")))) {
+            using (StreamReader r = new StreamReader(Path.Combine(Server.MapPath("~/Content/data.json"))))
+            {
 
                 json = r.ReadToEnd();
             }
@@ -31,8 +37,10 @@ namespace Project_PRN.Controllers {
         }
 
 
-        public JsonResult AddBill(string name, string address, string phone, string email, int payment) {
-            try {
+        public JsonResult AddBill(string name, string address, string phone, string email, int payment)
+        {
+            try
+            {
                 Bill bill = new Bill();
 
                 //Declare snowflake algorithm
@@ -58,14 +66,16 @@ namespace Project_PRN.Controllers {
                 bill.orderTime = DateTime.Now;
 
                 //is loged User
-                if (Session["user"] == null) {
+                if (Session["user"] == null)
+                {
                     //didn't log in case, storage cart in cookies
                     var serializer = new JavaScriptSerializer();
 
                     Dictionary<string, int> cart;
 
                     //check is exsisted cart in cookies
-                    if (Request.Cookies["cart"] != null) {
+                    if (Request.Cookies["cart"] != null)
+                    {
                         //exsisted case, pick up it
                         string cartJson = Request.Cookies["cart"].Value;
                         cart = serializer.Deserialize<Dictionary<string, int>>(cartJson);
@@ -73,7 +83,8 @@ namespace Project_PRN.Controllers {
                         Dictionary<string, int>.KeyCollection keys = cart.Keys;
 
                         //add bill to database
-                        foreach (string key in keys) {
+                        foreach (string key in keys)
+                        {
                             bill.productid = Int32.Parse(key);
                             bill.quantity = cart[key];
                             bill.amount = db.Products.Find(bill.productid = Int32.Parse(key)).price;
@@ -83,18 +94,23 @@ namespace Project_PRN.Controllers {
                             db.SaveChanges();
                         }
                         Response.Cookies["cart"].Expires = DateTime.Now.AddMinutes(-1);
-                    } else {
+                    }
+                    else
+                    {
                         //in null case of cart
                         return Json("Please put item into cart before check out!", JsonRequestBehavior.AllowGet);
                     }
 
-                } else {
+                }
+                else
+                {
                     //loged in case
                     Account account = db.Accounts.Find(Int32.Parse(Session["user"].ToString()));
                     bill.userid = account.userID;
 
                     //load cart infor from database
-                    List<Cart> carts = db.Carts.ToList().Select(cart => new Cart {
+                    List<Cart> carts = db.Carts.ToList().Select(cart => new Cart
+                    {
                         cartid = cart.cartid,
                         userid = cart.userid,
                         productid = cart.productid,
@@ -104,8 +120,10 @@ namespace Project_PRN.Controllers {
                     }).Where(c => c.userid == account.userID).ToList();
 
                     //check is exsisted any item in cart in database
-                    if (carts.Count > 0) {
-                        foreach (Cart cart in carts) {
+                    if (carts.Count > 0)
+                    {
+                        foreach (Cart cart in carts)
+                        {
                             bill.productid = cart.productid;
                             bill.quantity = cart.quantity;
                             bill.amount = cart.Product.price;
@@ -116,20 +134,27 @@ namespace Project_PRN.Controllers {
                             db.Carts.Remove(db.Carts.Find(cart.cartid));
                             db.SaveChanges();
                         }
-                    } else {
+                    }
+                    else
+                    {
                         //in null case of cart
-                        return Json(new {
+                        return Json(new
+                        {
                             type = 2,
                             message = "Please put item into cart before check out!"
                         }, JsonRequestBehavior.AllowGet);
                     }
                 }
-                return Json(new {
+                return Json(new
+                {
                     type = 1,
                     message = "Check Out Success!"
                 }, JsonRequestBehavior.AllowGet);
-            } catch {
-                return Json(new {
+            }
+            catch
+            {
+                return Json(new
+                {
                     type = 2,
                     message = "Check Out Fail!"
                 }, JsonRequestBehavior.AllowGet);
@@ -137,22 +162,119 @@ namespace Project_PRN.Controllers {
 
         }
 
+        //Bill admin
+        public JsonResult AdminBillManagerJson()
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            List<Bill> listBill = db.Bills.ToList().Select(Bill => new Bill
+            {
+                BillID = Bill.BillID,
+                quantity = Bill.quantity,
+                orderTime = Bill.orderTime,
+                amount = Bill.amount,
+                status = Bill.status,
+                Account = db.Accounts.Find(Bill.userid),
+                Product = db.Products.ToList().Select(product => new Product
+                {
+                    productID = product.productID,
+                    title = product.title,
+                    author = product.author,
+                    description = product.description,
+                    shortDescription = product.shortDescription,
+                    image = product.fullImagePath(),
+                    price = product.price,
+                    quantity = product.quantity,
+                    sold = product.sold,
+                    postTime = product.postTime,
+                    categoriesID = product.categoriesID,
+                    userID = product.userID,
+                }).Where(p => p.productID == Bill.productid).FirstOrDefault(),
+            }).ToList();
+            return Json(listBill, JsonRequestBehavior.AllowGet);
+        }
+        //Bill Nguoi dung
+        public JsonResult BillManagerJson()
+        {
+            int userId = Int32.Parse(Session["user"].ToString());
+            db.Configuration.ProxyCreationEnabled = false;
+
+            ArrayList billId = new ArrayList();
+            var result = db.Bills.GroupBy(test => test.BillID).Select(grp => grp.First()).ToList();
+            billId.Add(result);
+
+            List<Bill> listBill = db.Bills.Where(c => c.userid == userId).ToList().Select(Bill => new Bill
+            {
+                BillID = Bill.BillID,
+                quantity = Bill.quantity,
+                orderTime = Bill.orderTime,
+                amount = Bill.amount,
+                status = Bill.status,
+                Product = db.Products.ToList().Select(product => new Product
+                {
+                    productID = product.productID,
+                    title = product.title,
+                    author = product.author,
+                    description = product.description,
+                    shortDescription = product.shortDescription,
+                    image = product.fullImagePath(),
+                    price = product.price,
+                    quantity = product.quantity,
+                    sold = product.sold,
+                    postTime = product.postTime,
+                    categoriesID = product.categoriesID,
+                    userID = product.userID,
+                }).Where(p => p.productID == Bill.productid).FirstOrDefault(),
+            }).ToList();
+            return Json(listBill, JsonRequestBehavior.AllowGet);
+        }
 
 
+        public JsonResult StaffBillManagerJson(int billId)
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            List<Bill> listBill = db.Bills.Where(c => c.BillID == billId).ToList().Select(Bill => new Bill
+            {
+                BillID = Bill.BillID,
+                quantity = Bill.quantity,
+                orderTime = Bill.orderTime,
+                amount = Bill.amount,
+                status = Bill.status,
+                Product = db.Products.ToList().Select(product => new Product
+                {
+                    productID = product.productID,
+                    title = product.title,
+                    author = product.author,
+                    description = product.description,
+                    shortDescription = product.shortDescription,
+                    image = product.fullImagePath(),
+                    price = product.price,
+                    quantity = product.quantity,
+                    sold = product.sold,
+                    postTime = product.postTime,
+                    categoriesID = product.categoriesID,
+                    userID = product.userID,
+                }).Where(p => p.productID == Bill.productid).FirstOrDefault(),
+            }).ToList();
+            return Json(listBill, JsonRequestBehavior.AllowGet);
+        }
         // GET: Bills/Details/5
-        public ActionResult Details(long? id) {
-            if (id == null) {
+        public ActionResult Details(long? id)
+        {
+            if (id == null)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Bill bill = db.Bills.Find(id);
-            if (bill == null) {
+            if (bill == null)
+            {
                 return HttpNotFound();
             }
             return View(bill);
         }
 
         // GET: Bills/Create
-        public ActionResult Create() {
+        public ActionResult Create()
+        {
             ViewBag.userid = new SelectList(db.Accounts, "userID", "email");
             ViewBag.productid = new SelectList(db.Products, "productID", "title");
             return View();
@@ -163,8 +285,10 @@ namespace Project_PRN.Controllers {
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "BillID,userName,address,phoneNumber,email,orderTime,payment,userid,productid,quantity,status")] Bill bill) {
-            if (ModelState.IsValid) {
+        public ActionResult Create([Bind(Include = "BillID,userName,address,phoneNumber,email,orderTime,payment,userid,productid,quantity,status")] Bill bill)
+        {
+            if (ModelState.IsValid)
+            {
                 db.Bills.Add(bill);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -176,12 +300,15 @@ namespace Project_PRN.Controllers {
         }
 
         // GET: Bills/Edit/5
-        public ActionResult Edit(long? id) {
-            if (id == null) {
+        public ActionResult Edit(long? id)
+        {
+            if (id == null)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Bill bill = db.Bills.Find(id);
-            if (bill == null) {
+            if (bill == null)
+            {
                 return HttpNotFound();
             }
             ViewBag.userid = new SelectList(db.Accounts, "userID", "email", bill.userid);
@@ -194,8 +321,10 @@ namespace Project_PRN.Controllers {
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "BillID,userName,address,phoneNumber,email,orderTime,payment,userid,productid,quantity,status")] Bill bill) {
-            if (ModelState.IsValid) {
+        public ActionResult Edit([Bind(Include = "BillID,userName,address,phoneNumber,email,orderTime,payment,userid,productid,quantity,status")] Bill bill)
+        {
+            if (ModelState.IsValid)
+            {
                 db.Entry(bill).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -206,12 +335,15 @@ namespace Project_PRN.Controllers {
         }
 
         // GET: Bills/Delete/5
-        public ActionResult Delete(long? id) {
-            if (id == null) {
+        public ActionResult Delete(long? id)
+        {
+            if (id == null)
+            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Bill bill = db.Bills.Find(id);
-            if (bill == null) {
+            if (bill == null)
+            {
                 return HttpNotFound();
             }
             return View(bill);
@@ -220,15 +352,18 @@ namespace Project_PRN.Controllers {
         // POST: Bills/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(long id) {
+        public ActionResult DeleteConfirmed(long id)
+        {
             Bill bill = db.Bills.Find(id);
             db.Bills.Remove(bill);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing) {
-            if (disposing) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
                 db.Dispose();
             }
             base.Dispose(disposing);
