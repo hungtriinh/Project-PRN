@@ -902,6 +902,7 @@
     <Content Include="Views\Manager\AdminBillManager.cshtml" />
     <Content Include="Views\Manager\ReplyContact.cshtml" />
     <Content Include="Views\Manager\StaffBillManager.cshtml" />
+    <Content Include="Views\Bills\Bill.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

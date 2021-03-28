@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -15,8 +17,11 @@ namespace Project_PRN.Controllers {
     public class BillsController : Controller {
         private ProjectPRNEntities3 db = new ProjectPRNEntities3();
 
-        // GET: Bills
         public ActionResult CheckOut() {
+            return View();
+        }
+
+        public ActionResult Bill() {
             return View();
         }
 
@@ -57,6 +62,12 @@ namespace Project_PRN.Controllers {
                 bill.status = 1;
                 bill.orderTime = DateTime.Now;
 
+                //email content
+                string content = $"You have successfully booked your order, the ready-made product will be delivered within {DateTime.Now.AddDays(3).Date} to {DateTime.Now.AddDays(7).Date}<br/><br/>";
+                content += $"Order ID: {billID}<br/><br/>";
+                content += "<table><tr style=\"color: white; background-color: #7fad39;\"><td style=\"padding: 5px 10px 5px 10px; font-size: 15px;\">Product</td><td style=\"padding: 5px 10px 5px 10px; font-size: 15px;\">Price</td><td style=\"padding: 5px 10px 5px 10px; font-size: 15px;\">Quantity</td><td style=\"padding: 5px 10px 5px 10px; font-size: 15px;\">Total</td></tr>";
+
+
                 //is loged User
                 if (Session["user"] == null) {
                     //didn't log in case, storage cart in cookies
@@ -72,17 +83,26 @@ namespace Project_PRN.Controllers {
 
                         Dictionary<string, int>.KeyCollection keys = cart.Keys;
 
+                        decimal totalValue = 0;
                         //add bill to database
                         foreach (string key in keys) {
                             bill.productid = Int32.Parse(key);
                             bill.quantity = cart[key];
-                            bill.amount = db.Products.Find(bill.productid = Int32.Parse(key)).price;
+                            Product p = db.Products.Find(bill.productid = Int32.Parse(key));
+                            bill.amount = p.price;
 
                             //add into bill
                             db.Bills.Add(bill);
                             db.SaveChanges();
+
+                            decimal total = p.price * cart[key];
+                            content += $"<tr style=\"background - color: #eeeeee;\"><td style=\"padding: 5px 10px 5px 10px; font-size: 15px;\">{p.title}</td><td style=\"padding: 5px 10px 5px 10px; font-size: 15px;\">{p.price.ToString("C")}</td><td style=\"padding: 5px 10px 5px 10px; font-size: 15px;\">{cart[key]}</td><td style=\"padding: 5px 10px 5px 10px; font-size: 15px;\">{total.ToString("C")}</td>";
+                            totalValue += total;
                         }
                         Response.Cookies["cart"].Expires = DateTime.Now.AddMinutes(-1);
+
+                        //add last row to content
+                        content += $"<tr style=\"background-color: #F5F5F5;\"><td style=\"padding: 5px 10px 5px 10px; font-size: 15px;\"></td><td style=\"padding: 5px 10px 5px 10px; font-size: 15px;\"></td><td style=\"padding: 5px 10px 5px 10px; font-size: 15px;\">Total order value</td><td style=\"padding: 5px 10px 5px 10px; font-size: 15px;\">{totalValue.ToString("C")}</td></tr></table>";
                     } else {
                         //in null case of cart
                         return Json("Please put item into cart before check out!", JsonRequestBehavior.AllowGet);
@@ -124,6 +144,33 @@ namespace Project_PRN.Controllers {
                         }, JsonRequestBehavior.AllowGet);
                     }
                 }
+
+                //send email to user
+
+                MailAddress senderEmail = new MailAddress("pes2020testing@gmail.com", "BookStore");
+                MailAddress receiverEmail = new MailAddress(email, "Receiver");
+                string password = "pes2020test";
+                string subject = "Order successfull";
+                string body = content;
+                SmtpClient smtp = new SmtpClient {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(senderEmail.Address, password)
+                };
+                using (MailMessage mess = new MailMessage(senderEmail, receiverEmail) {
+
+                    Subject = subject,
+                    Body = body
+                }) {
+                    mess.IsBodyHtml = true;
+                    smtp.Send(mess);
+                }
+
+                Session["tempBillID"] = billID;
+
                 return Json(new {
                     type = 1,
                     message = "Check Out Success!"
@@ -137,18 +184,36 @@ namespace Project_PRN.Controllers {
 
         }
 
+        public JsonResult GetCurrentBill() {
+            long billID = Convert.ToInt64(Session["tempBillID"].ToString());
 
+            db.Configuration.ProxyCreationEnabled = false;
+            List<Bill> listBill = db.Bills.ToList().Select(Bill => new Bill {
+                BillID = Bill.BillID,
+                quantity = Bill.quantity,
+                orderTime = Bill.orderTime,
+                amount = Bill.amount,
+                status = Bill.status,
+                Account = db.Accounts.Find(Bill.userid),
+                Product = db.Products.ToList().Select(product => new Product {
+                    productID = product.productID,
+                    title = product.title,
+                    author = product.author,
+                    description = product.description,
+                    shortDescription = product.shortDescription,
+                    image = product.fullImagePath(),
+                    price = product.price,
+                    quantity = product.quantity,
+                    sold = product.sold,
+                    postTime = product.postTime,
+                    categoriesID = product.categoriesID,
+                    userID = product.userID,
+                }).Where(p => p.productID == Bill.productid).FirstOrDefault(),
+            }).Where(b => b.BillID == billID).ToList();
 
-        // GET: Bills/Details/5
-        public ActionResult Details(long? id) {
-            if (id == null) {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Bill bill = db.Bills.Find(id);
-            if (bill == null) {
-                return HttpNotFound();
-            }
-            return View(bill);
+            Session.Remove("tempBillID");
+            return Json(listBill, JsonRequestBehavior.AllowGet);
+
         }
 
         // GET: Bills/Create
@@ -203,28 +268,6 @@ namespace Project_PRN.Controllers {
             ViewBag.userid = new SelectList(db.Accounts, "userID", "email", bill.userid);
             ViewBag.productid = new SelectList(db.Products, "productID", "title", bill.productid);
             return View(bill);
-        }
-
-        // GET: Bills/Delete/5
-        public ActionResult Delete(long? id) {
-            if (id == null) {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Bill bill = db.Bills.Find(id);
-            if (bill == null) {
-                return HttpNotFound();
-            }
-            return View(bill);
-        }
-
-        // POST: Bills/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(long id) {
-            Bill bill = db.Bills.Find(id);
-            db.Bills.Remove(bill);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing) {
