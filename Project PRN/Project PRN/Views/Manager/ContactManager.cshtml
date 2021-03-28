@@ -16,7 +16,7 @@
                 contacts: [],
             },
             mounted: function () {
-                axios.get('/Home/ContactJson')
+                axios.get('/Manager/ContactJson')
                     .then(response => {
                         this.contacts = response.data;
                         console.log(this.contacts);
@@ -41,55 +41,35 @@
         <div class="row no-gutters slider-text align-items-center justify-content-center">
             <div class="col-md-9  text-center">
                 <h1 class="mb-0 bread">Contact Manager</h1>
+                <p class="breadcrumbs">
+                    <span class="mr-4"><a class="link-active" href="">Contact Manager</a></span>
+                    <span class="mr-4"><a href="/Manager/StaffBillManager">Bill Manager</a></span>
+                </p>
             </div>
         </div>
     </div>
 </div>
 
-<section class="ftco-section ftco-degree-bg">
+<section id="contacts" class="ftco-section ftco-degree-bg">
     <div class="container">
         <div class="col-lg-12 order-lg-last bg-light">
             <div class="row">
-                <div class="col-md-12 d-flex ">
+                <div v-for="contact in contacts" class="col-md-12 d-flex py-lg-3 px-lg-4">
                     <div class="blog-entry align-self-stretch d-md-flex">
                         <div class="text d-block pl-md-4">
                             <div class="meta mb-3">
-                                <div><a href="#">27/03/2021 22:08</a></div>
-                                <div><a href="#">Huy Tran</a></div>
+                                <div>{{format_date(contact.date)}}</div>
+                                <div>{{contact.Account.userName}}</div>
                             </div>
                             <h3 class="heading">
-                                <a href="#">
-                                    Cửa hàng bán sách gì mà ít mẫu mã như thế này?
-                                </a>
+                                {{contact.subject}}
                             </h3>
                             <p>
-                                Với tư cách là một người đam mê đọc sách đã nghiên cứu sách gần 20 năm nay tôi thấy Shop nên bổ sung thêm sách.
+                                {{contact.content}}
                             </p>
                             <div class="row">
-                                <a href="/Manager/ReplyContact" class="btn btn-primary btn-evaluate py-2 px-3">Reply</a>
-                                <a href="#" class="btn btn-primary btn-evaluate py-2 px-3">Reject</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 d-flex ">
-                    <div class="blog-entry align-self-stretch d-md-flex">
-                        <div class="text d-block pl-md-4">
-                            <div class="meta mb-3">
-                                <div><a href="#">26/03/2021 22:08</a></div>
-                                <div><a href="#">Tu Van Kha</a></div>
-                            </div>
-                            <h3 class="heading">
-                                <a href="#">
-                                    Shop có thể thay đổi giao diện?
-                                </a>
-                            </h3>
-                            <p>
-                                Tôi không thích giao diện này, mong Shop hãy đổi giao diện khác
-                            </p>
-                            <div class="row">
-                                <a href="/Manager/ReplyContact" class="btn btn-primary btn-evaluate py-2 px-3">Reply</a>
-                                <a href="#" class="btn btn-primary btn-evaluate py-2 px-3">Reject</a>
+                                <a v-if="contact.status == false" v-bind:href="'/Manager/ReplyContact?contactId=' + contact.contactid" class="btn btn-primary btn-evaluate py-2 px-5">Reply</a>
+                                <a v-else href="#" class="link-active btn btn-secondary btn-evaluate py-2 px-3">Responded</a>
                             </div>
                         </div>
                     </div>

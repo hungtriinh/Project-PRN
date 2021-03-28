@@ -9,6 +9,10 @@
         <div class="row no-gutters slider-text align-items-center justify-content-center">
             <div class="col-md-9 ftco-animate text-center">
                 <h1 class="mb-0 bread">Bill Manager</h1>
+                <p class="breadcrumbs">
+                    <span class="mr-4"><a href="/Manager/ContactManager">Contact Manager</a></span>
+                    <span class="mr-4"><a class="link-active" href="">Bill Manager</a></span>
+                </p>
             </div>
         </div>
     </div>
@@ -16,11 +20,10 @@
 
 <section class="ftco-section ftco-cart">
     <div id="contacts" class="container">
-        <form>
-            Bill ID: <input type="text" />
-            <input type="submit" value="Search"  />
+        <form class="form-control-lg p-5">
+            <span class="mr-4">Bill ID:</span> <input type="text" />
+            <input class="btn btn-dark" type="submit" value="Search"  />
         </form>
-        <hr />
         <div class="row">
             <div class="col-md-12">
                 <div class="cart-list">
@@ -34,7 +37,7 @@
                                 <th>Total</th>
                                 <th>Order Time</th>
                                 <th>Username</th>
-                                <th><a href="#" class="btn btn-success">DELIVERY SUCCESS</a></th>
+                                <th><a href="#" class="btn btn-secondary">DELIVERY SUCCESS</a></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,6 +48,7 @@
                                 <td class="">$24</td>
                                 <td class="">27/03/2021</td>
                                 <td class="">Huy Tran</td>
+                                <td></td>
                             </tr><!-- END TR-->
                             <tr class="text-center">
                                 <td class=""><a href="#">Global Citizen</a></td>
@@ -53,6 +57,7 @@
                                 <td class="">$30</td>
                                 <td class="">27/03/2021</td>
                                 <td class="">Huy Tran</td>
+                                <td></td>
                             </tr><!-- END TR-->
                         </tbody>
                     </table>
@@ -67,7 +72,7 @@
                                 <th>Total</th>
                                 <th>Order Time</th>
                                 <th>Username</th>
-                                <th><a href="#" class="btn btn-secondary">SUCCESSED</a></th>
+                                <th><a href="#" class="btn btn-success link-active">SUCCESSED</a></th>
                             </tr>
                         </thead>
                         <tbody>

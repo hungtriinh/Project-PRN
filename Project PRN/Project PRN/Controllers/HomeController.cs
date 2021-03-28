@@ -70,23 +70,5 @@ namespace Project_PRN.Controllers {
 
         }
 
-        public ViewResult Manager() {
-            return View();
-        }
-
-        public JsonResult ContactJson() {
-            db.Configuration.ProxyCreationEnabled = false;
-            List<Contact> contacts = db.Contacts.ToList().Select(contact => new Contact {
-                userid = contact.userid,
-                email = contact.email,
-                content = contact.content,
-                date = contact.date,
-                contactid = contact.contactid,
-                subject = contact.subject,
-                status = contact.status,
-                Account = db.Accounts.Find(contact.userid)
-            }).ToList();
-            return Json(contacts, JsonRequestBehavior.AllowGet);
-        }
     }
 }

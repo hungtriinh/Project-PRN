@@ -14577,6 +14577,10 @@ textarea.form-control {
     padding: 10px 10px !important;
 }
 
+.link-active {
+    pointer-events: none;
+}
+
 .rate-active {
     color: #dbcc8f;
 }
