@@ -4,6 +4,40 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section scripts{
+    <script src="~/Scripts/moment.js"></script>
+
+    <script>import moment from 'moment';</script>
+    <script>
+        new Vue({
+            el: '#userBills',
+            data: {
+                orders: []
+            },
+            mounted: function () {
+                axios.get('/Bills/BillManagerJson')
+                    .then(response => {
+                        this.orders = response.data
+                        console.log(response.data)
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+            },
+            methods: {
+                format_date(value) {
+                    if (value) {
+                        return moment(String(value)).format('MMMM Do YYYY, h: mm: ss a')
+                    }
+                },
+                calTotalForSingleProduct: function (bill) {
+                    return bill.amount * bill.quantity;
+                }
+            }
+        })
+    </script>
+}
+
 <div class="hero-wrap hero-bread" style="background-image: url('/Content/Design Images/bg_6.jpg');">
     <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
@@ -15,92 +49,38 @@
 </div>
 
 <section class="ftco-section ftco-cart">
-    <div id="contacts" class="container">
+    <div id="userBills" class="container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 col-lg-12">
                 <div class="cart-list">
-                    <table class="table">
+                    <table v-for="order in orders" class="table">
                         <thead class="thead-primary">
                             <tr class="text-center">
-                                <th>#123543256</th>
+                                <th>{{order.ID}}</th>
                                 <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
                                 <th>Total</th>
                                 <th>Ordertime</th>
-                                <th><a href="#" class="btn btn-danger">CANCEL</a></th>
+                                <th>
+                                    <a v-if="order.status == 0" href="#" class="btn btn-danger link-active">CANCEL</a>
+                                    <a v-if="order.status == 2" class="btn btn-success link-active">Success</a>
+                                    <a v-if="order.status == 1" id="btnPending" class="btn btn-secondary ">Pending, Click to Cancel</a>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="text-center">
-                                <td class="">{{image}}</td>
-                                <td class=""><a href="#">Learn 'How to learn'</a></td>
-                                <td class="">$12</td>
-                                <td>2</td>
-                                <td>$24</td>
-                                <td>27/03/2021</td>
-                                <td class="quantity manager">
-                                    <p><a href="#" class="btn btn-primary py-3 px-4">Review</a></p>
+                            <tr v-for="bill in order.bills" class="text-center">
+                                <td class="image-prod">
+                                    <a v-bind:href="'/Products/ProductDetail?productID=' + bill.Product.productID">
+                                        <img class="img" v-bind:src="bill.Product.image" />
+                                    </a>
                                 </td>
-                            </tr>
-                            <tr class="text-center">
-                                <td class="">{{image}}</td>
-                                <td class=""><a href="#">Little UK</a></td>
-                                <td class="">$15</td>
-                                <td>3</td>
-                                <td>$45</td>
-                                <td>27/03/2021</td>
+                                <td class=""><a v-bind:href="'/Products/ProductDetail?productID=' + bill.Product.productID">{{bill.Product.title}}</a></td>
+                                <td>${{calTotalForSingleProduct(bill)}}</td>
+                                <td>{{format_date(bill.orderTime)}}</td>
                                 <td class="quantity manager">
-                                    <p><a href="#" class="btn btn-primary py-3 px-4">Review</a></p>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <hr />
-                    <table class="table">
-                        <thead class="thead-primary">
-                            <tr class="text-center">
-                                <th>#675689346
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                                <th>Ordertime</th>
-                                <th><div class="btn btn-secondary">RECEIVED</div></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="text-center">
-                                <td class="">{{image}}</td>
-                                <td class=""><a href="#">Global Citizen</td>
-                                <td class="">$12</td>
-                                <td>2</td>
-                                <td>$24</td>
-                                <td>20/03/2021</td>
-                                <td class="quantity manager">
-                                    <p><a href="#" class="btn btn-primary py-3 px-4">Review</a></p>
-                                </td>
-                            </tr>
-                            <tr class="text-center">
-                                <td class="">{{image}}</td>
-                                <td class=""><a href="#">Little UK</a></td>
-                                <td class="">$15</td>
-                                <td>3</td>
-                                <td>$45</td>
-                                <td>20/03/2021</td>
-                                <td class="quantity manager">
-                                    <p><a href="#" class="btn btn-primary py-3 px-4">Review</a></p>
-                                </td>
-                            </tr>
-                            <tr class="text-center">
-                                <td class="">{{image}}</td>
-                                <td class=""><a href="#">Bye</a></td>
-                                <td class="">$15</td>
-                                <td>3</td>
-                                <td>$45</td>
-                                <td>20/03/2021</td>
-                                <td class="quantity manager">
-                                    <p><a href="#" class="btn btn-primary py-3 px-4">Review</a></p>
+                                    <p>
+                                        <a v-if="bill.status == 2" href="#" class="btn btn-primary py-3 px-4">Review</a>
+                                    </p>
                                 </td>
                             </tr>
                         </tbody>

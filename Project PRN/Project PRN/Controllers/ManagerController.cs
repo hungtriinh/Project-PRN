@@ -29,22 +29,62 @@ namespace Project_PRN.Controllers {
             }).Where(c => c.status == false).ToList();
             return Json(contacts, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult AdminBillManager()
-        {
-            return View();
+        public ActionResult AdminBillManager(int? type, DateTime? date) {
+            db.Configuration.ProxyCreationEnabled = false;
+            if (Session["user"] == null) {
+                return RedirectToAction("SignIn", "Accounts");
+            } else {
+                int userID = Int32.Parse(Session["user"].ToString());
+                Account account = db.Accounts.Find(userID);
+                if (account.role == 1) {
+                    if(type != null) {
+                        ViewData["type"] = type;
+                    } else {
+                        ViewData["type"] = 1;
+                    }
+                    if (date != null) {
+                        ViewData["date"] = date;
+                    } else {
+                        ViewData["date"] = DateTime.Now;
+                    }
+                    return View();
+                } else {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
         }
 
-        public ActionResult StaffBillManager()
-        {
-            return View();
+        public ActionResult StaffBillManager() {
+            db.Configuration.ProxyCreationEnabled = false;
+            if (Session["user"] == null) {
+                return RedirectToAction("SignIn", "Accounts");
+            } else {
+                int userID = Int32.Parse(Session["user"].ToString());
+                Account account = db.Accounts.Find(userID);
+                if (account.role == 3) {
+                    return View();
+                } else {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
         }
 
         public ActionResult BillManager() {
-            return View();
+            db.Configuration.ProxyCreationEnabled = false;
+            if (Session["user"] == null) {
+                return RedirectToAction("SignIn", "Accounts");
+            } else {
+                int userID = Int32.Parse(Session["user"].ToString());
+                Account account = db.Accounts.Find(userID);
+                if (account.role == 3 || account.role == 2) {
+                    return View();
+                } else {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
         }
 
-        public ActionResult ReplyContact(int? contactId)
-        {
+        public ActionResult ReplyContact(int? contactId) {
             ViewData["contactId"] = contactId;
             return View();
         }

@@ -14,7 +14,7 @@
                 productsRate: [],
             },
             mounted: function () {
-                axios.get('/Products/HomeRateProductJson',)
+                axios.get('/Products/ProductJson',)
                     .then(response => {
                         this.productsRate = response.data;
                         console.log(this.productsRate);
@@ -42,7 +42,7 @@
             }
         })
         var app2 = new Vue({
-            el: '#products',
+            el: '#productNew',
             data: {
                 products: [],
             },
@@ -189,7 +189,7 @@
             </div>
         </div>
     </div>
-    <div id="products" class="container">
+    <div id="productNew" class="container">
         <div class="row">
             <div v-for="p in products" class="col-sm-12 col-md-6 col-lg-3  d-flex">
                 <div class="product d-flex flex-column">
@@ -340,7 +340,7 @@
                 <div class="carousel-testimony owl-carousel">
                     <div class="item">
                         <div class="testimony-wrap">
-                            <div class="user-img mb-4" style=" background-image: url(/Content/images/person_1.jpg)">
+                            <div class="user-img mb-4" style=" background-image: url('/Content/Design Images/hung.jpg')">
                                 <span class="quote d-flex align-items-center justify-content-center">
                                     <i class="icon-quote-left"></i>
                                 </span>
@@ -350,14 +350,14 @@
                                     Far far away, behind the word mountains, far from the
                                     countries Vokalia and Consonantia, there live the blind texts.
                                 </p>
-                                <p class="name">Garreth Smith</p>
-                                <span class="position">Marketing Manager</span>
+                                <p class="name">Trịnh Hoàng Hưng</p>
+                                <span class="position">CEO</span>
                             </div>
                         </div>
                     </div>
                     <div class="item">
                         <div class="testimony-wrap">
-                            <div class="user-img mb-4" style="background-image: url(/Content/images/person_2.jpg)">
+                            <div class="user-img mb-4" style=" background-image: url('/Content/Design Images/huy.png')">
                                 <span class="quote d-flex align-items-center justify-content-center">
                                     <i class="icon-quote-left"></i>
                                 </span>
@@ -367,14 +367,14 @@
                                     Far far away, behind the word mountains, far from the
                                     countries Vokalia and Consonantia, there live the blind texts.
                                 </p>
-                                <p class="name">Garreth Smith</p>
-                                <span class="position">Interface Designer</span>
+                                <p class="name">Huy Trần</p>
+                                <span class="position">Trưởng phòng Bảo Vệ</span>
                             </div>
                         </div>
                     </div>
                     <div class="item">
                         <div class="testimony-wrap">
-                            <div class="user-img mb-4" style="background-image: url(/Content/images/person_3.jpg)">
+                            <div class="user-img mb-4" style=" background-image: url('/Content/Design Images/kha.jpg')">
                                 <span class="quote d-flex align-items-center justify-content-center">
                                     <i class="icon-quote-left"></i>
                                 </span>
@@ -384,14 +384,14 @@
                                     Far far away, behind the word mountains, far from the
                                     countries Vokalia and Consonantia, there live the blind texts.
                                 </p>
-                                <p class="name">Garreth Smith</p>
-                                <span class="position">UI Designer</span>
+                                <p class="name">Từ Văn Khả</p>
+                                <span class="position">Maketing</span>
                             </div>
                         </div>
                     </div>
                     <div class="item">
                         <div class="testimony-wrap">
-                            <div class="user-img mb-4" style="background-image: url(/Content/images/person_1.jpg)">
+                            <div class="user-img mb-4" style="background-image: url('/Content/Design Images/an.jpg')">
                                 <span class="quote d-flex align-items-center justify-content-center">
                                     <i class="icon-quote-left"></i>
                                 </span>
@@ -401,25 +401,8 @@
                                     Far far away, behind the word mountains, far from the
                                     countries Vokalia and Consonantia, there live the blind texts.
                                 </p>
-                                <p class="name">Garreth Smith</p>
-                                <span class="position">Web Developer</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="testimony-wrap">
-                            <div class="user-img mb-4" style="background-image: url(/Content/images/person_1.jpg)">
-                                <span class="quote d-flex align-items-center justify-content-center">
-                                    <i class="icon-quote-left"></i>
-                                </span>
-                            </div>
-                            <div class="text">
-                                <p class="mb-4 pl-4 line">
-                                    Far far away, behind the word mountains, far from the
-                                    countries Vokalia and Consonantia, there live the blind texts.
-                                </p>
-                                <p class="name">Garreth Smith</p>
-                                <span class="position">System Analyst</span>
+                                <p class="name">Anhihi</p>
+                                <span class="position">Content Writer</span>
                             </div>
                         </div>
                     </div>

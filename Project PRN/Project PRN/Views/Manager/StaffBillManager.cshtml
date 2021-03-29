@@ -4,6 +4,64 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@section scripts{
+    <script src="~/Scripts/moment.js"></script>
+
+    <script>import moment from 'moment';</script>
+    <script>
+        new Vue({
+            el: '#manageBills',
+            data: {
+                order: {},
+                text: ''
+            },
+            mounted: function () {
+                axios.get('/Bills/StaffBillManagerJson')
+                    .then(response => {
+                        this.order = response.data
+                        console.log(response.data)
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
+            },
+            methods: {
+                format_date(value) {
+                    if (value) {
+                        return moment(String(value)).format('MMMM Do YYYY, h: mm: ss a')
+                    }
+                },
+                calTotalForSingleProduct: function (bill) {
+                    return bill.amount * bill.quantity;
+                },
+                searchByID() {
+                    axios.get('/Bills/StaffBillManagerJson', {
+                        params: {
+                            billId: this.text
+                        }
+                    })
+                        .then(response => {
+                            if (response.data.type == 1) {
+                                this.order = response.data
+                                console.log(response.data)
+                            } else {
+                                Swal.fire({
+                                    position: 'Center',
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: response.data.message,
+                                })
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error)
+                        })
+                }
+            }
+        })
+    </script>
+}
+
 <div class="hero-wrap hero-bread" style="background-image: url('/Content/Design Images/bg_6.jpg');">
     <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
@@ -18,12 +76,12 @@
     </div>
 </div>
 
-<section class="ftco-section ftco-cart">
-    <div id="contacts" class="container">
-        <form class="form-control-lg p-5">
-            <span class="mr-4">Bill ID:</span> <input type="text" />
-            <input class="btn btn-dark" type="submit" value="Search"  />
-        </form>
+<section class="ftco-section">
+    <div id="manageBills" class="container">
+        <div class="form-control-lg p-5">
+            <span class="mr-4">Bill ID:</span> <input type="text" v-model="text"/>
+            <button class="btn btn-secondary" v-on:click="searchByID">Search</button>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="cart-list">
@@ -31,69 +89,32 @@
                     <table class="table">
                         <thead class="thead-primary">
                             <tr class="text-center">
-                                <th>#432567359</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
+                                <th>{{order.ID}}</th>
                                 <th>Total</th>
                                 <th>Order Time</th>
                                 <th>Username</th>
-                                <th><a href="#" class="btn btn-secondary">DELIVERY SUCCESS</a></th>
+                                <th>
+                                    <a v-if="order.status == 2" class="btn btn-success link-active">DELIVERY SUCCESS</a>
+                                    <a v-if="order.status == 0" class="btn btn-danger link-active">CANCELED</a>
+                                    <a v-if="order.status == 1" class="btn btn-secondary">PENDING - Click to confirm success!</a>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="text-center">
-                                <td class=""><a href="#">Learn 'How to learn'</a></td>
-                                <td class="">$12</td>
-                                <td class="">2</td>
-                                <td class="">$24</td>
-                                <td class="">27/03/2021</td>
-                                <td class="">Huy Tran</td>
-                                <td></td>
-                            </tr><!-- END TR-->
-                            <tr class="text-center">
-                                <td class=""><a href="#">Global Citizen</a></td>
-                                <td class="">$10</td>
-                                <td class="">3</td>
-                                <td class="">$30</td>
-                                <td class="">27/03/2021</td>
-                                <td class="">Huy Tran</td>
+                            <tr v-for="bill in order.bills" class="text-center">
+                                <td class="">
+                                    <a v-bind:href="'/Products/ProductDetail?productID=' + bill.Product.productID">
+                                        {{bill.Product.title}}
+                                    </a>
+                                </td>
+                                <td class="">${{calTotalForSingleProduct(bill)}}</td>
+                                <td>{{format_date(bill.orderTime)}}</td>
+                                <td>{{bill.userName}}</td>
                                 <td></td>
                             </tr><!-- END TR-->
                         </tbody>
                     </table>
 
-                    <!-- Truong hop Search ra Bill ID da giao hang (Success)-->
-                    <table class="table">
-                        <thead class="thead-primary">
-                            <tr class="text-center">
-                                <th>#432567359</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                                <th>Order Time</th>
-                                <th>Username</th>
-                                <th><a href="#" class="btn btn-success link-active">SUCCESSED</a></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="text-center">
-                                <td class=""><a href="#">Learn 'How to learn'</a></td>
-                                <td class="">$12</td>
-                                <td class="">2</td>
-                                <td class="">$24</td>
-                                <td class="">27/03/2021</td>
-                                <td class="">Huy Tran</td>
-                            </tr><!-- END TR-->
-                            <tr class="text-center">
-                                <td class=""><a href="#">Global Citizen</a></td>
-                                <td class="">$10</td>
-                                <td class="">3</td>
-                                <td class="">$30</td>
-                                <td class="">27/03/2021</td>
-                                <td class="">Huy Tran</td>
-                            </tr><!-- END TR-->
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>

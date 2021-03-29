@@ -340,7 +340,11 @@
     <Content Include="Content\css\style.css" />
     <Content Include="Content\Design Images\2.png" />
     <Content Include="Content\Design Images\4.png" />
+    <Content Include="Content\Design Images\an.jpg" />
     <Content Include="Content\Design Images\bg_6.jpg" />
+    <Content Include="Content\Design Images\hung.jpg" />
+    <Content Include="Content\Design Images\huy.png" />
+    <Content Include="Content\Design Images\kha.jpg" />
     <Content Include="Content\fonts\flaticon\backup.txt" />
     <Content Include="Content\fonts\flaticon\font\flaticon.css" />
     <Content Include="Content\fonts\flaticon\font\flaticon.html" />

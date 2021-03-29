@@ -4,7 +4,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+
 @section scripts{
+    <script src="~/Scripts/moment.js"></script>
+
+    <script>import moment from 'moment';</script>
     <script>
         new Vue({
             el: '#adminBillManager',
@@ -12,7 +17,12 @@
                 bills: []
             },
             mounted: function () {
-                axios.post('/Bills/AdminBillManagerJson')
+                axios.get('/Bills/AdminBillManagerJson', {
+                    params: {
+                        type: '@ViewData["type"]',
+                        date: '@ViewData["date"]'
+                    }
+                })
                     .then(response => {
                         this.bills = response.data;
                         console.log(this.bills);
@@ -20,6 +30,21 @@
                     .catch(error => {
                         console.log(error);
                     });
+            },
+            compute: {
+                getCurrentTime: {
+
+                }
+            },
+            methods: {
+                calTotalForSingleProduct: function (bills) {
+                    return bills.amount * bills.quantity;
+                },
+                format_date(value) {
+                    if (value) {
+                        return moment(String(value)).format('h: mm: ss a')
+                    }
+                },
             }
         })
     </script>
@@ -36,13 +61,40 @@
 </div>
 
 <section class="ftco-section ftco-cart">
-    <div id="contacts" class="container">
-        <div class="row justify-content-start">
-            <div class="col col-lg-5 col-md-6 mt-5 cart-wrap">
+    <div id="adminBillManager" class="container">
+        <div class="row">
+            <div class="col col-lg-7 col-md-12 mt-5 cart-wrap">
+                <form class="cart-total mb-5" action="AdminBillManager" method="get">
+                    <h3>Searching Bill</h3>
+                    <div class="d-block contact-form">
+                        <span>Time</span><input class="form-control" type="date" name="date" value="@DateTime.Now.ToString("yyyy-MM-dd")"/>
+                        <span class="">Type</span>
+                        <div class="d-flex">
+                            <select name="type" class="form-control">
+                                <option @(ViewData["type"].ToString().Equals("2") ? "selected" : "") value="2">Success</option>
+                                <option @(ViewData["type"].ToString().Equals("1") ? "selected" : "") value="1">Pending</option>
+                                <option @(ViewData["type"].ToString().Equals("0") ? "selected" : "") value="0">Cancel</option>
+                            </select>
+                            <div class="col-lg-4 col-md-6 mt-5">
+                                <input class="btn btn-primary" type="submit" value="Search" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col col-lg-5 col-md-12 mt-5 cart-wrap">
                 <div class="cart-total mb-3">
                     <h3>Revenue Totals</h3>
                     <p class="d-flex">
                         <span>Bill success</span>
+                        <span>1</span>
+                    </p>
+                    <p class="d-flex">
+                        <span>Bill Pending</span>
+                        <span>1</span>
+                    </p>
+                    <p class="d-flex">
+                        <span>Bill Cancel</span>
                         <span>1</span>
                     </p>
                     <hr>
@@ -61,56 +113,30 @@
                             <tr class="text-center">
                                 <th>Bill ID</th>
                                 <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
+                                <th>Total Amount</th>
                                 <th>Ordertime</th>
                                 <th>User Name</th>
                                 <th>Status</th>
-
                             </tr>
                         </thead>
                         <tbody>
                             <!-- Success-->
-                            <tr v-for="c in contacts" class="text-center">
-                                <td class="">#234563342</td>
-                                <td class=""><a href="#">Learn 'How to Learn'</a></td>
-                                <td class="">$12</td>
-                                <td>2</td>
-                                <td>$24</td>
-                                <td>27/03/2021</td>
-                                <td>Admin</td>
-                                <td class="quantity manager">
-                                    <p><div class="btn btn-success">Success</div></p>
+                            <tr v-for="c in bills" class="text-center">
+                                <td class="">{{c.BillID}}</td>
+                                <td class="">
+                                    <a v-bind:href="'/Products/ProductDetail?productID=' + c.Product.productID">
+                                        {{c.Product.title}}
+                                    </a>
                                 </td>
-
+                                <td class="">${{calTotalForSingleProduct(c)}}</td>
+                                <td>{{format_date(c.orderTime)}}</td>
+                                <td>{{c.userName}}</td>
+                                <td class="quantity manager">
+                                    <p v-if="c.status == 2" class="btn btn-success link-active">Success</p>
+                                    <p v-if="c.status == 1" class="btn btn-secondary link-active">Pending</p>
+                                    <p v-if="c.status == 0" class="btn btn-danger link-active">Cancel</p>
+                                </td>
                             </tr><!-- END TR-->
-                            <!-- Pending-->
-                            <tr>
-                                <td class="">#345873495</td>
-                                <td class=""><a href="#">Global Citizen</a></td>
-                                <td class="">$10</td>
-                                <td>3</td>
-                                <td>$30</td>
-                                <td>27/03/2021</td>
-                                <td>Admin</td>
-                                <td class="quantity manager">
-                                    <p><div class="btn btn-secondary">Pending</div></p>
-                                </td>
-                            </tr>
-                            <!-- Cancel-->
-                            <tr>
-                                <td class="">#456235763</td>
-                                <td class=""><a href="#">Little UK</a></td>
-                                <td class="">$20</td>
-                                <td>1</td>
-                                <td>$20</td>
-                                <td>27/03/2021</td>
-                                <td>Admin</td>
-                                <td class="quantity manager">
-                                    <p><div class="btn btn-danger">Cancel</div></p>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
