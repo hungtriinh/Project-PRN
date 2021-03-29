@@ -12578,7 +12578,7 @@ h5,
 }
 
 .table .thead-primary tr th {
-    padding: 20px 10px;
+    padding: 20px 20px;
     color: #fff !important;
     border: 1px solid transparent !important;
 }
@@ -12951,13 +12951,13 @@ textarea.form-control {
 }
 
 .ftco-section {
-    padding: 7em 0;
+    padding: 4em 0;
     position: relative;
 }
 
 @media (max-width: 767.98px) {
     .ftco-section {
-        padding: 6em 0;
+        padding: 3em 0;
     }
 }
 
@@ -14577,8 +14577,12 @@ textarea.form-control {
     padding: 10px 10px !important;
 }
 
+.link-active {
+    pointer-events: none;
+}
+
 .rate-active {
-    color: #dbcc8f;
+    color: #dbcc8f !important;
 }
 rates-active {
     color: #dbcc8f;

@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "BillManager";
+    ViewBag.Title = "Contact Manager";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -16,7 +16,7 @@
                 contacts: [],
             },
             mounted: function () {
-                axios.get('/Home/ContactJson')
+                axios.get('/Manager/ContactJson')
                     .then(response => {
                         this.contacts = response.data;
                         console.log(this.contacts);
@@ -40,62 +40,36 @@
     <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
             <div class="col-md-9  text-center">
-                <h1 class="mb-0 bread">Bill Manager</h1>
+                <h1 class="mb-0 bread">Contact Manager</h1>
+                <p class="breadcrumbs">
+                    <span class="mr-4"><a class="link-active" href="">Contact Manager</a></span>
+                    <span class="mr-4"><a href="/Manager/StaffBillManager">Bill Manager</a></span>
+                </p>
             </div>
         </div>
     </div>
 </div>
 
-<section class="ftco-section ftco-degree-bg">
+<section id="contacts" class="ftco-section ftco-degree-bg">
     <div class="container">
         <div class="col-lg-12 order-lg-last bg-light">
             <div class="row">
-                <div class="col-md-12 d-flex ">
+                <div v-for="contact in contacts" class="col-md-12 d-flex py-lg-3 px-lg-4">
                     <div class="blog-entry align-self-stretch d-md-flex">
                         <div class="text d-block pl-md-4">
                             <div class="meta mb-3">
-                                <div><a href="#">April 9, 2019</a></div>
-                                <div><a href="#">Admin</a></div>
-                                <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
+                                <div>{{format_date(contact.date)}}</div>
+                                <div>{{contact.Account.userName}}</div>
                             </div>
                             <h3 class="heading">
-                                <a href="#">
-                                    Even the all-powerful Pointing has no control about
-                                    the blind texts
-                                </a>
+                                {{contact.subject}}
                             </h3>
                             <p>
-                                Far far away, behind the word mountains, far from the countries Vokalia and
-                                Consonantia, there live the blind texts.
+                                {{contact.content}}
                             </p>
                             <div class="row">
-                                <a href="#" class="btn btn-primary btn-evaluate py-2 px-3">Cancel Order</a>
-                                <a href="#" class="btn btn-primary btn-evaluate py-2 px-3">Evaluate</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 d-flex ">
-                    <div class="blog-entry align-self-stretch d-md-flex">
-                        <div class="text d-block pl-md-4">
-                            <div class="meta mb-3">
-                                <div><a href="#">April 9, 2019</a></div>
-                                <div><a href="#">Admin</a></div>
-                                <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-                            </div>
-                            <h3 class="heading">
-                                <a href="#">
-                                    Even the all-powerful Pointing has no control about
-                                    the blind texts
-                                </a>
-                            </h3>
-                            <p>
-                                Far far away, behind the word mountains, far from the countries Vokalia and
-                                Consonantia, there live the blind texts.
-                            </p>
-                            <div class="row">
-                                <a href="#" class="btn btn-primary btn-evaluate py-2 px-3">Cancel Order</a>
-                                <a href="#" class="btn btn-primary btn-evaluate py-2 px-3">Evaluate</a>
+                                <a v-if="contact.status == false" v-bind:href="'/Manager/ReplyContact?contactId=' + contact.contactid" class="btn btn-primary btn-evaluate py-2 px-5">Reply</a>
+                                <a v-else href="#" class="link-active btn btn-secondary btn-evaluate py-2 px-3">Responded</a>
                             </div>
                         </div>
                     </div>
