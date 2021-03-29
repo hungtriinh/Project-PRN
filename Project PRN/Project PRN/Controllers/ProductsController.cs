@@ -16,13 +16,171 @@ namespace Project_PRN.Controllers {
         private ProjectPRNEntities3 db = new ProjectPRNEntities3();
 
         // GET: Products
-        public ActionResult Product() {
+        public ActionResult Product(int? categoryID, int? page, string searchKey)
+        {
+            if (categoryID != null)
+            {
+                ViewData["categoryID"] = categoryID;
+            }
+            if (page != null)
+            {
+                ViewData["page"] = page;
+            }
+            else
+            {
+                ViewData["page"] = 1;
+            }
+
+            if (searchKey != null)
+            {
+                ViewData["searchKey"] = searchKey;
+            }
             return View();
         }
 
-        public JsonResult HomeProductJson() {
+        public JsonResult ProductJson(int? page, int? categoryID, string searchKey)
+        {
             db.Configuration.ProxyCreationEnabled = false;
-            List<Product> listProduct = db.Products.ToList().Select(product => new Product {
+            List<Product> listProduct;
+            if (page == null)
+            {
+                page = 1;
+            }
+
+            int totalPage = 0;
+
+            if (categoryID == null)
+            {
+                int pageSize = 9;
+                int pageNumber = (page ?? 1);
+
+                listProduct = db.Products.ToList().Select(product => new Product
+                {
+                    productID = product.productID,
+                    title = product.title,
+                    author = product.author,
+                    description = product.description,
+                    shortDescription = product.shortDescription,
+                    image = product.fullImagePath(),
+                    price = product.price,
+                    quantity = product.quantity,
+                    sold = product.sold,
+                    postTime = product.postTime,
+                    categoriesID = product.categoriesID,
+                    userID = product.userID,
+                    rate = product.calculateRate(),
+                    Account = db.Accounts.Find(product.userID),
+                    Category = db.Categories.Find(product.categoriesID),
+                    Evaluates = db.Evaluates.Where(e => e.productID == product.productID).ToList()
+
+                }).OrderBy(product => product.postTime).ToPagedList(pageNumber, pageSize).ToList();
+                totalPage = db.Products.Count() / pageSize + 1;
+
+                if (!String.IsNullOrEmpty(searchKey))
+                {
+                    pageSize = 9;
+                    pageNumber = (page ?? 1);
+
+
+                    listProduct = db.Products.ToList().Select(product => new Product
+                    {
+                        productID = product.productID,
+                        title = product.title,
+                        author = product.author,
+                        description = product.description,
+                        shortDescription = product.shortDescription,
+                        image = product.fullImagePath(),
+                        price = product.price,
+                        quantity = product.quantity,
+                        sold = product.sold,
+                        postTime = product.postTime,
+                        categoriesID = product.categoriesID,
+                        userID = product.userID,
+                        rate = product.calculateRate(),
+                        Account = db.Accounts.Find(product.userID),
+                        Category = db.Categories.Find(product.categoriesID),
+                        Evaluates = db.Evaluates.Where(e => e.productID == product.productID).ToList()
+
+                    }).Where(s => s.title.ToLower().Contains(searchKey.ToLower())).OrderBy(product => product.postTime).ToPagedList(pageNumber, pageSize).ToList();
+                    totalPage = db.Products.Where(s => s.title.Contains(searchKey)).Count() / pageSize + 1;
+                }
+
+            }
+            else
+            {
+
+                int pageSize = 9;
+                int pageNumber = (page ?? 1);
+
+
+                listProduct = db.Products.ToList().Select(product => new Product
+                {
+                    productID = product.productID,
+                    title = product.title,
+                    author = product.author,
+                    description = product.description,
+                    shortDescription = product.shortDescription,
+                    image = product.fullImagePath(),
+                    price = product.price,
+                    quantity = product.quantity,
+                    sold = product.sold,
+                    postTime = product.postTime,
+                    categoriesID = product.categoriesID,
+                    userID = product.userID,
+                    rate = product.calculateRate(),
+                    Account = db.Accounts.Find(product.userID),
+                    Category = db.Categories.Find(product.categoriesID),
+                    Evaluates = db.Evaluates.Where(e => e.productID == product.productID).ToList()
+
+                }).Where(p => p.categoriesID == categoryID).OrderBy(product => product.postTime).ToPagedList(pageNumber, pageSize).ToList();
+                totalPage = db.Products.Where(p => p.categoriesID == categoryID).Count() / pageSize + 1;
+                if (!String.IsNullOrEmpty(searchKey))
+                {
+                    pageSize = 9;
+                    pageNumber = (page ?? 1);
+
+
+                    listProduct = db.Products.ToList().Select(product => new Product
+                    {
+                        productID = product.productID,
+                        title = product.title,
+                        author = product.author,
+                        description = product.description,
+                        shortDescription = product.shortDescription,
+                        image = product.fullImagePath(),
+                        price = product.price,
+                        quantity = product.quantity,
+                        sold = product.sold,
+                        postTime = product.postTime,
+                        categoriesID = product.categoriesID,
+                        userID = product.userID,
+                        rate = product.calculateRate(),
+                        Account = db.Accounts.Find(product.userID),
+                        Category = db.Categories.Find(product.categoriesID),
+                        Evaluates = db.Evaluates.Where(e => e.productID == product.productID).ToList()
+
+                    }).Where(s => s.categoriesID == categoryID && s.title.ToLower().Contains(searchKey.ToLower())).OrderBy(product => product.postTime).ToPagedList(pageNumber, pageSize).ToList();
+                    totalPage = db.Products.Where(s => s.categoriesID == categoryID && s.title.ToLower().Contains(searchKey.ToLower())).Count() / pageSize + 1;
+
+                }
+
+            }
+
+
+            return Json(new
+            {
+                totalPage = totalPage,
+                productList = listProduct
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public JsonResult HomeProductJson()
+        //day Product len trang Home 
+        {
+            db.Configuration.ProxyCreationEnabled = false;
+            List<Product> listProduct = db.Products.ToList().Select(product => new Product
+            {
                 productID = product.productID,
                 title = product.title,
                 author = product.author,
@@ -44,9 +202,12 @@ namespace Project_PRN.Controllers {
             return Json(listProduct, JsonRequestBehavior.AllowGet);
 
         }
-        public JsonResult HomeRateProductJson() {
+        public JsonResult HomeRateProductJson()
+        //day product len Home
+        {
             db.Configuration.ProxyCreationEnabled = false;
-            List<Product> listProduct = db.Products.ToList().Select(product => new Product {
+            List<Product> listProduct = db.Products.ToList().Select(product => new Product
+            {
                 productID = product.productID,
                 title = product.title,
                 author = product.author,
@@ -64,36 +225,6 @@ namespace Project_PRN.Controllers {
                 Category = db.Categories.Find(product.categoriesID),
                 Evaluates = db.Evaluates.Where(ev => ev.productID == product.productID).ToList()
             }).OrderByDescending(product => product.rate).Take(8).ToList();
-            return Json(listProduct, JsonRequestBehavior.AllowGet);
-
-        }
-
-        public JsonResult ProductJson(int? index, string searchText, int? userID) {
-            if (index == null) {
-                index = 1;
-            }
-            int pageSize = 9;
-            int pageNumber = (index ?? 1);
-            db.Configuration.ProxyCreationEnabled = false;
-            var listProduct = db.Products.ToList().Select(product => new Product {
-                productID = product.productID,
-                title = product.title,
-                author = product.author,
-                description = product.description,
-                shortDescription = product.shortDescription,
-                image = product.fullImagePath(),
-                price = product.price,
-                quantity = product.quantity,
-                sold = product.sold,
-                postTime = product.postTime,
-                categoriesID = product.categoriesID,
-                userID = product.userID,
-                rate = product.calculateRate(),
-                Account = db.Accounts.Find(product.userID),
-                Category = db.Categories.Find(product.categoriesID),
-                Evaluates = db.Evaluates.Where(e => e.productID == product.productID).ToList()
-
-            }).OrderBy(product => product.postTime).ToPagedList(pageNumber, pageSize);
             return Json(listProduct, JsonRequestBehavior.AllowGet);
 
         }
