@@ -32,6 +32,23 @@ namespace Project_PRN.Controllers {
             return View();
         }
 
+
+        public JsonResult SearchAutocomplete(string keyword) {
+            db.Configuration.ProxyCreationEnabled = false;
+
+            List<Product> data = db.Products.ToList().Select(product => new Product {
+                productID = product.productID,
+                title = product.title,
+
+                image = product.fullImagePath(),
+
+
+            }).Where(p => p.title.ToLower().StartsWith(keyword.ToLower())).OrderBy(x => x.title).ToList();
+            return Json(new {
+                data = data,
+                status = true
+            }, JsonRequestBehavior.AllowGet);
+        }
         public JsonResult HomeProductJson() {
             db.Configuration.ProxyCreationEnabled = false;
             List<Product> listProduct = db.Products.ToList().Select(product => new Product {
@@ -137,8 +154,8 @@ namespace Project_PRN.Controllers {
                         Category = db.Categories.Find(product.categoriesID),
                         Evaluates = db.Evaluates.Where(e => e.productID == product.productID).ToList()
 
-                    }).Where(s => s.title.ToLower().Contains(searchKey.ToLower())).OrderBy(product => product.postTime).ToPagedList(pageNumber, pageSize).ToList();
-                    totalPage = db.Products.Where(s => s.title.Contains(searchKey)).Count() / pageSize + 1;
+                    }).Where(s => s.title.ToLower().StartsWith(searchKey.ToLower())).OrderBy(product => product.title).ToPagedList(pageNumber, pageSize).ToList();
+                    totalPage = db.Products.Where(s => s.title.StartsWith(searchKey)).Count() / pageSize + 1;
                 }
 
             } else {
@@ -190,7 +207,7 @@ namespace Project_PRN.Controllers {
                         Category = db.Categories.Find(product.categoriesID),
                         Evaluates = db.Evaluates.Where(e => e.productID == product.productID).ToList()
 
-                    }).Where(s => s.categoriesID == categoryID && s.title.ToLower().StartsWith(searchKey.ToLower())).OrderBy(product => product.postTime).ToPagedList(pageNumber, pageSize).ToList();
+                    }).Where(s => s.categoriesID == categoryID && s.title.ToLower().StartsWith(searchKey.ToLower())).OrderBy(product => product.title).ToPagedList(pageNumber, pageSize).ToList();
                     totalPage = db.Products.Where(s => s.categoriesID == categoryID && s.title.ToLower().StartsWith(searchKey.ToLower())).Count() / pageSize + 1;
 
                 }

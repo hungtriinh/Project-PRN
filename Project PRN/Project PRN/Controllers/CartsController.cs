@@ -162,7 +162,7 @@ namespace Project_PRN.Controllers {
             }
         }
 
-        
+
 
         public void AddToCartWhenLogin(string cartJson, int userID) {
             var serializer = new JavaScriptSerializer();
@@ -194,34 +194,107 @@ namespace Project_PRN.Controllers {
         }
 
 
-        public JsonResult RemoveProductAtCart(int cartId)
-        {
-            // Tim Cart theo cartId roi remove
-            db.Carts.Remove(db.Carts.Find(cartId));
-            db.SaveChanges();
+        public JsonResult RemoveProductAtCart(int cartId, int productID) {
+            db.Configuration.ProxyCreationEnabled = false;
+            if (Session["user"] != null) {
+                // Tim Cart theo cartId roi remove
+                db.Carts.Remove(db.Carts.Find(cartId));
+                db.SaveChanges();
+            } else {
+                var serializer = new JavaScriptSerializer();
+                Dictionary<string, int> cart;
+                string cartJson = Request.Cookies["cart"].Value;
+                cart = serializer.Deserialize<Dictionary<string, int>>(cartJson);
+                cart.Remove(productID.ToString());
+                string cartValue = serializer.Serialize(cart);
+                Response.Cookies["cart"].Value = cartValue;
+            }
             JsonResult cartUpdated = CartJson();
-            return cartUpdated;
+            return CartJson();
         }
 
-        public JsonResult ChangeQuantityAtCart(int cartId, int productID, int quantity)
-        {
-            // Get Cart bang cartId
-            Cart cart = db.Carts.Find(cartId);
-            // Kiem tra quantity cua Product sau khi thay doi so luong la bao nhieu
-            int amount = cart.quantity + quantity;
-            // Neu nho hon 0 thi khong cho giam nua
-            if(amount < 1)
-            {
-                JsonResult cartUpdated = CartJson();
-                return cartUpdated;
-            // Neu lon hon 0 thi tien hanh thay doi quantity
-            } else if (amount >= 1) {
-                AddToCart(productID, quantity);
-                JsonResult cartUpdated = CartJson();
-                return cartUpdated;
+        public JsonResult ChangeQuantityAtCart(int cartId, int productID, int quantity) {
+            db.Configuration.ProxyCreationEnabled = false;
+            if (Session["user"] != null) {
+                // Get Cart bang cartId
+                Cart cart = db.Carts.Find(cartId);
+                // Kiem tra quantity cua Product sau khi thay doi so luong la bao nhieu
+                int amount = cart.quantity + quantity;
+                // Neu nho hon 0 thi khong cho giam nua
+                if (amount < 1) {
+                    JsonResult cartUpdated = CartJson();
+                    return cartUpdated;
+                } else if (amount >= 1) // Neu lon hon 0 thi tien hanh thay doi quantity
+                  {
+                    AddToCart(productID, quantity);
+                    JsonResult cartUpdated = CartJson();
+                    return cartUpdated;
+                }
+            } else {
+                var serializer = new JavaScriptSerializer();
+                Dictionary<string, int> cart;
+                //
+                string cartJson = Request.Cookies["cart"].Value;
+                cart = serializer.Deserialize<Dictionary<string, int>>(cartJson);
+                int amount = cart[productID.ToString()] + quantity;
+                if (amount < 1) {
+                    JsonResult cartUpdated = CartJson();
+                    return cartUpdated;
+
+                } else if (amount >= 1) // Neu lon hon 0 thi tien hanh thay doi quantity
+                  {
+                    int currentQuantity = cart[productID.ToString()];
+                    cart[productID.ToString()] = currentQuantity + quantity;
+                    string cartValue = serializer.Serialize(cart);
+                    Response.Cookies["cart"].Value = cartValue;
+                    JsonResult cartUpdated = CartJson();
+                    return cartUpdated;
+                }
+
             }
 
             return CartJson();
+        }
+
+        public JsonResult GetTotalCartAmount() {
+            decimal total = 0;
+
+            db.Configuration.ProxyCreationEnabled = false;
+            //userID from session
+            //check is user logged in
+            if (Session["user"] != null) {
+                //logged in case, storage cart in database
+
+                int userID = Int32.Parse(Session["user"].ToString());
+
+                //select items from cart with userID and productid
+                List<Cart> listItem = db.Carts.Where(c => c.userid == userID).ToList();
+                if (listItem.Count > 0) {
+                    //in null case, add new items to database
+                    foreach (Cart item in listItem) {
+                        total += db.Products.Find(item.productid).price * item.quantity;
+                    }
+                }
+            } else {
+                //didn't log in case, storage cart in cookies
+                var serializer = new JavaScriptSerializer();
+
+                //check is exsisted cart in cookies
+                if (Request.Cookies["cart"] != null) {
+                    //exsisted case, pick up it
+                    string cartJson = Request.Cookies["cart"].Value;
+                    Dictionary<string, int> cart = serializer.Deserialize<Dictionary<string, int>>(cartJson);
+                    Dictionary<string, int>.KeyCollection keys = cart.Keys;
+
+                    foreach (string key in keys) {
+                        
+                        Product p = db.Products.Find(Int32.Parse(key));
+                        total += p.price * cart[key];
+                    }
+                }
+            }
+
+            return Json(total.ToString("C"), JsonRequestBehavior.AllowGet);
         }
 
 

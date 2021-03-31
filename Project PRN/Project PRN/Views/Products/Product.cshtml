@@ -5,6 +5,10 @@
 }
 
 @section scripts{
+
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <link href="~/Content/css/jquery-ui.css" rel="stylesheet" />
+
     <script>
         var app1 = new Vue({
             el: '#categories',
@@ -97,6 +101,49 @@
             }
         })
     </script>
+
+    <script>
+
+        var common = {
+            init: function () {
+                common.registerEvent();
+            },
+            registerEvent: function () {
+                $("#txtKeyword").autocomplete({
+                    minLength: 0,
+                    source: function (request, response) {
+                        $.ajax({
+                            url: "/Products/SearchAutocomplete",
+                            dataType: "json",
+                            data: {
+                                keyword: request.term
+                            },
+                            success: function (res) {
+                                response(res.data);
+                            }
+                        });
+                    },
+                    focus: function (event, ui) {
+                        $("#txtKeyword").val(ui.item.title);
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        $("#txtKeyword").val(ui.item.title);
+                        return false;
+                    }
+                })
+                    .autocomplete("instance")._renderItem = function (ul, item) {
+                        return $("<li>")
+                            .append("<a>" + "<img src=\"" + item.image + "\" width = \"5%\" height = \"5%\"  ></img>&nbsp;&nbsp;&nbsp;&nbsp;" + item.title + "</a>")
+
+                            .appendTo(ul);
+                    };
+            }
+
+        }
+        common.init();
+
+    </script>
 }
 
 <div class="hero-wrap hero-bread" style="background-image: url('/Content/Design Images/bg_6.jpg');">
@@ -115,7 +162,7 @@
             <div id="products" class="col-md-8 col-lg-10 order-md-last">
                 <form class="form-group d-flex" action="Product" method="get">
                     <input name="categoryID" id="categoryID" hidden type="hidden" class="form-control col-md-6" value="@ViewData["categoryID"]" />
-                    <input name="searchKey" id="searchKey" type="text" class="form-control" placeholder="Search" />
+                    <input name="searchKey" id="txtKeyword" type="text" class="form-control" placeholder="Search" />
                     <input name="page" id="page" hidden type="hidden" class="form-control" value="@ViewData["page"]" />
                     <input type="submit" class="btn btn-primary py-2 px-5 m-2" value="Search">
                 </form>

@@ -34,18 +34,29 @@
 
             },
             methods: {
+                loadCart() {
+                    axios.get('/Carts/CartJson')
+                        .then(response => {
+                            this.carts = response.data;
+                            console.log(this.carts);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                },
                 calTotalForSingleProduct: function (cart) {
                     return cart.Product.price * cart.quantity;
                 },
-                removeProductAtCart(cartId) {
+                removeProductAtCart(cartId, productId) {
                     axios.get('/Carts/RemoveProductAtCart', {
                         params: {
-                            cartId: cartId
+                            cartId: cartId,
+                            productID: productId
                         }
                     })
                         .then(response => {
                             this.carts = response.data
-                            console.log(response.data)
+                            this.loadCart()
                         })
                         .catch(error => {
                             console.log(error);
@@ -61,7 +72,7 @@
                     })
                         .then(response => {
                             this.carts = response.data
-                            console.log(response.data)
+                            this.loadCart()
                         })
                         .catch(error => {
                             console.log(error);
@@ -100,7 +111,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="p in carts" class="text-center">
-                                <td class="product-remove"><a v-on:click="removeProductAtCart(p.cartid)" class="btn btn-danger"><span class="ion-ios-close"></span></a></td>
+                                <td class="product-remove"><a v-on:click="removeProductAtCart(p.cartid, p.Product.productID)" class="btn btn-danger"><span class="ion-ios-close"></span></a></td>
 
                                 <td class="image-prod">
                                     <a v-bind:href="'/Products/ProductDetail?productID=' + p.Product.productID">
@@ -121,7 +132,7 @@
                                 <td class="quantity">
                                     <div class="input-group mb-3">
                                         <span class="input-group-btn mr-2">
-                                            <button type="button" class="quantity-left-minus btn btn-primary" data-type="minus" v-on:click="changeQuantity(p.cartid, p.productid, -1)"
+                                            <button type="button" class="quantity-left-minus btn btn-primary" data-type="minus" v-on:click="changeQuantity(p.cartid, p.Product.productID, -1)"
                                                     data-field="">
                                                 <i class="ion-ios-remove"></i>
                                             </button>
@@ -129,7 +140,7 @@
                                         <input type="text" id="quantity" name="quantity"
                                                class="quantity form-control input-number" v-bind:value="p.quantity" min="1" v-bind:max="p.Product.quantity">
                                         <span class="input-group-btn ml-2">
-                                            <button type="button" class="quantity-right-plus btn" data-type="plus" v-on:click="changeQuantity(p.cartid, p.productid, 1)"
+                                            <button type="button" class="quantity-right-plus btn" data-type="plus" v-on:click="changeQuantity(p.cartid, p.Product.productID, 1)"
                                                     data-field="">
                                                 <i class="ion-ios-add"></i>
                                             </button>
