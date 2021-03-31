@@ -36,6 +36,36 @@
             methods: {
                 calTotalForSingleProduct: function (cart) {
                     return cart.Product.price * cart.quantity;
+                },
+                removeProductAtCart(cartId) {
+                    axios.get('/Carts/RemoveProductAtCart', {
+                        params: {
+                            cartId: cartId
+                        }
+                    })
+                        .then(response => {
+                            this.carts = response.data
+                            console.log(response.data)
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                },
+                changeQuantity(cartId, productId, quantity) {
+                    axios.get('/Carts/ChangeQuantityAtCart', {
+                        params: {
+                            cartId: cartId,
+                            productID: productId,
+                            quantity: quantity
+                        }
+                    })
+                        .then(response => {
+                            this.carts = response.data
+                            console.log(response.data)
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
                 }
             }
         })
@@ -70,7 +100,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="p in carts" class="text-center">
-                                <td class="product-remove"><a href="#"><span class="ion-ios-close"></span></a></td>
+                                <td class="product-remove"><a v-on:click="removeProductAtCart(p.cartid)" class="btn btn-danger"><span class="ion-ios-close"></span></a></td>
 
                                 <td class="image-prod">
                                     <a v-bind:href="'/Products/ProductDetail?productID=' + p.Product.productID">
@@ -91,15 +121,15 @@
                                 <td class="quantity">
                                     <div class="input-group mb-3">
                                         <span class="input-group-btn mr-2">
-                                            <button type="button" class="quantity-left-minus btn btn-primary" data-type="minus"
+                                            <button type="button" class="quantity-left-minus btn btn-primary" data-type="minus" v-on:click="changeQuantity(p.cartid, p.productid, -1)"
                                                     data-field="">
                                                 <i class="ion-ios-remove"></i>
                                             </button>
                                         </span>
                                         <input type="text" id="quantity" name="quantity"
-                                               class="quantity form-control input-number" v-bind:value="p.quantity" min="1" max="100">
+                                               class="quantity form-control input-number" v-bind:value="p.quantity" min="1" v-bind:max="p.Product.quantity">
                                         <span class="input-group-btn ml-2">
-                                            <button type="button" class="quantity-right-plus btn" data-type="plus"
+                                            <button type="button" class="quantity-right-plus btn" data-type="plus" v-on:click="changeQuantity(p.cartid, p.productid, 1)"
                                                     data-field="">
                                                 <i class="ion-ios-add"></i>
                                             </button>
@@ -107,7 +137,7 @@
                                     </div>
                                 </td>
 
-                                <td class="total">{{calTotalForSingleProduct(p)}}</td>
+                                <td class="total">${{calTotalForSingleProduct(p)}}</td>
                             </tr><!-- END TR-->
 
                         </tbody>

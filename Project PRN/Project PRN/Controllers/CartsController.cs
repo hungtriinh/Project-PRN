@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using Project_PRN.Models;
@@ -27,6 +28,8 @@ namespace Project_PRN.Controllers {
                     //Chọn tất cả cart của ng dùng đã log in
                     db.Configuration.ProxyCreationEnabled = false;
                     List<Cart> listCart = db.Carts.Where(c => c.userid == userId).ToList().Select(Cart => new Cart {
+                        //Hung: toi them gia tri cartid giup truy van cho phan RemoveProductAtCart()
+                        cartid = Cart.cartid,
                         userid = userId,
                         quantity = Cart.quantity,
                         productid = Cart.productid,
@@ -110,6 +113,7 @@ namespace Project_PRN.Controllers {
                     } else {
                         //in exsisted case, change quantity
                         cart.quantity += quantity;
+
                         db.Entry(cart).State = EntityState.Modified;
                         db.SaveChanges();
                     }
@@ -156,9 +160,9 @@ namespace Project_PRN.Controllers {
                         type = 2
                     }, JsonRequestBehavior.AllowGet);
             }
-
-
         }
+
+        
 
         public void AddToCartWhenLogin(string cartJson, int userID) {
             var serializer = new JavaScriptSerializer();
@@ -187,6 +191,37 @@ namespace Project_PRN.Controllers {
             } catch {
 
             }
+        }
+
+
+        public JsonResult RemoveProductAtCart(int cartId)
+        {
+            // Tim Cart theo cartId roi remove
+            db.Carts.Remove(db.Carts.Find(cartId));
+            db.SaveChanges();
+            JsonResult cartUpdated = CartJson();
+            return cartUpdated;
+        }
+
+        public JsonResult ChangeQuantityAtCart(int cartId, int productID, int quantity)
+        {
+            // Get Cart bang cartId
+            Cart cart = db.Carts.Find(cartId);
+            // Kiem tra quantity cua Product sau khi thay doi so luong la bao nhieu
+            int amount = cart.quantity + quantity;
+            // Neu nho hon 0 thi khong cho giam nua
+            if(amount < 1)
+            {
+                JsonResult cartUpdated = CartJson();
+                return cartUpdated;
+            // Neu lon hon 0 thi tien hanh thay doi quantity
+            } else if (amount >= 1) {
+                AddToCart(productID, quantity);
+                JsonResult cartUpdated = CartJson();
+                return cartUpdated;
+            }
+
+            return CartJson();
         }
 
 
