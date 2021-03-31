@@ -12,7 +12,7 @@
                 information: []
             },
             mounted: function () {
-                axios.get('/Accounts/EditJson')
+                axios.get('/Accounts/GetAccountInfor')
                     .then(response => {
                         this.information = response.data;
                         console.log(this.information);

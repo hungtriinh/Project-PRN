@@ -5,6 +5,29 @@
 }
 
 @section scripts{
+    <script>
+        new Vue({
+            el: '#detail',
+            data: {
+                product: {}
+            },
+            mounted: function () {
+                axios.get('/Products/ProductDetailJson', {
+                    params: {
+                        productID: '@ViewData["productID"]'
+                    }
+                })
+                    .then(response => {
+                        console.log(response.data);
+                        this.product = response.data;
+                        console.log(this.product);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+            }
+        })
+    </script>
     <script src="~/Scripts/rate.js"></script>
 }
 
@@ -19,7 +42,7 @@
 </div>
 
 <section class="ftco-section contact-section bg-light">
-    <div class="container">
+    <div id="detail" class="container">
         <div class="row block-9">
             <div class="col-md-6 order-md-last d-flex">
                 <form action="#" class="bg-white p-5 contact-form">

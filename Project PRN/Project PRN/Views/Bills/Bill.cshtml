@@ -72,9 +72,9 @@
                         </td>
                         <td class=""><a v-bind:href="'/Products/ProductDetail?productID=' + bill.Product.productID">{{bill.Product.title}}</a></td>
                         <td>{{format_date(bill.orderTime)}}</td>
-                        <td class="">{{bill.amount}}</td>
+                        <td class="">${{bill.amount}}</td>
                         <td>{{bill.quantity}}</td>
-                        <td>{{calTotalForSingleProduct(bill)}}</td>
+                        <td>${{calTotalForSingleProduct(bill)}}</td>
                     </tr>
                 </tbody>
             </table>

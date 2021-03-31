@@ -151,38 +151,46 @@ namespace Project_PRN.Controllers {
                     }
                 }
 
+                Session["tempBillID"] = billID;
+
                 //last row of table
                 content += $"<tr style=\"background-color: #F5F5F5;\"><td style=\"padding: 5px 10px 5px 10px; font-size: 15px;\"></td><td style=\"padding: 5px 10px 5px 10px; font-size: 15px;\"></td><td style=\"padding: 5px 10px 5px 10px; font-size: 15px;\">Total order value</td><td style=\"padding: 5px 10px 5px 10px; font-size: 15px;\">{totalValue.ToString("C")}</td></tr></table>";
 
-                //send email to user
-                MailAddress senderEmail = new MailAddress("pes2020testing@gmail.com", "BookStore");
-                MailAddress receiverEmail = new MailAddress(email, "Receiver");
-                string password = "pes2020test";
-                string subject = "Order successfull";
-                string body = content;
-                SmtpClient smtp = new SmtpClient {
-                    Host = "smtp.gmail.com",
-                    Port = 587,
-                    EnableSsl = true,
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(senderEmail.Address, password)
-                };
-                using (MailMessage mess = new MailMessage(senderEmail, receiverEmail) {
+                try {
+                    //send email to user
+                    MailAddress senderEmail = new MailAddress("pes2020testing@gmail.com", "BookStore");
+                    MailAddress receiverEmail = new MailAddress(email, "Receiver");
+                    string password = "pes2020test";
+                    string subject = "Order successfull";
+                    string body = content;
+                    SmtpClient smtp = new SmtpClient {
+                        Host = "smtp.gmail.com",
+                        Port = 587,
+                        EnableSsl = true,
+                        DeliveryMethod = SmtpDeliveryMethod.Network,
+                        UseDefaultCredentials = false,
+                        Credentials = new NetworkCredential(senderEmail.Address, password)
+                    };
+                    using (MailMessage mess = new MailMessage(senderEmail, receiverEmail) {
 
-                    Subject = subject,
-                    Body = body
-                }) {
-                    mess.IsBodyHtml = true;
-                    smtp.Send(mess);
+                        Subject = subject,
+                        Body = body
+                    }) {
+                        mess.IsBodyHtml = true;
+                        smtp.Send(mess);
+                    }
+
+                    return Json(new {
+                        type = 1,
+                        message = "Check Out Success!"
+                    }, JsonRequestBehavior.AllowGet);
+                } catch {
+                    return Json(new {
+                        type = 2,
+                        message = "Send email fail!"
+                    }, JsonRequestBehavior.AllowGet);
                 }
-
-                Session["tempBillID"] = billID;
-
-                return Json(new {
-                    type = 1,
-                    message = "Check Out Success!"
-                }, JsonRequestBehavior.AllowGet);
+                
             } catch {
                 return Json(new {
                     type = 2,

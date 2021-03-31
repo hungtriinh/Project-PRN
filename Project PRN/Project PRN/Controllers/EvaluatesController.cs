@@ -15,8 +15,9 @@ namespace Project_PRN.Controllers
         private ProjectPRNEntities3 db = new ProjectPRNEntities3();
 
         // GET: Evaluates
-        public ActionResult Evaluate()
+        public ActionResult Evaluate(int? productID)
         {
+            ViewData["productID"] = productID;
             return View();
         }
 

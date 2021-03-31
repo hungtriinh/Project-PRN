@@ -16,9 +16,10 @@
                 errors: []
             },
             mounted: function () {
-                axios.get('/Accounts/EditJson')
+                axios.get('/Accounts/GetAccountInfor')
                     .then(response => {
                         this.information = response.data;
+                        this.email = response.data.email;
                         console.log(this.information);
                     })
                     .catch(error => {
@@ -27,36 +28,51 @@
             },
             methods: {
                 checkInput(e) {
-                    if (this.email && this.subject && this.content) {
-                        return true;
+                    console.log(this.email)
+                    console.log(this.subject)
+                    console.log(this.content)
+                    if (this.email != '' && this.subject != '' && this.content != '') {
+                        //sau sử dụng confirm
+                        Swal.fire({
+                            position: 'Center',
+                            icon: 'success',
+                            title: 'Send Contact Successful!',
+                            showConfirmButton: false,
+                            timer: 2000,
+                        })
+                        setTimeout(() => {
+                            console.log("Success!");
+                        }, 2000);
+                        $("contactForm").submit;
+                        
+                    } else {
+                        this.errors = [];
+
+                        if (!this.email) {
+                            this.errors.push("Email required!\n");
+                        }
+                        if (!this.subject) {
+                            this.errors.push("Subject required!\n");
+                        }
+                        if (!this.content) {
+                            this.errors.push("Message required!\n");
+                        }
+
+                        let message = '';
+
+                        for (let text of this.errors) {
+                            message += text;
+                        }
+
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: message
+                        })
+
+                        e.preventDefault();
                     }
-
-                    this.errors = [];
-
-                    if (!this.email) {
-                        this.errors.push("Email required!\n");
-                    }
-                    if (!this.subject) {
-                        this.errors.push("Subject required!\n");
-                    }
-                    if (!this.content) {
-                        this.errors.push("Message required!\n");
-                    }
-
-                    let message = '';
-
-                    for (let text of this.errors) {
-                        message += text;
-                    }
-
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: message
-                    })
-
-                    e.preventDefault();
                 }
             }
         })
@@ -76,7 +92,7 @@
     <div class="container">
         <div id="formContact" class="row block-9">
             <div class="col-md-12 order-md-last d-flex">
-                <form v-on:submit="checkInput" action="Contact" method="post" class="bg-white p-5 contact-form">
+                <form v-on:submit="checkInput" action="Contact" id="contactForm" method="post" class="bg-white p-5 contact-form">
                     <span class="text-danger">@ViewBag.Message</span>
                     @Html.AntiForgeryToken()
                     <div class="form-group" v-for="i in information">

@@ -127,16 +127,6 @@ namespace Project_PRN.Controllers {
             }
         }
 
-        public JsonResult EditJson() {
-            db.Configuration.ProxyCreationEnabled = false;
-            if (Session["user"] != null) {
-                var userId = Int32.Parse(Session["user"].ToString());
-                var infor = db.Accounts.Where(a => a.userID == userId).ToList();
-                return Json(infor, JsonRequestBehavior.AllowGet);
-            }
-            return Json(null, JsonRequestBehavior.AllowGet);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "password,userName,address,phoneNumber")] Account account) {
@@ -165,6 +155,39 @@ namespace Project_PRN.Controllers {
                 }
             }
             return View(account);
+        }
+
+        public JsonResult GetAccountInfor() {
+            db.Configuration.ProxyCreationEnabled = false;
+            if (Session["user"] != null) {
+                var userId = Int32.Parse(Session["user"].ToString());
+                var infor = db.Accounts.Where(a => a.userID == userId).ToList();
+                return Json(infor, JsonRequestBehavior.AllowGet);
+            } else {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetCheckOutInfor() {
+            db.Configuration.ProxyCreationEnabled = false;
+            if (Session["user"] != null) {
+                var userId = Int32.Parse(Session["user"].ToString());
+                var infor = db.Accounts.Where(a => a.userID == userId).FirstOrDefault();
+                string[] nameWords = infor.userName.Split(' ');
+                string firstname = nameWords[0];
+                string lastname = "";
+                for(int i = 1; i < nameWords.Length; i++) {
+                    lastname += nameWords[i];
+                }
+                return Json(new { 
+                    firstname = firstname,
+                    lastname = lastname,
+                    phone = infor.phoneNumber,
+                    email = infor.email
+                }, JsonRequestBehavior.AllowGet);
+            } else {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
         }
 
         protected override void Dispose(bool disposing) {
