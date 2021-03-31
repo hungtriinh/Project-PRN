@@ -40,20 +40,21 @@
                 },
                 submitCheckOut() {
                     list = this.list;
-                    @*if (this.firstName == '' || this.lastName == '' || this.phone == '' || this.email == '' || this.payment <= 0 || payment >= 4) {
+                    if (this.firstName == '' || this.lastName == '' || this.phone == '' || this.email == '' || this.payment <= 0 || this.payment >= 4) {
                         Swal.fire({
                             position: 'Center',
                             icon: 'error',
                             title: 'Oops...',
                             text: 'Please input all filed!'
                         })
-                    }*@
+                        return;
+                    }
                     //processing form
                     let timerInterval
                     Swal.fire({
                         title: 'Please wait!',
                         html: 'Your order is in processing',
-                        timer: 100000,
+                        timer: 200000,
                         didOpen: () => {
                             Swal.showLoading()
                             timerInterval = setInterval(() => {
@@ -74,13 +75,23 @@
                         .then(response => {
                             clearInterval(timerInterval)
                             //success form
-                            Swal.fire({
-                                position: 'Center',
-                                icon: 'success',
-                                title: response.data.message,
-                                showConfirmButton: false,
-                                timer: 1000
-                            })
+                            if (response.data.type == 1) {
+                                Swal.fire({
+                                    position: 'Center',
+                                    icon: 'success',
+                                    title: response.data.message,
+                                    showConfirmButton: false,
+                                    timer: 1000
+                                })
+                            } else {
+                                clearInterval(timerInterval)
+                                Swal.fire({
+                                    position: 'Center',
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: response.data.message
+                                })
+                            }
                             setTimeout(function () {
                                 window.location.href = '/Bills/Bill'
                             }, 2000);
@@ -98,7 +109,17 @@
 
                 },
                 showInfor() {
-
+                    axios.get('/Accounts/GetCheckOutInfor')
+                        .then(response => {
+                            this.firstName = response.data.firstname;
+                            this.lastName = response.data.lastname;
+                            this.phone = response.data.phone;
+                            this.email = response.data.email;
+                            console.log(response.data);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
                 }
             }
         })
@@ -198,7 +219,7 @@
                             <div class="form-group mt-4">
                                 <div class="radio">
                                     <label class="mr-3">
-                                        <a href="#">Using Your Information?</a>
+                                        <button class="btn btn-primary" v-on:click="showInfor">Using Your Information?</button>
                                     </label>
                                 </div>
                             </div>

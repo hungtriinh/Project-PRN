@@ -56,6 +56,46 @@
                         .catch(error => {
                             console.log(error)
                         })
+                },
+                searchByIDHasParam(billID) {
+                    axios.get('/Bills/StaffBillManagerJson', {
+                        params: {
+                            billId: billID
+                        }
+                    })
+                        .then(response => {
+                            if (response.data.type == 1) {
+                                this.order = response.data
+                                console.log(response.data)
+                            } else {
+                                Swal.fire({
+                                    position: 'Center',
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: response.data.message,
+                                })
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error)
+                        })
+                },
+                changeStatus(billId) {
+                    axios.get('/Manager/ChangeStatus', {
+                        params: {
+                            sBillId: this.text,
+                            sType: "1"
+                        }
+                    })
+                        .then(response => {
+                            this.order = response.data
+                            console.log(response.data)
+                            this.searchByIDHasParam(this.text)
+                        })
+                        .catch(error => {
+                            console.log(error)
+                        })
+
                 }
             }
         })
@@ -70,6 +110,7 @@
                 <p class="breadcrumbs">
                     <span class="mr-4"><a href="/Manager/ContactManager">Contact Manager</a></span>
                     <span class="mr-4"><a class="link-active" href="">Bill Manager</a></span>
+                    <span class="mr-4"><a class="" href="/Products/UploadProduct">Upload Product</a></span>
                 </p>
             </div>
         </div>
@@ -96,7 +137,7 @@
                                 <th>
                                     <a v-if="order.status == 2" class="btn btn-success link-active">DELIVERY SUCCESS</a>
                                     <a v-if="order.status == 0" class="btn btn-danger link-active">CANCELED</a>
-                                    <a v-if="order.status == 1" class="btn btn-secondary">PENDING - Click to confirm success!</a>
+                                    <a v-if="order.status == 1" v-on:click="changeStatus(order.ID)" class="btn btn-secondary">PENDING - Click to confirm success!</a>
                                 </th>
                             </tr>
                         </thead>

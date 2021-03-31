@@ -32,7 +32,8 @@
                 },
                 calTotalForSingleProduct: function (bill) {
                     return bill.amount * bill.quantity;
-                }
+                },
+
             }
         })
     </script>
@@ -61,9 +62,9 @@
                                 <th>Total</th>
                                 <th>Ordertime</th>
                                 <th>
-                                    <a v-if="order.status == 0" href="#" class="btn btn-danger link-active">CANCEL</a>
+                                    <a v-if="order.status == 0" v-bind:href="'/Bills/ChangeStatus?billID=' + order.ID + '&type=0'" class="btn btn-danger link-active">CANCEL</a>
                                     <a v-if="order.status == 2" class="btn btn-success link-active">Success</a>
-                                    <a v-if="order.status == 1" id="btnPending" class="btn btn-secondary ">Pending, Click to Cancel</a>
+                                    <a v-if="order.status == 1" v-bind:href="'/Manager/ChangeStatus?sBillID=' + order.ID + '&sType=0'" id="btnPending" class="btn btn-secondary ">Pending - Click to Cancel</a>
                                 </th>
                             </tr>
                         </thead>
@@ -79,7 +80,7 @@
                                 <td>{{format_date(bill.orderTime)}}</td>
                                 <td class="quantity manager">
                                     <p>
-                                        <a v-if="bill.status == 2" href="#" class="btn btn-primary py-3 px-4">Review</a>
+                                        <a v-if="bill.status == 2" v-bind:href="'/Evaluates/Evaluate?productID=' + bill.Product.productID" class="btn btn-primary py-3 px-4">Review</a>
                                     </p>
                                 </td>
                             </tr>
