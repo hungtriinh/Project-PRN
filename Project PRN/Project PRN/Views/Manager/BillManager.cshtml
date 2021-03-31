@@ -80,7 +80,7 @@
                                 <td>{{format_date(bill.orderTime)}}</td>
                                 <td class="quantity manager">
                                     <p>
-                                        <a v-if="bill.status == 2" v-bind:href="'/Evaluates/Evaluate?productID=' + bill.Product.productID" class="btn btn-primary py-3 px-4">Review</a>
+                                        <a v-if="bill.status == 2" v-bind:href="'/Evaluates/Evaluate?productID=' + bill.Product.productID + '&BillId=' + bill.BillID" class="btn btn-primary py-3 px-4">Review</a>
                                     </p>
                                 </td>
                             </tr>

@@ -34,7 +34,7 @@
 <div class="hero-wrap hero-bread" style="background-image: url('/Content/Design Images/bg_6.jpg');">
     <div class="container">
         <div class="row no-gutters slider-text align-items-center justify-content-center">
-            <div class="col-md-9 ftco-animate text-center">
+            <div class="col-md-9 text-center">
                 <h1 class="mb-0 bread">EVALUATE</h1>
             </div>
         </div>
@@ -45,7 +45,9 @@
     <div id="detail" class="container">
         <div class="row block-9">
             <div class="col-md-6 order-md-last d-flex">
-                <form action="#" class="bg-white p-5 contact-form">
+                <form action="Create" method="post" class="bg-white p-5 contact-form">
+                    @Html.AntiForgeryToken()
+                    <input name="productID" value="@ViewData["productID"]" type="hidden" />
                     <div class="rating">
                         <h3>Rate: </h3>
                         <div>
@@ -61,7 +63,7 @@
                         <h4 id="result_DP">Rank: </h4>
                     </div>
                     <div class="form-group">
-                        <textarea name="" id="" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
+                        <textarea name="evaluateContent" id="" cols="30" rows="7" class="form-control" placeholder="Message"></textarea>
                     </div>
                     <div class="form-group">
                         <input type="submit" value="Send Message" class="btn btn-primary py-3 px-5">
@@ -72,14 +74,14 @@
 
             <div class="col-md-6">
                 <div class="row">
-                    <div class="col-lg-6 mb-5 ftco-animate">
+                    <div class="col-lg-6 mb-5 text-right">
                         <a href="images/product-1.png" class="image-popup prod-img-bg">
-                            <img src="~/Content/images/product-1.png"
+                            <img v-bind:src="product.image"
                                  class="img-fluid" alt="Colorlib Template">
                         </a>
                     </div>
-                    <div class="col-lg-6 product-details pl-md-5 ftco-animate">
-                        <h3>Nike Free RN 2019 iD</h3>
+                    <div class="col-lg-6 product-details pl-md-5">
+                        <h3>{{product.title}}</h3>
                         <div class="rating d-flex">
                             <p class="text-left mr-4">
                                 <a href="#" class="mr-2">5.0</a>
@@ -91,17 +93,16 @@
                             </p>
                             <p class="text-left mr-4">
                                 <a href="#" class="mr-2" style="color: #000;">
-                                    100 <span style="color: #bbb;">Rating</span>
+                                    {{product.rate}} <span style="color: #bbb;">Rating</span>
                                 </a>
                             </p>
                             <p class="text-left">
-                                <a href="#" class="mr-2" style="color: #000;">500 <span style="color: #bbb;">Sold</span></a>
+                                <a href="#" class="mr-2" style="color: #000;">{{product.sold}} <span style="color: #bbb;">Sold</span></a>
                             </p>
                         </div>
-                        <p class="price"><span>$120.00</span></p>
+                        <p class="price"><span>${{product.price}}</span></p>
                         <p>
-                            A small river named Duden flows by their place and supplies it with the necessary regelialia. It
-                            is a paradisematic country, in which roasted parts of sentences fly into your mouth.
+                            {{product.shortDescription}}
                         </p>
                     </div>
                 </div>
