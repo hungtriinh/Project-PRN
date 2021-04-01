@@ -4,6 +4,7 @@
     <EntitySetMapping Name="Accounts">
       <EntityTypeMapping TypeName="ProjectPRNModel.Account">
         <MappingFragment StoreEntitySet="Account">
+          <ScalarProperty Name="captcha" ColumnName="captcha" />
           <ScalarProperty Name="userID" ColumnName="userID" />
           <ScalarProperty Name="email" ColumnName="email" />
           <ScalarProperty Name="password" ColumnName="password" />
@@ -37,6 +38,7 @@
     <EntitySetMapping Name="Products">
       <EntityTypeMapping TypeName="ProjectPRNModel.Product">
         <MappingFragment StoreEntitySet="Product">
+          <ScalarProperty Name="status" ColumnName="status" />
           <ScalarProperty Name="productID" ColumnName="productID" />
           <ScalarProperty Name="title" ColumnName="title" />
           <ScalarProperty Name="author" ColumnName="author" />

@@ -16,6 +16,7 @@
     <NavigationProperty Name="Contacts" Relationship="Self.FK__Contact__userid__4316F928" FromRole="Account" ToRole="Contact" />
     <NavigationProperty Name="Evaluates" Relationship="Self.FK__Evaluate__userID__44FF419A" FromRole="Account" ToRole="Evaluate" />
     <NavigationProperty Name="Products" Relationship="Self.FK__Product__userID__46E78A0C" FromRole="Account" ToRole="Product" />
+    <Property Name="captcha" Type="Guid" />
   </EntityType>
   <EntityType Name="Category">
     <Key>
@@ -59,6 +60,7 @@
     <NavigationProperty Name="Evaluates" Relationship="Self.FK__Evaluate__produc__440B1D61" FromRole="Product" ToRole="Evaluate" />
     <NavigationProperty Name="Bills" Relationship="Self.FK__Bill__productid__3F466844" FromRole="Product" ToRole="Bill" />
     <NavigationProperty Name="Carts" Relationship="Self.FK__Cart__productid__412EB0B6" FromRole="Product" ToRole="Cart" />
+    <Property Name="status" Type="Boolean" />
   </EntityType>
   <EntityType Name="Bill">
     <Key>

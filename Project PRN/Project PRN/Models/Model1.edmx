@@ -16,6 +16,7 @@
           <Property Name="role" Type="int" Nullable="false" />
           <Property Name="address" Type="nvarchar(max)" Nullable="false" />
           <Property Name="phoneNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="captcha" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="Bill">
           <Key>
@@ -87,6 +88,7 @@
           <Property Name="price" Type="money" Nullable="false" />
           <Property Name="quantity" Type="int" Nullable="false" />
           <Property Name="sold" Type="int" Nullable="false" />
+          <Property Name="status" Type="bit" />
           <Property Name="postTime" Type="datetime" Nullable="false" />
           <Property Name="categoriesID" Type="int" Nullable="false" />
           <Property Name="userID" Type="int" Nullable="false" />
@@ -264,6 +266,7 @@
           <NavigationProperty Name="Contacts" Relationship="Self.FK__Contact__userid__4316F928" FromRole="Account" ToRole="Contact" />
           <NavigationProperty Name="Evaluates" Relationship="Self.FK__Evaluate__userID__44FF419A" FromRole="Account" ToRole="Evaluate" />
           <NavigationProperty Name="Products" Relationship="Self.FK__Product__userID__46E78A0C" FromRole="Account" ToRole="Product" />
+          <Property Name="captcha" Type="Guid" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -307,6 +310,7 @@
           <NavigationProperty Name="Evaluates" Relationship="Self.FK__Evaluate__produc__440B1D61" FromRole="Product" ToRole="Evaluate" />
           <NavigationProperty Name="Bills" Relationship="Self.FK__Bill__productid__3F466844" FromRole="Product" ToRole="Bill" />
           <NavigationProperty Name="Carts" Relationship="Self.FK__Cart__productid__412EB0B6" FromRole="Product" ToRole="Cart" />
+          <Property Name="status" Type="Boolean" />
         </EntityType>
         <EntityType Name="Bill">
           <Key>
@@ -514,6 +518,7 @@
           <EntitySetMapping Name="Accounts">
             <EntityTypeMapping TypeName="ProjectPRNModel.Account">
               <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="captcha" ColumnName="captcha" />
                 <ScalarProperty Name="userID" ColumnName="userID" />
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="password" ColumnName="password" />
@@ -547,6 +552,7 @@
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="ProjectPRNModel.Product">
               <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="productID" ColumnName="productID" />
                 <ScalarProperty Name="title" ColumnName="title" />
                 <ScalarProperty Name="author" ColumnName="author" />

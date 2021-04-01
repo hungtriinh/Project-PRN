@@ -14,7 +14,6 @@ namespace Project_PRN.Controllers {
     public class CartsController : Controller {
         private ProjectPRNEntities3 db = new ProjectPRNEntities3();
 
-
         public ActionResult Cart() {
             return View();
         }

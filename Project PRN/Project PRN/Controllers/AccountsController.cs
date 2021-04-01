@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using Project_PRN.Models;
@@ -59,6 +60,7 @@ namespace Project_PRN.Controllers {
                         });
                     } else {
                         ViewBag.Message = "Wrong Password!";
+                        ViewData["email"] = account.email;
                     }
                 } else {
                     ViewBag.Message = "Not exsisted account!";
@@ -79,17 +81,47 @@ namespace Project_PRN.Controllers {
                 if (ModelState.IsValid) {
                     List<Account> list = db.Accounts.Where(a => a.email.Equals(account.email)).ToList();
                     if (list.Count == 0) {
-                        account.role = 2;
+                        account.role = 0;
                         string pass = account.password;
                         int cost = 12;
                         string newPassword = BCrypt.Net.BCrypt.HashPassword(pass, cost);
                         account.password = newPassword;
-                        Console.WriteLine($"{account.userID} - {account.userName} - {account.password} - {account.phoneNumber} - {account.role} - {account.address}");
+                        Guid captcha = Guid.NewGuid();
+                        account.captcha = captcha;
                         db.Accounts.Add(account);
                         db.SaveChanges();
+
+                        string content = $"Wellcome to my Bookstore, to active your account," +
+                            $" please click here https://localhost:44368/Accounts/ActiveAcount?captcha={captcha}";
+                        var senderEmail = new MailAddress("pes2020testing@gmail.com", "Active Account");
+                        var receiverEmail = new MailAddress(account.email, "Receiver");
+                        var password = "pes2020test";
+                        var subject = "Active Account";
+                        var body = content;
+                        var smtp = new SmtpClient {
+                            Host = "smtp.gmail.com",
+                            Port = 587,
+                            EnableSsl = true,
+                            DeliveryMethod = SmtpDeliveryMethod.Network,
+                            UseDefaultCredentials = false,
+                            Credentials = new NetworkCredential(senderEmail.Address, password)
+                        };
+                        using (var mess = new MailMessage(senderEmail, receiverEmail) {
+
+                            Subject = subject,
+                            Body = body
+                        }) {
+                            mess.IsBodyHtml = true;
+                            smtp.Send(mess);
+                        }
+
                         return RedirectToAction("SignIn");
                     } else {
                         ViewBag.Message = "Exsisted Account! Please register again";
+                        ViewData["email"] = account.email;
+                        ViewData["userName"] = account.userName;
+                        ViewData["phoneNumber"] = account.phoneNumber;
+                        ViewData["address"] = account.address;
                     }
                 }
                 return View();
@@ -101,6 +133,21 @@ namespace Project_PRN.Controllers {
                 });
             }
 
+        }
+
+        public ActionResult ActiveAcount(Guid? captcha) {
+            Account ac = db.Accounts.Where(a => a.captcha == captcha).FirstOrDefault();
+
+            //get account with captcha
+            if (ac != null) {
+                ac.role = 2;
+                ac.captcha = null;
+                db.Entry(ac).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index", "Home");
+            }
+
+            return null;
         }
 
         public ActionResult SignOut() {
@@ -176,10 +223,10 @@ namespace Project_PRN.Controllers {
                 string[] nameWords = infor.userName.Split(' ');
                 string firstname = nameWords[0];
                 string lastname = "";
-                for(int i = 1; i < nameWords.Length; i++) {
+                for (int i = 1; i < nameWords.Length; i++) {
                     lastname += nameWords[i];
                 }
-                return Json(new { 
+                return Json(new {
                     firstname = firstname,
                     lastname = lastname,
                     phone = infor.phoneNumber,
