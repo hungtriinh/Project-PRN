@@ -242,15 +242,13 @@ namespace Project_PRN.Controllers {
             }
         }
 
-        // POST: Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "productID,title,author,description,shortDescription,image,price,quantity,sold,postTime,categoriesID,userID")] Product product, HttpPostedFileBase image) {
             if (ModelState.IsValid) {
                 product.userID = Int32.Parse(Session["user"].ToString());
                 product.postTime = DateTime.Now;
+                product.status = true;
                 string imgPath = ConfigurationManager.ConnectionStrings["imagePath"].ToString();
                 try {
                     if (image != null) {
@@ -269,7 +267,6 @@ namespace Project_PRN.Controllers {
                 } catch (Exception) {
 
                 }
-
                 db.Products.Add(product);
                 db.SaveChanges();
                 return RedirectToRoute(new {
