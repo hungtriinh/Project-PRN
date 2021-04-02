@@ -79,15 +79,18 @@
                             <li class="nav-item"><a href="/Manager/ContactManager" class="nav-link"><span><i class="fas fa-user"></i></span> Staff Manager</a></li>
                         } else {
                             <li class="nav-item"><a href="/Home/Contact" class="nav-link">Contact</a></li>
+                            <li class="nav-item cta cta-colored">
+                                <a href="/Accounts/Edit" class="nav-link"><span><i class="fas fa-user"></i></span> Account</a>
+                            </li>
+                            <li class="nav-item cta cta-colored">
+                                <a href="/Carts/Cart" class="nav-link"><span><i class="fas fa-shopping-cart"></i></span>Cart</a>
+                            </li>
                         }
-                        <li class="nav-item cta cta-colored">
-                            <a href="/Accounts/Edit" class="nav-link"><span><i class="fas fa-user"></i></span> Account</a>
-                        </li>
                     }
-                    <li class="nav-item cta cta-colored">
-                        <a href="/Carts/Cart" class="nav-link"><span><i class="fas fa-shopping-cart"></i></span>Cart</a>
-                    </li>
                     @if (Session["user"] == null) {
+                        <li class="nav-item cta cta-colored">
+                            <a href="/Carts/Cart" class="nav-link"><span><i class="fas fa-shopping-cart"></i></span>Cart</a>
+                        </li>
                         <li class="nav-item cta cta-colored">
                             <a href="/Accounts/SignIn" class="nav-link"><span><i class="fas fa-sign-in-alt"></i></span> Sign in</a>
                         </li>
@@ -99,12 +102,13 @@
                 </ul>
             </div>
         </div>
-
-        <a href="/Carts/Cart">
-            <div class="cartfixed d-none d-lg-block d-xl-block">
-                <i class="fas fa-shopping-cart"></i>
-            </div>
-        </a>
+        @if (Session["user"] == null || Session["role"].ToString().Equals("2")) {
+            <a href="/Carts/Cart">
+                <div class="cartfixed d-none d-lg-block d-xl-block">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+            </a>
+        }
         <div class="social d-none d-lg-block d-xl-block">
             <a href="#"><i class="fab fa-facebook-f"></i></a><br>
             <a href="#"><i class="fab fa-twitter"></i></a><br>

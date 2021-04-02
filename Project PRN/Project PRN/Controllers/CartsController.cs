@@ -15,6 +15,11 @@ namespace Project_PRN.Controllers {
         private ProjectPRNEntities3 db = new ProjectPRNEntities3();
 
         public ActionResult Cart() {
+            if (Session["Role"] != null) {
+                if (!Session["Role"].ToString().Equals("2")) {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
             return View();
         }
 
@@ -50,11 +55,9 @@ namespace Project_PRN.Controllers {
                     return Json(listCart, JsonRequestBehavior.AllowGet);
                 } else {
                     //nếu chưa login. lấy dữ liệu từ cookies
-                    var serializer = new JavaScriptSerializer();
                     Dictionary<string, int> cart;
-                    if (Request.Cookies["cart"] != null) {
-                        string cartJson = Request.Cookies["cart"].Value;
-                        cart = serializer.Deserialize<Dictionary<string, int>>(cartJson);
+                    if (Session["cart"] != null) {
+                        cart = (Dictionary<string, int>)Session["cart"];
                         Dictionary<string, int>.KeyCollection keys = cart.Keys;
                         List<Cart> carts = new List<Cart>();
                         foreach (string key in keys) {
@@ -123,10 +126,9 @@ namespace Project_PRN.Controllers {
                     Dictionary<string, int> cart;
 
                     //check is exsisted cart in cookies
-                    if (Request.Cookies["cart"] != null) {
+                    if (Session["cart"] != null) {
                         //exsisted case, pick up it
-                        string cartJson = Request.Cookies["cart"].Value;
-                        cart = serializer.Deserialize<Dictionary<string, int>>(cartJson);
+                        cart = (Dictionary<string, int>)Session["cart"];
                     } else {
                         //not exsisted case, declare new cart
                         cart = new Dictionary<string, int>();
@@ -142,10 +144,7 @@ namespace Project_PRN.Controllers {
                         cart[productID.ToString()] = quantity;
                     }
 
-                    //save into cookies
-                    string cartValue = serializer.Serialize(cart);
-                    Response.Cookies["cart"].Value = cartValue;
-                    Response.Cookies["cart"].Expires = DateTime.Now.AddDays(30);
+                    Session["cart"] = cart;
 
                 }
                 return Json(new {
@@ -162,14 +161,10 @@ namespace Project_PRN.Controllers {
         }
 
 
-
-        public void AddToCartWhenLogin(string cartJson, int userID) {
-            var serializer = new JavaScriptSerializer();
-            Dictionary<string, int> cookieCart = new Dictionary<string, int>();
+        //note
+        public void AddToCartWhenLogin(Dictionary<string, int> cookieCart, int userID) {
             try {
                 db.Configuration.ProxyCreationEnabled = false;
-                cookieCart = serializer.Deserialize<Dictionary<string, int>>(cartJson);
-
                 Dictionary<string, int>.KeyCollection key = cookieCart.Keys;
                 foreach (string k in key) {
                     int productId = Int32.Parse(k);
@@ -200,13 +195,10 @@ namespace Project_PRN.Controllers {
                 db.Carts.Remove(db.Carts.Find(cartId));
                 db.SaveChanges();
             } else {
-                var serializer = new JavaScriptSerializer();
                 Dictionary<string, int> cart;
-                string cartJson = Request.Cookies["cart"].Value;
-                cart = serializer.Deserialize<Dictionary<string, int>>(cartJson);
+                cart = (Dictionary<string, int>)Session["cart"];
                 cart.Remove(productID.ToString());
-                string cartValue = serializer.Serialize(cart);
-                Response.Cookies["cart"].Value = cartValue;
+                Session["cart"] = cart;
             }
             JsonResult cartUpdated = CartJson();
             return CartJson();
@@ -233,8 +225,7 @@ namespace Project_PRN.Controllers {
                 var serializer = new JavaScriptSerializer();
                 Dictionary<string, int> cart;
                 //
-                string cartJson = Request.Cookies["cart"].Value;
-                cart = serializer.Deserialize<Dictionary<string, int>>(cartJson);
+                cart = (Dictionary<string, int>)Session["cart"];
                 int amount = cart[productID.ToString()] + quantity;
                 if (amount < 1) {
                     JsonResult cartUpdated = CartJson();
@@ -245,7 +236,7 @@ namespace Project_PRN.Controllers {
                     int currentQuantity = cart[productID.ToString()];
                     cart[productID.ToString()] = currentQuantity + quantity;
                     string cartValue = serializer.Serialize(cart);
-                    Response.Cookies["cart"].Value = cartValue;
+                    Session["cart"] = cart;
                     JsonResult cartUpdated = CartJson();
                     return cartUpdated;
                 }
@@ -279,14 +270,15 @@ namespace Project_PRN.Controllers {
                 var serializer = new JavaScriptSerializer();
 
                 //check is exsisted cart in cookies
-                if (Request.Cookies["cart"] != null) {
+                if (Session["cart"] != null) {
                     //exsisted case, pick up it
-                    string cartJson = Request.Cookies["cart"].Value;
-                    Dictionary<string, int> cart = serializer.Deserialize<Dictionary<string, int>>(cartJson);
+                   
+
+                    Dictionary<string, int> cart = (Dictionary<string, int>)Session["cart"];
                     Dictionary<string, int>.KeyCollection keys = cart.Keys;
 
                     foreach (string key in keys) {
-                        
+
                         Product p = db.Products.Find(Int32.Parse(key));
                         total += p.price * cart[key];
                     }

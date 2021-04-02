@@ -31,7 +31,6 @@
                     }
                     return total;
                 },
-
             },
             methods: {
                 loadCart() {
@@ -77,6 +76,10 @@
                         .catch(error => {
                             console.log(error);
                         })
+                },
+                formattedCurrencyValue(totalValue) {
+                    if (!totalValue) { return "$0.00" }
+                    return "$" + parseFloat(totalValue).toFixed(2)
                 }
             }
         })
@@ -175,7 +178,7 @@
                     <hr>
                     <p class="d-flex total-price">
                         <span>Total</span>
-                        <span>${{calTotal}}</span>
+                        <span>{{formattedCurrencyValue(calTotal)}}</span>
                     </p>
                 </div>
                 <p class="text-center"><a href="/Bills/CheckOut" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p>

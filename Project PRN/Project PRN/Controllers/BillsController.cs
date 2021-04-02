@@ -73,15 +73,13 @@ namespace Project_PRN.Controllers {
                 //is loged User
                 if (Session["user"] == null) {
                     //didn't log in case, storage cart in cookies
-                    var serializer = new JavaScriptSerializer();
 
                     Dictionary<string, int> cart;
 
                     //check is exsisted cart in cookies
-                    if (Request.Cookies["cart"] != null) {
+                    if (Session["cart"] != null) {
                         //exsisted case, pick up it
-                        string cartJson = Request.Cookies["cart"].Value;
-                        cart = serializer.Deserialize<Dictionary<string, int>>(cartJson);
+                        cart = (Dictionary<string, int>)Session["cart"];
 
                         Dictionary<string, int>.KeyCollection keys = cart.Keys;
 
@@ -102,7 +100,7 @@ namespace Project_PRN.Controllers {
                             content += $"<tr style=\"background - color: #eeeeee;\"><td style=\"padding: 5px 10px 5px 10px; font-size: 15px;\">{p.title}</td><td style=\"padding: 5px 10px 5px 10px; font-size: 15px;\">{p.price.ToString("C")}</td><td style=\"padding: 5px 10px 5px 10px; font-size: 15px;\">{cart[key]}</td><td style=\"padding: 5px 10px 5px 10px; font-size: 15px;\">{total.ToString("C")}</td>";
                             totalValue += total;
                         }
-                        Response.Cookies["cart"].Expires = DateTime.Now.AddMinutes(-1);
+                        Session.Remove("cart");
                     } else {
                         //in null case of cart
                         return Json("Please put item into cart before check out!", JsonRequestBehavior.AllowGet);

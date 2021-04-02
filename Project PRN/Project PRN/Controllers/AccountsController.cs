@@ -46,12 +46,12 @@ namespace Project_PRN.Controllers {
                         session.Add("user", checkAccount.userID);
                         session.Add("role", checkAccount.role);
                         //reload cart
-                        if (Request.Cookies["cart"] != null) {
-                            string cartJson = Request.Cookies["cart"].Value;
+                        if (Session["cart"] != null) {
                             CartsController cartsController = new CartsController();
                             int userId = Int32.Parse(Session["user"].ToString());
-                            cartsController.AddToCartWhenLogin(cartJson, userId);
-                            Response.Cookies["cart"].Expires = DateTime.Now.AddDays(-1);
+                            Dictionary<string, int> cookieCart = (Dictionary<string, int>)Session["cart"];
+                            cartsController.AddToCartWhenLogin(cookieCart, userId);
+                            Session.Remove("cart");
                         }
                         return RedirectToRoute(new {
                             controller = "Home",
@@ -155,6 +155,10 @@ namespace Project_PRN.Controllers {
                 if (Session["user"] != null) {
                     HttpSessionStateBase session = HttpContext.Session;
                     session.Remove("user");
+                    session.Remove("role");
+                    if (Session["cart"] != null) {
+                        session.Remove("cart");
+                    }
                 }
             } catch (Exception e) {
                 //chuyen toi trang bao loi
@@ -167,7 +171,7 @@ namespace Project_PRN.Controllers {
         }
 
         public ActionResult Edit() {
-            if (Session["user"] != null) {
+            if (Session["user"] != null && Session["Role"] != null && Session["Role"].ToString().Equals("2")) {
                 return View();
             } else {
                 return RedirectToAction("SignIn");
