@@ -202,6 +202,10 @@ namespace Project_PRN.Controllers {
 
         public JsonResult AdminBillManagerJson(int? type, DateTime? date) {
             db.Configuration.ProxyCreationEnabled = false;
+            int success = 0;
+            int pending = 0;
+            int cancel = 0;
+            decimal total = 0;
             List<Bill> listBill = db.Bills.ToList().Select(Bill => new Bill {
                 BillID = Bill.BillID,
                 quantity = Bill.quantity,
@@ -225,7 +229,17 @@ namespace Project_PRN.Controllers {
                     userID = product.userID,
                 }).Where(p => p.productID == Bill.productid).FirstOrDefault(),
             }).Where(b => b.orderTime >= date.Value.AddDays(-1) && b.orderTime < date.Value.AddDays(1) && b.status == type).ToList();
-            return Json(listBill, JsonRequestBehavior.AllowGet);
+            success = listBill.Where(b => b.status == 2).Count();
+            pending = listBill.Where(b => b.status == 1).Count();
+            cancel = listBill.Where(b => b.status == 0).Count();
+            total = listBill.Sum(b => b.amount);
+            return Json(new {
+                listBill = listBill,
+                success = success,
+                pending = pending,
+                cancel = cancel,
+                total = total.ToString("C")
+            }, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult BillManagerJson() {

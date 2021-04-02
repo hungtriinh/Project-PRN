@@ -1,4 +1,5 @@
-﻿using Project_PRN.Models;
+﻿using PagedList;
+using Project_PRN.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -43,9 +44,9 @@ namespace Project_PRN.Controllers {
                         ViewData["type"] = 1;
                     }
                     if (date != null) {
-                        ViewData["date"] = date;
+                        ViewData["date"] = date.Value.ToString("yyyy-MM-dd");
                     } else {
-                        ViewData["date"] = DateTime.Now;
+                        ViewData["date"] = DateTime.Now.ToString("yyyy-MM-dd");
                     }
                     return View();
                 } else {
@@ -174,6 +175,65 @@ namespace Project_PRN.Controllers {
             }
             return null;
 
+        }
+
+        public ActionResult AccountManager(int? page) {
+            db.Configuration.ProxyCreationEnabled = false;
+            if (Session["user"] == null) {
+                return RedirectToAction("SignIn", "Accounts");
+            } else {
+                int userID = Int32.Parse(Session["user"].ToString());
+                Account account = db.Accounts.Find(userID);
+                if (account.role == 1) {
+                    if (page != null) {
+                        ViewData["page"] = page;
+                    } else {
+                        ViewData["page"] = 1;
+                    }
+                    return View();
+                } else {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+        }
+
+        public JsonResult AccountJson(int? page) {
+            db.Configuration.ProxyCreationEnabled = false;
+            List<Account> listAccount;
+            if (page == null) {
+                page = 1;
+            }
+            int totalPage = 0;
+            int pageSize = 6;
+            int pageNumber = (page ?? 1);
+            listAccount = db.Accounts.ToList().Where(a => a.role > 1).Select(account => new Account {
+                userID = account.userID,
+                email = account.email,
+                password = account.password,
+                userName = account.userName,
+                role = account.role,
+                address = account.address,
+                phoneNumber = account.phoneNumber,
+            }).OrderByDescending(product => product.role).ToPagedList(pageNumber, pageSize).ToList();
+            totalPage = db.Accounts.Where(a => a.role > 1).Count() / pageSize + 1;
+            return Json(new {
+                totalPage = totalPage,
+                pageIndex = page,
+                accountList = listAccount
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AdminEditProfile([Bind(Include = "userID,email,password,userName,address,phoneNumber")] Account account) {
+            Account a = db.Accounts.Find(account.userID);
+            a.email = account.email;
+            a.userName = account.userName;
+            a.address = account.address;
+            a.phoneNumber = account.phoneNumber;
+            db.Entry(a).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("AccountManager");
         }
     }
 }

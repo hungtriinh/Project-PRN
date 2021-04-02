@@ -268,15 +268,12 @@
                     <div class="col text-center">
                         <div class="block-27">
                             <ul>
-                                <li><a>&lt;&lt;</a></li>
                                 @*<li class="active"><span>1</span></li>*@
                                 @if (@ViewData["categoryID"] == null) {
                                     <li v-for="n in totalPage" :class="{active: n == pageIndex}"><span><a v-bind:href="'/Products/Product?page='+n">{{n}}</a></span></li>
                                 } else {
                                     <li v-for="n in totalPage" :class="{active: n == pageIndex}"><span><a v-bind:href="'/Products/Product?categoryID='+ @ViewData["categoryID"] +'&page='+n">{{n}}</a></span></li>
                                 }
-
-                                <li><a>&gt;&gt;</a></li>
                             </ul>
                         </div>
                     </div>

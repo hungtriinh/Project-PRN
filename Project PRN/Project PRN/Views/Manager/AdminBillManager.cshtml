@@ -14,7 +14,11 @@
         new Vue({
             el: '#adminBillManager',
             data: {
-                bills: []
+                bills: [],
+                success: 0,
+                pending: 0,
+                cancel: 0,
+                total: 0
             },
             mounted: function () {
                 axios.get('/Bills/AdminBillManagerJson', {
@@ -24,7 +28,11 @@
                     }
                 })
                     .then(response => {
-                        this.bills = response.data;
+                        this.bills = response.data.listBill
+                        this.cancel = response.data.cancel
+                        this.success = response.data.success
+                        this.pending = response.data.pending
+                        this.total = response.data.total
                         console.log(this.bills);
                     })
                     .catch(error => {
@@ -55,6 +63,10 @@
         <div class="row no-gutters slider-text align-items-center justify-content-center">
             <div class="col-md-9 ftco-animate text-center">
                 <h1 class="mb-0 bread">Admin Manager</h1>
+                <p class="breadcrumbs">
+                    <span class="mr-4"><a class="link-active" href="">Bill Manager</a></span>
+                    <span class="mr-4"><a href="/Manager/AccountManager">Account Manager</a></span>
+                </p>
             </div>
         </div>
     </div>
@@ -67,7 +79,7 @@
                 <form class="cart-total mb-5" action="AdminBillManager" method="get">
                     <h3>Searching Bill</h3>
                     <div class="d-block contact-form">
-                        <span>Time</span><input class="form-control" type="date" name="date" value="@DateTime.Now.ToString("yyyy-MM-dd")"/>
+                        <span>Time</span><input class="form-control" type="date" name="date" value="@ViewData["date"]" />
                         <span class="">Type</span>
                         <div class="d-flex">
                             <select name="type" class="form-control">
@@ -87,20 +99,20 @@
                     <h3>Revenue Totals</h3>
                     <p class="d-flex">
                         <span>Bill success</span>
-                        <span>1</span>
+                        <span>{{success}}</span>
                     </p>
                     <p class="d-flex">
                         <span>Bill Pending</span>
-                        <span>1</span>
+                        <span>{{pending}}</span>
                     </p>
                     <p class="d-flex">
                         <span>Bill Cancel</span>
-                        <span>1</span>
+                        <span>{{cancel}}</span>
                     </p>
                     <hr>
                     <p class="d-flex total-price">
                         <span>Total</span>
-                        <span>$24</span>
+                        <span>{{total}}</span>
                     </p>
                 </div>
             </div>
