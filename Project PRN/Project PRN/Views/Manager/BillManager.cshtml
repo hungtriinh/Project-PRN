@@ -13,7 +13,7 @@
             el: '#userBills',
             data: {
                 orders: [],
-                selected: undefined
+                selected: []
             },
             mounted: function () {
                 axios.get('/Bills/BillManagerJson')
@@ -35,10 +35,10 @@
                     return bill.amount * bill.quantity;
                 },
                 cellClick(index) {
-                    if (this.selected != index) {
-                        this.selected = index
+                    if (!this.selected.includes(index)) {
+                        this.selected.push(index)
                     } else {
-                        this.selected = undefined
+                        this.selected.splice(this.selected.indexOf(index), 1)
                     }
                     console.log(this.selected)
                 }
@@ -81,7 +81,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody :class="{hide: selected != index}">
+                        <tbody :class="{hide: !selected.includes(index)}">
                             <tr v-for="bill in order.bills" class="text-center">
                                 <td class="image-prod">
                                     <a v-bind:href="'/Products/ProductDetail?productID=' + bill.Product.productID">
