@@ -12,7 +12,8 @@
         new Vue({
             el: '#userBills',
             data: {
-                orders: []
+                orders: [],
+                selected: undefined
             },
             mounted: function () {
                 axios.get('/Bills/BillManagerJson')
@@ -33,6 +34,14 @@
                 calTotalForSingleProduct: function (bill) {
                     return bill.amount * bill.quantity;
                 },
+                cellClick(index) {
+                    if (this.selected != index) {
+                        this.selected = index
+                    } else {
+                        this.selected = undefined
+                    }
+                    console.log(this.selected)
+                }
 
             }
         })
@@ -54,8 +63,8 @@
         <div class="row">
             <div class="col-md-12 col-lg-12">
                 <div class="cart-list">
-                    <table v-for="order in orders" class="table">
-                        <thead class="thead-primary">
+                    <table v-for="(order, index) in orders" class="table">
+                        <thead v-on:click="cellClick(index)" class="thead-primary">
                             <tr class="text-center">
                                 <th>{{order.ID}}</th>
                                 <th>Product</th>
@@ -68,7 +77,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody :class="{hide: selected != index}">
                             <tr v-for="bill in order.bills" class="text-center">
                                 <td class="image-prod">
                                     <a v-bind:href="'/Products/ProductDetail?productID=' + bill.Product.productID">

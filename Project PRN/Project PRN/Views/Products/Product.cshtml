@@ -15,7 +15,10 @@
             data: {
                 products: [],
                 totalPage: 0,
-                categories: []
+                categories: [],
+                catID: 0,
+                pageIndex: 0
+
             },
             mounted: function () {
                 axios.get('/Products/ProductJson', {
@@ -27,8 +30,11 @@
                     }
                 })
                     .then(response => {
-                        this.products = response.data.productList;
-                        this.totalPage = response.data.totalPage;
+                        this.products = response.data.productList
+                        this.totalPage = response.data.totalPage
+                        this.catID = response.data.categoryID
+                        this.pageIndex = response.data.pageIndex
+                        console.log(this.pageIndex)
                         console.log(this.products);
                     })
                     .catch(error => {
@@ -265,9 +271,9 @@
                                 <li><a>&lt;&lt;</a></li>
                                 @*<li class="active"><span>1</span></li>*@
                                 @if (@ViewData["categoryID"] == null) {
-                                    <li v-for="n in totalPage"><a v-bind:href="'/Products/Product?page='+n"><span>{{n}}</span></a></li>
+                                    <li v-for="n in totalPage" :class="{active: n == pageIndex}"><span><a v-bind:href="'/Products/Product?page='+n">{{n}}</a></span></li>
                                 } else {
-                                    <li v-for="n in totalPage"><a v-bind:href="'/Products/Product?categoryID='+ @ViewData["categoryID"] +'&page='+n"><span>{{n}}</span></a></li>
+                                    <li v-for="n in totalPage" :class="{active: n == pageIndex}"><span><a v-bind:href="'/Products/Product?categoryID='+ @ViewData["categoryID"] +'&page='+n">{{n}}</a></span></li>
                                 }
 
                                 <li><a>&gt;&gt;</a></li>
@@ -284,16 +290,25 @@
                         <div class="fancy-collapse-panel">
                             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                                 <ul>
+                                    <li>
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading" role="tab" id="headingOne">
+                                                <h4 class="panel-title">
+                                                    <a :class="{'categories-active': catID == null}" href="/Products/Product" aria-expanded="true"
+                                                       aria-controls="collapseOne">
+                                                        ALL
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </li>
                                     <!--v-for Category-->
-                                    <a class="categories-active" href="/Products/Product" aria-expanded="true"
-                                       aria-controls="collapseOne">
-                                        ALL
-                                    </a>
+
                                     <li v-for="category in categories">
                                         <div class="panel panel-default">
                                             <div class="panel-heading" role="tab" id="headingOne">
                                                 <h4 class="panel-title">
-                                                    <a class="categories-active" v-bind:href="'/Products/Product?categoryID=' + category.categoriesID" aria-expanded="true"
+                                                    <a :class="{'categories-active': category.categoriesID == catID}" v-bind:href="'/Products/Product?categoryID=' + category.categoriesID" aria-expanded="true"
                                                        aria-controls="collapseOne">
                                                         {{category.categoriesName}}
                                                     </a>

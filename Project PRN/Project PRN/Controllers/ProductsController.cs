@@ -223,6 +223,8 @@ namespace Project_PRN.Controllers {
 
             return Json(new {
                 totalPage = totalPage,
+                pageIndex = page,
+                categoryID = categoryID,
                 productList = listProduct
             }, JsonRequestBehavior.AllowGet);
         }

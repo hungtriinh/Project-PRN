@@ -15411,4 +15411,9 @@ textarea.form-control {
 rates-active {
     color: #dbcc8f;
 }
+
+.hide{
+    display: none;
+    transition: 0.8s;
+}
 /*end individual*/

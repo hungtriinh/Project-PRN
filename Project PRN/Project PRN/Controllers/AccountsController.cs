@@ -36,7 +36,7 @@ namespace Project_PRN.Controllers {
                 string checkPassword = account.password;
 
                 //get user's information from database
-                Account checkAccount = db.Accounts.Where(a => a.email.Equals(checkEmail)).FirstOrDefault();
+                Account checkAccount = db.Accounts.Where(a => a.email.Equals(checkEmail) && a.role != 0).FirstOrDefault();
                 //check is exsisted account
                 if (checkAccount != null) {
                     //check if password matches
