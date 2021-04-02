@@ -78,13 +78,13 @@
                             <div class="form-group ">
                                 <div class="col-lg-12">
                                     <div class="radio">
-                                        <input v-if="product.status == 1" class="form-check-input" type="radio" name="status" checked value="1">
-                                        <input v-else class="form-check-input" type="radio" name="status" value="1">
+                                        <input v-if="product.status == 1" class="form-check-input" type="radio" name="status" checked value="true">
+                                        <input v-else class="form-check-input" type="radio" name="status" value="true">
                                         Instock
                                     </div>
                                     <div class="radio">
-                                        <input v-if="product.status == 0" class="form-check-input" type="radio" name="status" checked value="0">
-                                        <input v-else class="form-check-input" type="radio" name="status" value="0">
+                                        <input v-if="product.status == 0" class="form-check-input" type="radio" name="status" checked value="false">
+                                        <input v-else class="form-check-input" type="radio" name="status" value="false">
                                         Outstock
                                     </div>
                                 </div>

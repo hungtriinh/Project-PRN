@@ -151,7 +151,7 @@
                                     </div>
                                 </td>
 
-                                <td class="total">${{calTotalForSingleProduct(p)}}</td>
+                                <td class="total">{{formattedCurrencyValue(calTotalForSingleProduct(p))}}</td>
                             </tr><!-- END TR-->
 
                         </tbody>
@@ -165,7 +165,7 @@
                     <h3>Cart Totals</h3>
                     <p class="d-flex">
                         <span>Subtotal</span>
-                        <span>${{calTotal}}</span>
+                        <span>{{formattedCurrencyValue(calTotal)}}</span>
                     </p>
                     <p class="d-flex">
                         <span>Delivery</span>
