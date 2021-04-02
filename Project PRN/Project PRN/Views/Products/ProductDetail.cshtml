@@ -138,11 +138,12 @@
                         </span>
                     </div>
                     <div class="w-100"></div>
-                    <div class="col-md-12">
-                        <p style="color: #000;">{{product.quantity}} piece available</p>
-                    </div>
+                    
                 </div>
-                <p>
+                <p v-if="!product.status" class="text-danger">
+                    This product is out selling
+                </p>
+                <p v-else>
                     <button v-on:click="addToCart" class="btn btn-black py-3 px-5 mr-2">Add to Cart</button>
                     <button class="btn btn-primary py-3 px-5">Buy now</button>
                 </p>

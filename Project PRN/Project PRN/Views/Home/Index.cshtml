@@ -297,7 +297,7 @@
 
                             } else {
                                 <p class="bottom-area d-block px-3 text-center">
-                                    <a href="/Products/Edit" class="add-to-cart text-center py-2 mr-1 col-11">
+                                    <a v-bind:href="'/Products/Edit?productID='+p.productID" class="add-to-cart text-center py-2 mr-1 col-11">
                                         <span>
                                             Edit this product <i class="ion-ios-add ml-1"></i>
                                         </span>
@@ -377,7 +377,7 @@
 
                             } else {
                                 <p class="bottom-area d-block px-3 text-center">
-                                    <a href="/Products/Edit" class="add-to-cart text-center py-2 mr-1 col-11">
+                                    <a v-bind:href="'/Products/Edit?productID='+p.productID" class="add-to-cart text-center py-2 mr-1 col-11">
                                         <span>
                                             Edit this product <i class="ion-ios-add ml-1"></i>
                                         </span>

@@ -12804,9 +12804,9 @@ h5,
 
     .product .img-prod span.status {
         padding: 10px 1px;
-        color: #333333;
+        color: #ffffff;
         font-weight: 400;
-        background: #dbcc8f;
+        background: #EA4335;
         -webkit-writing-mode: vertical-lr;
         -ms-writing-mode: tb-lr;
         writing-mode: vertical-lr;
@@ -12822,7 +12822,7 @@ h5,
         left: 0;
         text-transform: uppercase;
         letter-spacing: 3px;
-        font-size: 12px;
+        font-size: 13px;
         z-index: 1;
     }
 

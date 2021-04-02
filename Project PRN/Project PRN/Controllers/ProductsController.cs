@@ -70,7 +70,7 @@ namespace Project_PRN.Controllers {
                 Category = db.Categories.Find(product.categoriesID),
                 Evaluates = db.Evaluates.Where(e => e.productID == product.productID).ToList()
 
-            }).OrderByDescending(product => product.postTime).Take(8).ToList();
+            }).Where(p => p.status == true).OrderByDescending(product => product.postTime).Take(8).ToList();
             return Json(listProduct, JsonRequestBehavior.AllowGet);
 
         }
@@ -94,7 +94,7 @@ namespace Project_PRN.Controllers {
                 Account = db.Accounts.Find(product.userID),
                 Category = db.Categories.Find(product.categoriesID),
                 Evaluates = db.Evaluates.Where(ev => ev.productID == product.productID).ToList()
-            }).OrderByDescending(product => product.rate).Take(8).ToList();
+            }).Where(p => p.status == true).OrderByDescending(product => product.rate).Take(8).ToList();
             return Json(listProduct, JsonRequestBehavior.AllowGet);
 
         }
@@ -328,7 +328,44 @@ namespace Project_PRN.Controllers {
             return Json(listCategories, JsonRequestBehavior.AllowGet);
         }
 
-        
+        public ActionResult Edit(int? productId) {
+            if (Session["user"] != null)
+                db.Configuration.ProxyCreationEnabled = false;
+            ViewData["productId"] = productId;
+
+            if (Session["user"] == null) {
+                return RedirectToAction("SignIn", "Accounts");
+            } else {
+                int userID = Int32.Parse(Session["user"].ToString());
+                Account account = db.Accounts.Find(userID);
+                if (account.role == 3 || account.role == 1) {
+                    return View();
+                } else {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "productID,description,shortDescription,price,quantity,status")] Product product) {
+            try {
+                db.Configuration.ProxyCreationEnabled = false;
+                int id = product.productID;
+                Product ProductUpdated = db.Products.Find(id);
+                ProductUpdated.description = product.description;
+                ProductUpdated.shortDescription = product.shortDescription;
+                ProductUpdated.price = product.price;
+                ProductUpdated.quantity = product.quantity;
+                ProductUpdated.status = product.status;
+
+                db.Entry(ProductUpdated).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Product", "Products");
+            } catch {
+                ViewData["productId"] = product.productID;
+                return RedirectToAction("Edit", "Products");
+            }
+        }
 
         protected override void Dispose(bool disposing) {
             if (disposing) {
